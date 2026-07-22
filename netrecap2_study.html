@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CN201 – Part 2 Exam Prep | netRECAP2</title>
+  <meta name="description" content="Exam prep for CN201 Part 2: Topology, IP Addressing, Routing, BGP, Network Security, Firewalls, IDS/IPS, Cryptography, PKI"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg:#08090f;--bg2:#0e1020;--bg3:#13162a;
+      --card:#181c32;--card2:#1e2340;
+      --accent:#7c3aed;--accent2:#a78bfa;
+      --teal:#06b6d4;--pink:#f43f5e;--gold:#f59e0b;
+      --green:#22c55e;--red:#ef4444;--orange:#f97316;
+      --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+      --border:#252b4a;--glow:rgba(124,58,237,.25);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+    /* BG FX */
+    .bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.2;animation:drift 10s ease-in-out infinite}
+    .orb1{width:600px;height:600px;background:radial-gradient(circle,#7c3aed,transparent);top:-150px;right:-100px;animation-delay:0s}
+    .orb2{width:450px;height:450px;background:radial-gradient(circle,#06b6d4,transparent);bottom:-100px;left:-100px;animation-delay:4s}
+    .orb3{width:350px;height:350px;background:radial-gradient(circle,#f43f5e,transparent);top:50%;left:40%;animation-delay:2s}
+    @keyframes drift{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-25px) rotate(5deg)}}
+
+    /* HERO */
+    .hero{position:relative;z-index:1;text-align:center;padding:56px 24px 36px;background:linear-gradient(180deg,rgba(124,58,237,.1) 0%,transparent 100%);border-bottom:1px solid var(--border)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);color:var(--accent2);border-radius:999px;padding:6px 18px;font-size:.8rem;font-weight:600;margin-bottom:18px;letter-spacing:.06em;animation:glow-pulse 2s ease-in-out infinite}
+    @keyframes glow-pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.5)}50%{box-shadow:0 0 0 8px rgba(124,58,237,0)}}
+    .hero h1{font-size:clamp(1.9rem,5vw,3.4rem);font-weight:900;background:linear-gradient(135deg,#fff 20%,var(--accent2) 55%,var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.18;margin-bottom:14px}
+    .hero p{color:var(--text2);font-size:1rem;max-width:600px;margin:0 auto 28px;line-height:1.7}
+    .hero-stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+    .stat{text-align:center}
+    .stat-num{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .stat-label{font-size:.72rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+
+    /* NAV */
+    .nav-wrap{position:sticky;top:0;z-index:100;background:rgba(8,9,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 16px}
+    .nav-tabs{display:flex;overflow-x:auto;gap:4px;max-width:1200px;margin:0 auto;scrollbar-width:none;padding:10px 0}
+    .nav-tabs::-webkit-scrollbar{display:none}
+    .tab-btn{flex-shrink:0;padding:8px 18px;border-radius:999px;border:1px solid transparent;background:transparent;color:var(--text2);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'Inter',sans-serif}
+    .tab-btn:hover{background:var(--card);color:var(--text);border-color:var(--border)}
+    .tab-btn.active{background:linear-gradient(135deg,var(--accent),#9f5cf7);color:#fff;border-color:transparent;box-shadow:0 0 18px var(--glow)}
+
+    /* MAIN */
+    .main{max-width:1200px;margin:0 auto;padding:32px 20px;position:relative;z-index:1}
+    .section{display:none}
+    .section.active{display:block}
+
+    /* OVERVIEW */
+    .overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-top:8px}
+    .topic-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+    .topic-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(124,58,237,.07));opacity:0;transition:opacity .25s}
+    .topic-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 32px rgba(124,58,237,.2)}
+    .topic-card:hover::after{opacity:1}
+    .topic-num{font-size:.7rem;font-weight:700;letter-spacing:.12em;color:var(--accent2);text-transform:uppercase;margin-bottom:8px}
+    .topic-title{font-size:1.02rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+    .topic-bullets{list-style:none;font-size:.81rem;color:var(--text2);line-height:1.85}
+    .topic-bullets li::before{content:'▸ ';color:var(--teal)}
+    .topic-tag{display:inline-block;margin-top:12px;padding:3px 10px;border-radius:999px;font-size:.7rem;font-weight:600;background:rgba(6,182,212,.1);color:var(--teal);border:1px solid rgba(6,182,212,.25)}
+
+    /* SECTION HEADER */
+    .section-header{margin-bottom:26px}
+    .section-header h2{font-size:1.75rem;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .section-header p{color:var(--text2);margin-top:6px;font-size:.9rem}
+
+    /* CHAPTER LABEL */
+    .chapter-label{display:flex;align-items:center;gap:12px;margin:36px 0 16px}
+    .chapter-label span{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2);white-space:nowrap}
+    .chapter-label .line{flex:1;height:1px;background:var(--border)}
+
+    /* MCQ */
+    .mcq-item{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;transition:border-color .2s}
+    .mcq-item:hover{border-color:rgba(124,58,237,.4)}
+    .q-num{font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+    .q-text{font-size:.97rem;font-weight:600;color:var(--text);margin-bottom:18px;line-height:1.65}
+    .options{display:flex;flex-direction:column;gap:10px}
+    .opt{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:12px;border:1px solid var(--border);cursor:pointer;transition:all .2s;background:var(--bg3);font-size:.87rem;line-height:1.5;color:var(--text2)}
+    .opt:hover{border-color:var(--accent);color:var(--text);background:var(--card2)}
+    .opt.selected-correct{background:rgba(34,197,94,.12);border-color:var(--green);color:#86efac}
+    .opt.selected-wrong{background:rgba(239,68,68,.12);border-color:var(--red);color:#fca5a5}
+    .opt.reveal-correct{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.4);color:#86efac}
+    .opt-letter{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;background:rgba(124,58,237,.15);color:var(--accent2);transition:all .2s}
+    .opt.selected-correct .opt-letter{background:var(--green);color:#fff}
+    .opt.selected-wrong .opt-letter{background:var(--red);color:#fff}
+    .opt.reveal-correct .opt-letter{background:var(--green);color:#fff}
+    .answer-reveal{margin-top:16px;padding:14px 16px;border-radius:12px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);font-size:.85rem;color:var(--text2);display:none;line-height:1.7}
+    .answer-reveal.shown{display:block}
+    .answer-reveal strong{color:var(--accent2)}
+    .mcq-actions{display:flex;gap:10px;margin-top:16px}
+    .btn-reveal,.btn-reset{padding:8px 16px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid;transition:all .2s;font-family:'Inter',sans-serif}
+    .btn-reveal{background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.4);color:var(--accent2)}
+    .btn-reveal:hover{background:rgba(124,58,237,.3)}
+    .btn-reset{background:transparent;border-color:var(--border);color:var(--text3)}
+    .btn-reset:hover{border-color:var(--text2);color:var(--text2)}
+
+    /* SCOREBOARD */
+    .scoreboard{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+    .score-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 24px;flex:1;min-width:150px;text-align:center}
+    .score-val{font-size:2rem;font-weight:800;margin-bottom:4px}
+    .score-val.green{background:linear-gradient(135deg,var(--green),#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .score-val.red{background:linear-gradient(135deg,var(--red),#fca5a5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .score-val.gold{background:linear-gradient(135deg,var(--gold),#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .score-lbl{font-size:.73rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
+    .progress-bar{height:10px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:6px}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--teal));border-radius:999px;transition:width .5s ease;width:0%}
+
+    /* FILTER BAR */
+    .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+    .filter-chip{padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:.78rem;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+    .filter-chip:hover,.filter-chip.active{background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.4);color:var(--accent2)}
+
+    /* ESSAY */
+    .essay-item{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:14px;overflow:hidden}
+    .essay-header{padding:20px 24px;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;transition:background .2s}
+    .essay-header:hover{background:var(--card2)}
+    .essay-q{font-size:.94rem;font-weight:600;color:var(--text);line-height:1.6;flex:1}
+    .essay-marks{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+    .marks-badge{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--gold);letter-spacing:.05em;white-space:nowrap}
+    .type-badge{font-size:.69rem;padding:2px 8px;border-radius:999px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);color:var(--teal);white-space:nowrap}
+    .chevron{color:var(--text3);transition:transform .3s;font-size:1.1rem;margin-top:2px}
+    .essay-item.open .chevron{transform:rotate(180deg)}
+    .essay-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
+    .essay-item.open .essay-body{display:block}
+    .answer-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--teal);text-transform:uppercase;margin:16px 0 10px}
+    .answer-content{font-size:.87rem;color:var(--text2);line-height:1.9}
+    .answer-content p{margin-bottom:10px}
+    .answer-content strong{color:var(--text)}
+    .answer-content ul{list-style:none;padding:0}
+    .answer-content ul li{padding:5px 0 5px 20px;position:relative;border-bottom:1px solid rgba(255,255,255,.04)}
+    .answer-content ul li::before{content:'→';position:absolute;left:0;color:var(--accent2)}
+    .key-points{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .kp{padding:4px 12px;border-radius:999px;font-size:.73rem;font-weight:500;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);color:var(--accent2)}
+
+    /* HIGHLIGHT BOX */
+    .highlight-box{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 18px;margin:14px 0;font-size:.86rem;color:var(--text2);line-height:1.7}
+    .formula-box{background:var(--bg3);border:1px solid rgba(6,182,212,.3);border-radius:12px;padding:14px 20px;margin:12px 0;font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--teal)}
+    .warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);border-left:3px solid var(--orange);border-radius:0 12px 12px 0;padding:14px 18px;margin:14px 0;font-size:.85rem;color:#fed7aa;line-height:1.7}
+
+    /* TABLE */
+    .data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.82rem}
+    .data-table th{background:rgba(124,58,237,.15);color:var(--accent2);padding:10px 14px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)}
+    .data-table td{padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text2);vertical-align:top}
+    .data-table tr:last-child td{border-bottom:none}
+    .data-table tr:hover td{background:rgba(124,58,237,.05)}
+
+    /* CHEAT */
+    .cheat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .cheat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .cheat-card h4{font-size:.9rem;font-weight:700;color:var(--accent2);margin-bottom:10px}
+    .cheat-card ul{list-style:none;font-size:.81rem;color:var(--text2);line-height:1.9}
+    .cheat-card ul li::before{content:'• ';color:var(--teal)}
+    .cheat-card.orange-card{border-color:rgba(249,115,22,.25)}
+    .cheat-card.orange-card h4{color:#fb923c}
+    .cheat-card.red-card{border-color:rgba(239,68,68,.25)}
+    .cheat-card.red-card h4{color:#f87171}
+    .cheat-card.teal-card{border-color:rgba(6,182,212,.25)}
+    .cheat-card.teal-card h4{color:var(--teal)}
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--card2);border-radius:3px}
+
+    @media(max-width:600px){.hero h1{font-size:1.75rem}.hero-stats{gap:16px}.tab-btn{padding:7px 12px;font-size:.77rem}}
+    .fade-in{animation:fadeIn .4s ease forwards}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    .tag-important{display:inline-block;padding:1px 8px;border-radius:4px;font-size:.68rem;font-weight:700;background:rgba(244,63,94,.2);color:#fb7185;margin-left:8px;vertical-align:middle;letter-spacing:.05em}
+  </style>
+</head>
+<body>
+<div class="bg-orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🔐 CN201 Part 2 · netRECAP2.pdf · 209 Slides · Exam in 2 Days!</div>
+  <h1>Network Topology, IP Addressing,<br>Routing, Security & Cryptography</h1>
+  <p>Comprehensive exam prep covering flow analysis, topologies, subnetting, BGP, firewalls, IDS/IPS, and cryptography — with MCQs, essays & model answers.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">209</div><div class="stat-label">Slides Covered</div></div>
+    <div class="stat"><div class="stat-num">70+</div><div class="stat-label">MCQ Questions</div></div>
+    <div class="stat"><div class="stat-num">35+</div><div class="stat-label">Essay Questions</div></div>
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Key Topics</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showSection('overview',this)">📋 Overview</button>
+    <button class="tab-btn" onclick="showSection('mcq',this)">✅ MCQ Quiz</button>
+    <button class="tab-btn" onclick="showSection('essay',this)">📝 Essay Q&A</button>
+    <button class="tab-btn" onclick="showSection('cheat',this)">⚡ Cheat Sheet</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- OVERVIEW -->
+<div id="overview" class="section active fade-in">
+  <div class="section-header">
+    <h2>📚 Topic Overview – netRECAP2</h2>
+    <p>All 10 key topic areas from netRECAP2.pdf — click any card to jump to questions</p>
+  </div>
+  <div class="overview-grid">
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-req')">
+      <div class="topic-num">Topic 01</div>
+      <div class="topic-title">Requirements Analysis & Flow Analysis</div>
+      <ul class="topic-bullets">
+        <li>Requirement Specification & Mapping</li>
+        <li>Methods of Gathering Requirements</li>
+        <li>Flow Analysis (Individual, Composite, Critical)</li>
+        <li>Flow Specification (Flowspec)</li>
+        <li>Data Sources & Sinks</li>
+      </ul>
+      <span class="topic-tag">8 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-capacity')">
+      <div class="topic-num">Topic 02</div>
+      <div class="topic-title">Capacity Planning</div>
+      <ul class="topic-bullets">
+        <li>Network Capacity Definition</li>
+        <li>Capacity Planning Process</li>
+        <li>OPEX & CAPEX</li>
+        <li>Baseline Traffic Behavior</li>
+      </ul>
+      <span class="topic-tag">5 MCQs · 3 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-topology')">
+      <div class="topic-num">Topic 03</div>
+      <div class="topic-title">Network Topologies</div>
+      <ul class="topic-bullets">
+        <li>Star, Bus, Ring, Mesh, Tree, Hybrid</li>
+        <li>Physical vs Logical Topology</li>
+        <li>Spine & Leaf (Data Centers)</li>
+        <li>Ad-hoc, Cell Architecture</li>
+      </ul>
+      <span class="topic-tag">10 MCQs · 5 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-ip')">
+      <div class="topic-num">Topic 04</div>
+      <div class="topic-title">IP Addressing & Subnetting</div>
+      <ul class="topic-bullets">
+        <li>IPv4 Classes (A, B, C)</li>
+        <li>Private Address Ranges</li>
+        <li>Subnet Mask & CIDR Notation</li>
+        <li>Network & Broadcast Addresses</li>
+        <li>Subnetting Calculations</li>
+      </ul>
+      <span class="topic-tag">12 MCQs · 5 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-routing')">
+      <div class="topic-num">Topic 05</div>
+      <div class="topic-title">Routing & BGP</div>
+      <ul class="topic-bullets">
+        <li>Static vs Dynamic Routing</li>
+        <li>Routing Table Entries</li>
+        <li>BGP (iBGP vs eBGP)</li>
+        <li>BGP Attributes (AS-Path, Local Pref, MED)</li>
+        <li>Autonomous Systems (AS)</li>
+      </ul>
+      <span class="topic-tag">10 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-security')">
+      <div class="topic-num">Topic 06</div>
+      <div class="topic-title">Network Security & Attacks</div>
+      <ul class="topic-bullets">
+        <li>CIA Triad</li>
+        <li>Passive vs Active Attacks</li>
+        <li>Interruption, Interception, Fabrication, Modification</li>
+        <li>Prevention Methods</li>
+      </ul>
+      <span class="topic-tag">8 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-firewall')">
+      <div class="topic-num">Topic 07</div>
+      <div class="topic-title">Firewalls</div>
+      <ul class="topic-bullets">
+        <li>5 Firewall Types</li>
+        <li>Deployment Architectures (DMZ)</li>
+        <li>Hardware vs Software vs Cloud Firewalls</li>
+        <li>WAF, NGFW</li>
+        <li>4 Generations of Firewalls</li>
+      </ul>
+      <span class="topic-tag">10 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-ids')">
+      <div class="topic-num">Topic 08</div>
+      <div class="topic-title">IDS & IPS</div>
+      <ul class="topic-bullets">
+        <li>IDS (NIDS, HIDS, SIDS)</li>
+        <li>IPS (NIPS, WIPS, NBA, HIPS)</li>
+        <li>IDS vs IPS comparison</li>
+        <li>Detection Methods (Signature, Anomaly, Policy)</li>
+      </ul>
+      <span class="topic-tag">6 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-crypto')">
+      <div class="topic-num">Topic 09</div>
+      <div class="topic-title">Cryptography</div>
+      <ul class="topic-bullets">
+        <li>Symmetric vs Asymmetric Encryption</li>
+        <li>DES, 3DES, AES</li>
+        <li>Block Cipher vs Stream Cipher</li>
+        <li>RC4 Algorithm</li>
+        <li>Substitution vs Transposition</li>
+      </ul>
+      <span class="topic-tag">10 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-pki')">
+      <div class="topic-num">Topic 10</div>
+      <div class="topic-title">Digital Signatures, PKI & Public Key</div>
+      <ul class="topic-bullets">
+        <li>Public Key Cryptography (RSA, ECDSA)</li>
+        <li>Digital Signatures & Hash Functions</li>
+        <li>Digital Certificates</li>
+        <li>PKI (CA, VA, RA)</li>
+      </ul>
+      <span class="topic-tag">8 MCQs · 4 Essays</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- MCQ -->
+<div id="mcq" class="section fade-in">
+  <div class="section-header">
+    <h2>✅ MCQ Practice Quiz</h2>
+    <p>Click an option to answer — auto-reveals wrong/correct, track score at the top!</p>
+  </div>
+
+  <div class="scoreboard">
+    <div class="score-card"><div class="score-val green" id="scoreCorrect">0</div><div class="score-lbl">Correct</div></div>
+    <div class="score-card"><div class="score-val red" id="scoreWrong">0</div><div class="score-lbl">Wrong</div></div>
+    <div class="score-card"><div class="score-val gold" id="scoreTotal">0</div><div class="score-lbl">Attempted</div></div>
+    <div class="score-card">
+      <div class="progress-bar"><div class="progress-fill" id="mainProgress"></div></div>
+      <div class="score-lbl" id="scorePct">0% Accuracy</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-chip active" onclick="filterMCQ('all',this)">All Topics</button>
+    <button class="filter-chip" onclick="filterMCQ('req',this)">Flow Analysis</button>
+    <button class="filter-chip" onclick="filterMCQ('topology',this)">Topology</button>
+    <button class="filter-chip" onclick="filterMCQ('ip',this)">IP/Subnetting</button>
+    <button class="filter-chip" onclick="filterMCQ('routing',this)">Routing/BGP</button>
+    <button class="filter-chip" onclick="filterMCQ('security',this)">Security</button>
+    <button class="filter-chip" onclick="filterMCQ('firewall',this)">Firewalls</button>
+    <button class="filter-chip" onclick="filterMCQ('crypto',this)">Cryptography</button>
+  </div>
+
+  <div id="mcq-container">
+
+    <!-- REQUIREMENTS & FLOW ANALYSIS -->
+    <div class="chapter-label" id="topic-req"><div class="line"></div><span>Topic 01 – Requirements & Flow Analysis</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 01</div>
+      <div class="q-text">What is the purpose of a Requirements Map in network analysis?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>To show the physical cable layout of the building</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>To map requirements to a geographical description showing locations of devices and applications</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>To list the budget requirements for the project</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>To track vendor contracts</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — A Requirements Map shows the location dependencies between applications and devices. Requirements are mapped to a geographical description of the environment (building, campus, metropolitan, or WAN level). It helps estimate where traffic flows will occur.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 02</div>
+      <div class="q-text">What is Flow Analysis in the context of network design?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>The process of managing water cooling systems in data centers</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>The process of characterizing traffic flows to show those with greatest impact on network architecture</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Testing the physical cable connections</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Analyzing financial cash flows for the network project</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Flow analysis is the process of characterizing traffic flows. The intent is NOT to show every possible flow, but rather to show flows that will have the greatest impact on the network architecture and design — often a small fraction of total flows.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 03</div>
+      <div class="q-text">What is the difference between an Individual Flow and a Composite Flow?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>Individual flow = single application session; Composite flow = combination of multiple applications sharing a common path</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Individual flow = WAN traffic; Composite flow = LAN traffic</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Individual flow = upstream; Composite flow = downstream</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>They are the same thing</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — An Individual flow is the flow for a single session of a single application (the basic unit of traffic flow). A Composite flow is a combination of requirements from multiple applications or individual flows that share a common link, path, or network. Most flows in a network are composites.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 04</div>
+      <div class="q-text">Critical Flows in a network design are given the HIGHEST priority because:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>They use the most bandwidth</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>They are mission-critical, rate-critical, real-time, or interactive with strict performance requirements</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>They originate from management personnel only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>They are the cheapest to implement</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Critical flows are those with higher performance requirements (mission-critical, rate-critical, real-time, interactive, high-performance) or that serve more important users/applications/devices. They get the highest priority in the network architecture and design phase.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 05</div>
+      <div class="q-text">What are the 4 common Flow Models in computer networks?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>LAN, WAN, MAN, PAN</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Peer-to-peer, Client-server, Hierarchical Client-server, Distributed computing</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Star, Bus, Ring, Mesh</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>HTTP, FTP, SMTP, DNS</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The four common Flow Models are: (1) Peer-to-peer, (2) Client-server, (3) Hierarchical client-server, and (4) Distributed computing. They differ in directionality, hierarchy, and interconnectivity.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 06</div>
+      <div class="q-text">In a Client-Server flow model, the server is considered:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>A data sink</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>A data source (responses are larger than requests)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Neutral — neither source nor sink</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>A relay node only</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — In the client-server model, flows are asymmetric. Requests from clients tend to be small relative to responses from the server. Since predominant flows go from server to clients, the server is a data SOURCE and clients are data SINKS.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 07</div>
+      <div class="q-text">What methods are used to gather network requirements?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Only surveys sent by email</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Discussions/Meetings, Interviews, Questionnaires, and Observations</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Only automated network monitoring tools</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Physical cable testing only</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Requirements gathering methods include: (1) Discussions/Meetings — with management, experts, specific groups; (2) Interviews — CTO, CFO, IT managers; (3) Questionnaires — staff, end users, general public; (4) Observations — devices, networks, systems.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 08</div>
+      <div class="q-text">What does the 80/20 cost rule say about networks?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>80% is hardware cost, 20% is software</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>80% is operational cost, 20% is implementation/design cost</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>80% is cabling cost, 20% is devices</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>80% is staff salary, 20% is equipment</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The 80/20 rule: 80% of the total network cost is its OPERATIONAL cost; only 20% is for design and implementation. This means networks should be designed to be easy to operate, easy to maintain, and easy to upgrade — to minimize that 80% operational cost.</div>
+    </div>
+
+    <!-- CAPACITY PLANNING -->
+    <div class="chapter-label" id="topic-capacity"><div class="line"></div><span>Topic 02 – Capacity Planning</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 09</div>
+      <div class="q-text">What is Network Capacity Planning?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Planning the physical space for network equipment</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>The process of planning a network for utilization, bandwidth, operations and availability constraints — usually projected in years</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Calculating the electrical capacity of the data center</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Planning the maximum number of users for a Wi-Fi network</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Network capacity planning identifies shortcomings and parameters that can affect network performance or availability within a predictable future time (usually in years). It requires data about current traffic volumes, network utilization, type of traffic, and capacity of current infrastructure.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="req">
+      <div class="q-num">Question 10</div>
+      <div class="q-text">What is the difference between OPEX and CAPEX in network context?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>OPEX = hardware costs; CAPEX = software costs</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>OPEX = operational expense (running costs); CAPEX = capital expense (initial investment/equipment)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>They mean the same thing</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>OPEX = staff salaries only; CAPEX = bandwidth costs</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — OPEX (Operating Expenditure) = ongoing running costs (power, bandwidth, staff, maintenance). CAPEX (Capital Expenditure) = initial one-time costs (equipment purchase, infrastructure). Capacity planning aims to minimize both.</div>
+    </div>
+
+    <!-- TOPOLOGY -->
+    <div class="chapter-label" id="topic-topology"><div class="line"></div><span>Topic 03 – Network Topologies</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 11</div>
+      <div class="q-text">What is the most commonly used network topology for LAN?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Bus topology</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Ring topology</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Star topology</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Mesh topology</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Star topology is the most commonly used network topology for LAN. Each peripheral node connects to a central hub/switch. It's the easiest topology to design and implement. New nodes can be added/removed without taking the whole network offline.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 12</div>
+      <div class="q-text">Which is the biggest DISADVANTAGE of Star topology?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Cannot add new nodes easily</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>If the central concentrator (hub/switch) fails, the whole network goes down</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Uses too much cable compared to bus</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Very difficult to install</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The biggest disadvantage of star topology: if the central concentrator (hub or switch) fails, the entire network crashes. Other disadvantages: high installation cost; performance is based on the single concentrator.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 13</div>
+      <div class="q-text">Bus topology uses which IEEE standards?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>IEEE 802.11</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>IEEE 802.3 and IEEE 802.4</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>IEEE 802.15.1</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>IEEE 802.16</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — IEEE 802.3 and IEEE 802.4 standards address communication over LANs with bus topologies. Early Ethernet LAN implementations used physical bus architectures. Today, most Ethernet uses physical stars (though a shared media hub is called "bus in a box").</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 14</div>
+      <div class="q-text">In Ring topology, what mechanism controls when a node can transmit data?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>CSMA/CD collision detection</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Random time slots</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Token passing — a node must have possession of the token to transmit</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Central switch assigns transmission slots</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — In ring topology, an electrical "token" circulates around the network. Any node that wants to transmit data must wait until it has possession of the token. Token Ring and FDDI LANs use physical ring topologies. Ring can be made bidirectional using Dual Ring.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 15</div>
+      <div class="q-text">Mesh topology uses which two data transmission techniques?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Token passing and CSMA/CD</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Routing and Flooding</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Broadcasting and unicasting only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Frequency division and time division</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Mesh topology uses Routing and Flooding for data transmission. All devices are connected to each other (point-to-point). Mesh is also used in WAN for redundancy and multi-homing. Examples: ALOHA, FabFi networking systems.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 16</div>
+      <div class="q-text">Which topology is BEST suited for Wide Area Networks (WAN)?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Star topology</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Bus topology</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Tree topology (and Mesh for redundancy)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Ring topology</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Tree topology is best for WAN. Corporate networks mainly use tree topology for managing hierarchy. Mesh topology is also used in WAN to provide redundancy and multi-homing. LANs typically use bus, ring, and star topologies.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 17</div>
+      <div class="q-text">What is the Spine and Leaf topology primarily used for?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Home networking</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Campus Wi-Fi</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Data center networks and large-scale distributed computing</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Mobile cellular networks</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Spine-leaf architecture is a data center network topology with two switching layers (spine and leaf). Used for scalable core networks, can be scaled to very high densities. Used by Google and others in large-scale distributed computing. Mainly used in data centers.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 18</div>
+      <div class="q-text">Logical topology is concerned with:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>The physical cable layout</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>How messages are passed from node to node (corresponds to MAC protocol)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>The physical placement of routers and switches</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>The grounding and power system of the network</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Logical topology is concerned with how messages are passed from node to node within the network. It corresponds to the Media Access Control (MAC) protocol used in the LAN. Physical topology refers to the physical layout and placement of network devices.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 19</div>
+      <div class="q-text">Which topology has the MINIMUM possibility of collision?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Bus topology</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Star topology</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Ring topology</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Mesh topology</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Ring topology has minimum possibility of collision because of the token-passing mechanism. Only one node transmits at a time (the one holding the token). Disadvantages: adding/removing stations can disturb the topology, less secure, difficult to troubleshoot.</div>
+    </div>
+
+    <!-- IP ADDRESSING -->
+    <div class="chapter-label" id="topic-ip"><div class="line"></div><span>Topic 04 – IP Addressing & Subnetting</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 20</div>
+      <div class="q-text">IPv4 uses how many bits and supports how many addresses?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>16-bit, 65,536 addresses</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>32-bit, 4,294,967,296 (4.2 billion) addresses</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>64-bit, 1.8×10^19 addresses</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>128-bit, 3.4×10^38 addresses</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — IPv4 uses 32-bit addresses, limiting the address space to 4,294,967,296 (4.2 billion) addresses. IPv4 was first deployed on SATNET in 1982 and on ARPANET in January 1983. It still routes over 60% of Internet traffic. (IPv6 uses 128-bit.)</div>
+    </div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 21</div>
+      <div class="q-text">Which is the correct Class A IPv4 address range?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>1.0.0.0 – 126.255.255.255 (first bit always 0)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>128.0.0.0 – 191.255.255.255 (first two bits always 10)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>192.0.0.0 – 223.255.255.255 (first three bits always 110)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>224.0.0.0 – 239.255.255.255</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — Class A: First bit is always 0, range 1–126 (1.0.0.0 – 126.255.255.255). Class B: First two bits always 10, range 128–191. Class C: First three bits always 110, range 192–223. Address 127.x.x.x is reserved for loopback.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 22</div>
+      <div class="q-text">What are the THREE private IP address ranges reserved for internal use?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>10.0.0.0/16, 172.16.0.0/24, 192.168.0.0/24</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>10.0.0.0/8, 172.0.0.0/16, 192.0.0.0/8</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>10.0.0.0/24, 172.16.0.0/16, 192.168.0.0/32</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The three private IP ranges are: 10.0.0.0/8 (Class A), 172.16.0.0/12 (Class B), 192.168.0.0/16 (Class C). These are not routable on the public internet and are used for internal networks.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 23</div>
+      <div class="q-text">For a subnet with prefix /28, how many host addresses are available?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>16 total, 16 usable</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>16 total, 14 usable (16 - 2 for network and broadcast)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>14 total, 14 usable</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>32 total, 30 usable</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — /28 means 28 network bits → 32-28 = 4 host bits → 2^4 = 16 total addresses. We lose 2 addresses per subnet: 1 for Network Address + 1 for Broadcast Address → 14 usable host addresses. Netmask: 255.255.255.240.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 24</div>
+      <div class="q-text">How is the Network Address derived from an IP address?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>OR operation between IP address and subnet mask</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Boolean AND operation between IP address and subnet mask</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>XOR operation between IP address and subnet mask</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>NOT operation on the IP address</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The Network Address is derived by performing a Boolean (logical) AND operation between each bit of the IPv4 address and the corresponding bit of the subnet mask. Example: IP 138.101.114.250 AND mask 255.255.255.192 → Network Address.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 25</div>
+      <div class="q-text">In a subnet, which two addresses CANNOT be assigned to any device interface?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Gateway and DNS server addresses</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Network Address (first) and Broadcast Address (last)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Second and second-to-last addresses</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Only the broadcast address</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — We lose 2 addresses per network/subnet: (1) Network Address — the first address, reserved to identify the network itself; (2) Broadcast Address — the last address, used to address all hosts in that network. Neither can be assigned to an interface.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 26</div>
+      <div class="q-text">For IP 10.20.5.130/26: How many host IPs are available and what is the subnet mask?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>32 hosts; 255.255.255.192</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>62 usable hosts; 255.255.255.192</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>64 usable hosts; 255.255.255.192</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>30 usable hosts; 255.255.255.224</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — /26 = 26 network bits → 32-26 = 6 host bits → 2^6 = 64 total addresses → 64-2 = 62 usable hosts. Subnet mask: 11111111.11111111.11111111.11000000 = 255.255.255.192. Network address: 10.20.5.128. Broadcast: 10.20.5.191.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 27</div>
+      <div class="q-text">What is the purpose of Subnetting?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>To increase the number of IP classes</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>To divide a network into sub-networks for better management, security, and to control broadcast domains</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>To encrypt network traffic</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>To connect different protocol networks together</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Subnetting divides a network into sub-networks because: (1) Requirements differ for individuals/applications/geography, (2) Need to control "shouting" (broadcast) in the network, (3) Isolation is a remedy for many problems, (4) When devices are large, "Divide and Conquer" is best.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="ip">
+      <div class="q-num">Question 28</div>
+      <div class="q-text">IPv4 is described as a "connectionless, best-effort" protocol. What does this mean?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>It always guarantees delivery with high reliability</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>It uses connection-oriented sessions for every transmission</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>It does NOT guarantee delivery, proper sequencing, or avoidance of duplicate delivery</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>It requires acknowledgment for every packet sent</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — IPv4 is connectionless and operates on a best-effort delivery model — it does NOT guarantee delivery, does NOT assure proper sequencing, and does NOT avoid duplicate delivery. Higher-layer protocols like TCP provide reliability on top of IP.</div>
+    </div>
+
+    <!-- ROUTING -->
+    <div class="chapter-label" id="topic-routing"><div class="line"></div><span>Topic 05 – Routing & BGP</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="routing">
+      <div class="q-num">Question 29</div>
+      <div class="q-text">What is BGP and what is it used for?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Border Gateway Protocol — used within a single LAN for local routing</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Border Gateway Protocol — the de-facto routing algorithm used to route data BETWEEN Autonomous Systems on the Internet</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Broadcast Gateway Protocol — used for multicast routing</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Basic Gateway Protocol — used to configure default gateways on routers</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — BGP (Border Gateway Protocol) is the de-facto routing algorithm for routing between Autonomous Systems (ASs). It propagates tens or hundreds of thousands of routes between networks. BGP is the successor to EGP (Exterior Gateway Protocol).</div>
+    </div>
+
+    <div class="mcq-item" data-topic="routing">
+      <div class="q-num">Question 30</div>
+      <div class="q-text">What is the difference between iBGP and eBGP?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>iBGP runs WITHIN the same Autonomous System; eBGP runs BETWEEN different Autonomous Systems</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>iBGP is for IPv4; eBGP is for IPv6</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>iBGP is internet BGP; eBGP is enterprise BGP</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>They are the same protocol with different names</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — iBGP (Internal BGP) runs within the same Autonomous System — speakers are usually fully-meshed. eBGP (External BGP) runs between different Autonomous Systems — peers are usually directly connected.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="routing">
+      <div class="q-num">Question 31</div>
+      <div class="q-text">The AS-Path attribute in BGP is used for:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Prioritizing routes within the same AS</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Loop detection — BGP peers do not accept paths containing their own ASN in the AS_PATH</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Measuring bandwidth between AS connections</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Setting QoS values for packets</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — AS-Path attribute is a sequence of ASs a route has traversed. It provides a mechanism for loop detection (BGP peers don't accept paths containing their own ASN). Policies may be applied based on AS path. The SHORTEST AS path is preferred.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="routing">
+      <div class="q-num">Question 32</div>
+      <div class="q-text">Local Preference (Local-Pref) attribute in BGP: which value is PREFERRED?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Lowest value preferred; default is 0</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Highest value preferred; default is 100</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Lowest value preferred; default is 100</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Highest value preferred; default is 0</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Local Preference default value is 100 and the HIGHEST value is preferred. Local-pref is used to advertise to iBGP neighbors about how to leave their AS (influences outbound traffic). It is sent to IBGP neighbors only (within the AS). It is well-known and discretionary.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="routing">
+      <div class="q-num">Question 33</div>
+      <div class="q-text">What is "Router Flapping" and how is it mitigated?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>When a router overheats — mitigated by cooling systems</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>When a router rapidly cycles between up and down states — mitigated by "Router Flap Damping"</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>When routing tables grow too large — mitigated by route aggregation</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>When packets are lost — mitigated by increasing buffer size</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Router Flapping: sometimes routers get into a rapid cycle between up and down states. This creates excessive work for all neighbors. "Router Flap Damping" technique is used to mitigate this issue by suppressing unstable routes.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="routing">
+      <div class="q-num">Question 34</div>
+      <div class="q-text">In a routing table, what does "C 192.168.0.0/24 is directly connected, e1" mean?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>This is a static route learned from configuration</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>"C" = Connected. The network 192.168.0.0/24 is directly connected to router interface e1</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>"C" = Cisco-specific route</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>"C" = critical route that must be maintained</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — In a routing table: "C" = Connected (directly connected network), "S" = Static route. Key routing entry parameters include: Routing protocol/source, Network with subnet, Next hop IP, and Interface ID. Default route is 0.0.0.0/0.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="routing">
+      <div class="q-num">Question 35</div>
+      <div class="q-text">BGP routes are exchanged over "peering sessions" running on top of which protocol?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>UDP</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>TCP</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>ICMP</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>IP directly</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — BGP routes are exchanged over "peering sessions" that run on top of TCP. Keepalives are used to avoid needing to re-send the whole routing table periodically. Once a session comes up, all best-routes are exchanged; then only topology updates are sent.</div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="chapter-label" id="topic-security"><div class="line"></div><span>Topic 06 – Network Security & Attacks</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 36</div>
+      <div class="q-text">What is the difference between a Threat and an Attack?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Threats are more dangerous than attacks</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>A Threat is a possible security violation; an Attack is a deliberate unauthorized action that has actually occurred</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Threats come from inside the network; attacks come from outside</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>They are the same thing</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — A Threat is a POSSIBLE security violation that might exploit vulnerability (may be accidental, environmental, human negligence). An Attack is a DELIBERATE unauthorized action. Attacks can be active or passive. Security threats/attacks include: interruption, interception, fabrication, modification.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 37</div>
+      <div class="q-text">A Passive Attack is characterized by:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Actively modifying data in transit</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Observing, copying, and monitoring information without modifying it — mainly interception (difficult to detect)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Causing denial of service attacks</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Impersonating a legitimate user</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — In passive attacks, the attacker observes, copies messages and may use them for malicious purposes (Interception). The attacker looks for open ports and vulnerabilities. Passive attacks are DIFFICULT TO DETECT. Example: Eavesdropping. Prevention: SSL, VPN tunnels, firewalls.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 38</div>
+      <div class="q-text">Fabrication attacks (Denial of Service) compromise which aspect of the CIA triad?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Confidentiality</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Integrity</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Availability</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Authentication</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Fabrication/Interruption attacks (DoS/DDoS) compromise AVAILABILITY in the CIA triad. Modification attacks compromise INTEGRITY. Interception/Passive attacks compromise CONFIDENTIALITY. CIA = Confidentiality, Integrity, Availability.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 39</div>
+      <div class="q-text">Which mitigation technique prevents Modification attacks (Change, Insertion, Deletion)?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>VPN tunnels</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Hashing methods, Encryption, Message Authentication Codes (MACs)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Load balancers</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Firewall ACLs</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — To prevent Modification attacks (change, insertion, deletion): Hashing methods (ensure data integrity), Encryption, Locking/archiving old data, Access and privilege control, and Message Authentication Codes (MACs). These verify the integrity of data.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 40</div>
+      <div class="q-text">What types of attacks are associated with network interruptions?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>SQL injection and XSS</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>DoS (Denial of Service) and DDoS (Distributed Denial of Service)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Phishing and ransomware</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>DNS spoofing only</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Interruption attacks cause disruption or unavailability of services (compromises Availability). They include DoS and DDoS attacks. Prevention: Redundancy of devices, Firewalls/IPS, multiple routing paths, load balancers, backups, link load balancers for multiple ISP links.</div>
+    </div>
+
+    <!-- FIREWALLS -->
+    <div class="chapter-label" id="topic-firewall"><div class="line"></div><span>Topic 07 – Firewalls</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="firewall">
+      <div class="q-num">Question 41</div>
+      <div class="q-text">What were the 4 generations of firewall evolution?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>1st Hardware → 2nd Software → 3rd Cloud → 4th AI</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>1st Packet filters → 2nd Stateful filters (circuit-level) → 3rd Application layer → 4th NGFW (machine learning)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>1st Router ACL → 2nd DMZ → 3rd VPN → 4th WAF</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>1st Physical → 2nd Logical → 3rd Virtual → 4th Cloud</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — 4 generations: (1) Packet filters — DEC developed; (2) Stateful filters — AT&T Bell Labs developed circuit-level firewalls; (3) Application layer — integrates user identity into rules; (4) NGFW — proactive ML-powered, Palo Alto Networks delivered first NGFW in 2008.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="firewall">
+      <div class="q-num">Question 42</div>
+      <div class="q-text">Packet Filtering Firewall operates at which OSI layer?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Application Layer (Layer 7)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Transport Layer (Layer 4)</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Network Layer (Layer 3) — examines Source IP, Destination IP</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Data Link Layer (Layer 2)</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Packet filter firewalls examine packets at the Network Layer (Layer 3). They check Source IP, Destination IP. Simple accept or reject decision model. No awareness of higher protocol layers. Very fast. Commonly deployed on routers (ACLs). Does not provide much security alone.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="firewall">
+      <div class="q-num">Question 43</div>
+      <div class="q-text">What is a Stateful Inspection Firewall's key advantage over simple packet filtering?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>It is faster than packet filtering</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>It checks only the IP header</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>It tracks whether packets are part of an established session (connection state-aware), offering more security</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>It requires no configuration</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Stateful inspection firewalls deal with CONNECTIONS and their characteristics rather than individual packets. They not only examine each packet but also keep track of whether it's part of an established TCP or other session. More security than packet filtering but affects network performance. Effective against DoS.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="firewall">
+      <div class="q-num">Question 44</div>
+      <div class="q-text">What does DMZ stand for and what is its purpose in firewall architecture?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Dedicated Management Zone — for router management</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>DeMilitarized Zone — a semi-trusted network between trusted internal network and untrusted internet, housing public-facing servers</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Dynamic Memory Zone — for caching network data</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Distributed Management Zone — for network monitoring tools</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — DMZ (DeMilitarized Zone) is a semi-trusted network segment that houses public-facing servers (Web, SMTP). It sits between the trusted internal network and the untrusted internet. Used in Multi-Legged Firewall and Firewall Sandwich architectures to provide a secure sandbox.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="firewall">
+      <div class="q-num">Question 45</div>
+      <div class="q-text">A NGFW (Next-Generation Firewall) combines which capabilities?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Only packet filtering and antivirus</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Packet inspection + Stateful inspection + DPI (Deep Packet Inspection) + IDS/IPS + malware filtering + antivirus</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Only application layer and circuit level filtering</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>VPN + firewall only</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — NGFW combines: packet inspection + stateful inspection + Deep Packet Inspection (DPI) + IDS/IPS + malware filtering + antivirus. DPI looks at the actual packet DATA (payload), not just protocol headers. Tracks all traffic from Layer 2 to application layer. Disadvantages: costly, complex integration.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="firewall">
+      <div class="q-num">Question 46</div>
+      <div class="q-text">What is the key difference between Application-level Gateway and Circuit-level Gateway?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>Application-level filters by service AND other characteristics (HTTP strings); Circuit-level monitors TCP handshakes without examining content</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Application-level is faster; Circuit-level is slower</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Circuit-level is newer technology; Application-level is older</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>They are identical in function</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — Application-level Gateway (proxy firewall): filters packets by service AND other characteristics (like HTTP request strings). Can block harmful sites and prevent data leaks, but introduces delay. Circuit-level Gateway: monitors TCP handshakes for session legitimacy, but once established, relays traffic WITHOUT examining content.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="firewall">
+      <div class="q-num">Question 47</div>
+      <div class="q-text">The Layered Firewall Approach is best suited for:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Small home networks</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Small to medium businesses</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Large enterprises with low risk tolerance — separates internal environments (user/HR/dev networks)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>ISP backbone networks only</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Layered Firewall Approach: Large enterprises with low risk tolerance. Separates internal environments (User Network, HR Network, Development Network). Reduces computer crimes (most attacks are internally based), controls overhead administrative traffic, allows IDS to work more effectively.</div>
+    </div>
+
+    <!-- IDS/IPS -->
+    <div class="chapter-label" id="topic-ids"><div class="line"></div><span>Topic 08 – IDS & IPS</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 48</div>
+      <div class="q-text">What is the key difference between IDS and IPS?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>IDS is hardware; IPS is software</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>IDS is passive — only detects and reports; IPS is active — placed in-line, can actively PREVENT/BLOCK intrusions</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>IPS only detects while IDS prevents</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>IDS is for wireless networks; IPS is for wired networks</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — IDS (Intrusion Detection System) is PASSIVE — monitors and reports but does NOT affect incoming packets. IPS (Intrusion Prevention System) is placed IN-LINE and can ACTIVELY prevent or block detected intrusions (send alarm, drop malicious packets, reset connections, block offending IP).</div>
+    </div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 49</div>
+      <div class="q-text">What are the THREE IPS detection methods?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Hardware, Software, Cloud</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Signature-Based, Anomaly-Based, Policy-Based</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Network, Host, Stack</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Packet, Frame, Session</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — IPS detection methods: (1) Signature-Based — uses predefined signatures of known threats, takes action when matched; (2) Anomaly-Based — monitors for abnormal/unexpected behavior, blocks access immediately; (3) Policy-Based — administrators configure security policies, alert triggered when violated.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 50</div>
+      <div class="q-text">NIDS (Network Intrusion Detection System) connects to the network via:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Direct inline installation only</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Network hub, switch configured for port mirroring, or network tap</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Wireless access point only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Cloud connectivity only</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — NIDS accesses network traffic by connecting to: a network hub, a network switch configured for port mirroring, or a network tap. Sensors are placed at choke points in the network (often in DMZ or at network borders). Example: Snort (NIDS). HIDS examples: Tripwire and OSSEC.</div>
+    </div>
+
+    <!-- CRYPTOGRAPHY -->
+    <div class="chapter-label" id="topic-crypto"><div class="line"></div><span>Topic 09 – Cryptography</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 51</div>
+      <div class="q-text">What are the FIVE basic protections that Cryptography provides?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Speed, Size, Stability, Scalability, Security</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Confidentiality, Integrity, Availability, Authentication, Non-repudiation</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Encryption, Decryption, Hashing, Signing, Verification</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Firewall, IDS, IPS, VPN, DMZ</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Cryptography provides 5 protections: (1) Confidentiality — only authorized parties can view; (2) Integrity — ensures information is correct and unaltered; (3) Availability — authorized users can access; (4) Authentication — verifies sender; (5) Non-repudiation — proves a user performed an action.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 52</div>
+      <div class="q-text">What is the difference between Substitution Cipher and Transposition Cipher?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>Substitution replaces characters with other chars (identity changes, position unchanged); Transposition rearranges position (identity unchanged, position changes)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>They are the same technique</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Substitution is for numbers only; Transposition is for letters only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Substitution is modern; Transposition is ancient</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — Substitution Cipher: plain text characters are REPLACED with other characters/numbers/symbols. Character's identity changes, position remains unchanged. Caesar Cipher is an example. Transposition Cipher: REARRANGES the POSITION of characters. Character's identity unchanged, position changes.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 53</div>
+      <div class="q-text">Symmetric encryption uses:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Two different keys — one public, one private</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>The SAME single secret key for both encryption and decryption</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>No keys — relies on algorithms only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Three keys — one for encryption, one for decryption, one for signing</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Symmetric (shared key) encryption uses the SAME single secret key for both encrypting and decrypting. Both sender and receiver must know and use the same key. The security depends on the SECRECY of the KEY, not the secrecy of the algorithm. Symmetric keys: 128, 192, or 256 bits.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 54</div>
+      <div class="q-text">What are the THREE most common symmetric encryption algorithms?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>RSA, ECDSA, DSA</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>DES, 3DES (TDEA), AES</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>MD5, SHA-1, SHA-256</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>SSL, TLS, HTTPS</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The 3 most common symmetric algorithms: (1) DES — 64-bit blocks, 64-bit key, deprecated (FIPS PUB 46-3 withdrawn May 19, 2005); (2) 3DES/TDEA — 168-bit key (three 56-bit keys K1,K2,K3), slower; (3) AES — 128-bit blocks, 128/192/256-bit keys, current standard.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 55</div>
+      <div class="q-text">What is the difference between Block Cipher and Stream Cipher?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>Block cipher encrypts fixed-length groups (blocks) of bits; Stream cipher encrypts one bit at a time continuously</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Block cipher is for small data; Stream cipher is for large data</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Block cipher uses asymmetric keys; Stream cipher uses symmetric keys</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>They are essentially the same</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — Block cipher: groups data into blocks of fixed size, encrypts each block with key (e.g., AES uses 128-bit blocks). Stream cipher: does NOT encrypt by blocks — encrypts 1-bit at a time incrementally. RC4 is a well-known stream cipher. Block ciphers are far more common.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 56</div>
+      <div class="q-text">Why was AES developed to replace 3DES?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>3DES was not compatible with internet protocols</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>3DES is slow (3x rounds of DES) and uses inefficient 64-bit block size; AES needed better security AND efficiency</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>3DES required too many keys to manage</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>AES was cheaper to license</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — 3DES limitations: 3x slower than DES, uses 64-bit block size (efficiency issue). NIST in 1997 called for AES proposals requiring: symmetric block cipher, 128-bit blocks, support for 128/192/256-bit keys, better security than 3DES, significantly improved efficiency. AES uses substitution-permutation network.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 57</div>
+      <div class="q-text">RC4 is used in which two important network protocols?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>DNS and DHCP</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>SSL/TLS (web browser-server communication) and WEP/WPA (IEEE 802.11 wireless)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>SMTP and FTP only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>BGP and OSPF routing protocols</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — RC4 (Rivest Cipher, designed 1987 by Ron Rivest) is used in: (1) SSL/TLS standards for web browser-server communication; (2) WEP (Wired Equivalent Privacy) and WPA (Wi-Fi Protected Access) protocols in IEEE 802.11 wireless LAN. RC4 is a variable key-size stream cipher.</div>
+    </div>
+
+    <!-- PKI -->
+    <div class="chapter-label" id="topic-pki"><div class="line"></div><span>Topic 10 – Public Key, Digital Signatures & PKI</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 58</div>
+      <div class="q-text">In Public Key Cryptography, if Bob wants to send a private message to Alice:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Bob encrypts with Bob's private key; Alice decrypts with Bob's public key</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Bob encrypts with Alice's PUBLIC key; Alice decrypts with Alice's PRIVATE key</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Bob encrypts with a shared secret key</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Both use the same key known to both</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — To send a private message: Bob ENCRYPTS using Alice's PUBLIC KEY → Alice DECRYPTS using her own PRIVATE KEY. No other recipient can decrypt because only Alice knows her private key. This is the fundamental asymmetric (public key) cryptography principle.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 59</div>
+      <div class="q-text">What is a Digital Signature and what does it prove?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>An image of a handwritten signature scanned digitally</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>A mathematical technique using private key to validate authenticity and integrity of a message (Authentication + Integrity + Non-repudiation)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>A certificate issued by a bank</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>A timestamp on a document</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — A Digital Signature is created using User A's PRIVATE KEY. It proves: (1) Authentication — message was created by a known sender; (2) Integrity — message was not altered in transit; (3) Non-repudiation — sender cannot deny sending. Verification uses User A's PUBLIC KEY (from directory). Uses hash functions (MD5, SHA-1, SHA-2).</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 60</div>
+      <div class="q-text">What are the THREE key authorities in a PKI (Public Key Infrastructure)?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>CEO, CTO, CFO</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>CA (Certificate Authority), VA (Validation Authority), RA (Registration Authority)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>SSL, TLS, HTTPS</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Router, Switch, Firewall</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — PKI Key Authorities: (1) CA (Certificate Authority) — binds public keys with user identities to identify them properly; (2) VA (Validation Authority) — third-party who provides validation information on behalf of CA; (3) RA (Registration Authority) — carries out registration and issuance on behalf of CA.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 61</div>
+      <div class="q-text">What information is contained in a Digital Certificate?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Only the owner's name and email address</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Owner's name, Owner's public key, Issuer's name, Issuer's digital signature, Certificate serial number, Expiration date</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Only the encryption algorithm used</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>The private key of the owner</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — A Digital Certificate contains: Owner's name/alias, Owner's public key, Issuer's name, Issuer's digital signature, Certificate serial number, Expiration date of the public key. Digital certificates are used to prevent man-in-the-middle attacks and verify public key ownership.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 62</div>
+      <div class="q-text">Public Key Cryptography was first publicly proposed by:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Ron Rivest in 1987</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>DEC (Digital Equipment Corporation) in 1970</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Whitfield Diffie and Martin Hellman in 1976</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>NIST in 1997</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Public key encryption was first publicly proposed by Whitfield Diffie and Martin Hellman in 1976. It was the first truly revolutionary advance in encryption in thousands of years. Public key algorithms are based on mathematical functions rather than simple bit pattern operations.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="crypto">
+      <div class="q-num">Question 63</div>
+      <div class="q-text">Which public key cryptography algorithms are currently in use?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>DES, 3DES, AES, RC4</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>RSA, ECDSA, DSA, Diffie-Hellman key agreement</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>MD5, SHA-1, SHA-256, SHA-512</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>WEP, WPA, WPA2, WPA3</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Public key algorithms in use: (1) RSA (Rivest-Shamir-Adleman) — most popular, supports digital signatures and encryption; (2) ECDSA (Elliptic Curve Digital Signature Algorithm) — shorter keys, comparable strength; (3) DSA (Digital Signature Algorithm) — digital signatures only; (4) Diffie-Hellman key agreement protocol.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="topology">
+      <div class="q-num">Question 64</div>
+      <div class="q-text">Which wireless mesh technologies use Mesh topology?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>LTE, 4G, 5G</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>ZigBee, Z-Wave, WirelessHART, MANETs, VANETs</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Bluetooth, Wi-Fi, NFC</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>ADSL, VDSL, fiber optic</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Mesh topology is widely used to extend coverage of short-range wireless technologies: ZigBee, Z-Wave, WirelessHART. Ad-hoc mesh types include: MANETs (Mobile ad hoc networks), VANETs (Vehicular ad hoc networks), SPANs (Smartphone ad hoc networks), Wireless mesh networks.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="security">
+      <div class="q-num">Question 65</div>
+      <div class="q-text">What does WAF (Web Application Firewall) specifically protect against?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Physical network intrusions</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Web application threats: SQL injection, XSS, file inclusion, improper system configuration</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Only DDoS attacks</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Email spam only</div>
+      </div>
+      <div class="mcq-actions"><button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button><button class="btn-reset" onclick="resetMCQ(this)">Reset</button></div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — WAF (Web Application Firewall) filters, monitors, and blocks HTTP traffic to/from web services. Protects against: SQL injection, XSS (Cross-Site Scripting), file inclusion, improper system configuration. WAF protects SERVERS (unlike proxies which protect clients). WAF is a reverse proxy. WAFs can also prevent data leaks from within.</div>
+    </div>
+
+  </div><!-- end mcq-container -->
+</div><!-- end mcq -->
+
+<!-- ESSAY SECTION -->
+<div id="essay" class="section fade-in">
+  <div class="section-header">
+    <h2>📝 Essay Questions & Model Answers</h2>
+    <p>Click any question to expand the model answer. These are the most exam-likely essay questions!</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-chip active" onclick="filterEssay('all',this)">All Topics</button>
+    <button class="filter-chip" onclick="filterEssay('req',this)">Flow Analysis</button>
+    <button class="filter-chip" onclick="filterEssay('topology',this)">Topology</button>
+    <button class="filter-chip" onclick="filterEssay('ip',this)">IP/Routing</button>
+    <button class="filter-chip" onclick="filterEssay('security',this)">Security</button>
+    <button class="filter-chip" onclick="filterEssay('firewall',this)">Firewalls</button>
+    <button class="filter-chip" onclick="filterEssay('crypto',this)">Cryptography</button>
+  </div>
+
+  <!-- FLOW ANALYSIS ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 01–02 – Flow Analysis & Capacity Planning</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="req">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain Flow Analysis in network design. Describe the types of flows and explain why critical flows get the highest priority.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <p><strong>Flow Analysis</strong> is the process of characterizing traffic flows for a network. Its intent is NOT to show every possible flow, but to identify flows with the GREATEST IMPACT on network architecture and design (often a small fraction of total flows).</p>
+        <p><strong>What is a Flow?</strong> Sets of network traffic (application, protocol, and control information) that have common attributes: source/destination address, type of information, directionality, or other end-to-end information.</p>
+        <p><strong>Types of Flows:</strong></p>
+        <ul>
+          <li><strong>Individual Flow:</strong> Flow for a single session of a single application. The basic unit of traffic flow. Can be unidirectional (one-sided arrow) or bidirectional (two-sided arrow).</li>
+          <li><strong>Composite Flow:</strong> Combination of requirements from MULTIPLE applications or individual flows sharing a common link, path, or network. MOST flows in a network are composites.</li>
+          <li><strong>Critical Flows:</strong> Flows that are higher in performance (mission-critical, rate-critical, realtime, interactive, high-performance) or serve more important users/devices. They get HIGHEST PRIORITY in the design phase.</li>
+        </ul>
+        <p><strong>Flow Models:</strong></p>
+        <ul>
+          <li>Peer-to-peer (equivalent flows)</li>
+          <li>Client-server (asymmetric — server=source, client=sink)</li>
+          <li>Hierarchical client-server (multiple server tiers)</li>
+          <li>Distributed computing (inverse or hybrid)</li>
+        </ul>
+        <p><strong>Flow Specification (Flowspec):</strong> The end result combining all flow identification, definitions, and descriptions. Can be one-part, two-part, or multi-part. Lists flows with performance requirements and priority levels.</p>
+        <div class="key-points">
+          <span class="kp">Flow = traffic with common attributes</span>
+          <span class="kp">Individual = single app session</span>
+          <span class="kp">Composite = multiple apps sharing path</span>
+          <span class="kp">Critical = highest priority</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="req">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Describe the process of Network Capacity Planning. What factors need to be considered and what are the goals?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">12 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <p><strong>Network Capacity:</strong> Maximum amount of data that can be reliably transferred between different locations over a network.</p>
+        <p><strong>Capacity Planning Process Steps:</strong></p>
+        <ul>
+          <li>Formulate user discussion groups (wide representation: IT/non-IT/management)</li>
+          <li>Quantify user behavior (population distribution, user groups, application requirements)</li>
+          <li>Quantify application behavior (delay, jitter, packet loss, hop count, burst vs sustained rate)</li>
+          <li>Identify baseline traffic behavior (current profile from ACL/routers/packet capture, bandwidth by protocol, error rates)</li>
+          <li>Generate traffic projections (future estimates)</li>
+          <li>Summarize for design purpose</li>
+          <li>Get limitations and constraints from relevant organizations</li>
+        </ul>
+        <p><strong>Goals of Capacity Planning:</strong></p>
+        <ul>
+          <li>Minimize downtime</li>
+          <li>Maximize service to users</li>
+          <li>Minimize OPEX (Operating Expense) and CAPEX (Capital Expense)</li>
+          <li>Avoid unscheduled maintenance and redesigning</li>
+          <li>Avoid costly upgrades and rectifications</li>
+        </ul>
+        <div class="highlight-box">80/20 rule: 80% of network cost = OPERATIONAL. Design for easy operation, easy maintenance, and easy upgrades!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPOLOGY ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 03 – Network Topologies</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="topology">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Compare and contrast Star, Bus, Ring, Mesh, and Tree topologies. Include advantages, disadvantages, and typical use cases for each.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">20 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <table class="data-table">
+          <tr><th>Topology</th><th>Description</th><th>Advantages</th><th>Disadvantages</th><th>Use Case</th></tr>
+          <tr>
+            <td><strong>Star</strong></td>
+            <td>Each node connects to central hub/switch</td>
+            <td>Dedicated connections, centralized admin, easy to add/remove nodes, fault isolation</td>
+            <td>Central device failure = whole network down; high installation cost</td>
+            <td>Most common LAN topology</td>
+          </tr>
+          <tr>
+            <td><strong>Bus</strong></td>
+            <td>All devices connect to single backbone cable</td>
+            <td>Less cable, simple, inexpensive, easy to add nodes</td>
+            <td>Single cable failure = whole network down; limited bus length (10-Base-2); expensive to maintain</td>
+            <td>Early Ethernet implementations</td>
+          </tr>
+          <tr>
+            <td><strong>Ring</strong></td>
+            <td>Nodes in circle; data travels in one direction; token passing</td>
+            <td>Minimum collision possibility, cheap to install</td>
+            <td>Adding/removing nodes disrupts topology; less secure; difficult troubleshooting</td>
+            <td>Token Ring, FDDI LANs; MAN rings</td>
+          </tr>
+          <tr>
+            <td><strong>Tree</strong></td>
+            <td>Hierarchical structure</td>
+            <td>Easy to add/remove nodes; easy administration; fault isolation; scalable</td>
+            <td>More expensive cabling than bus; depends on root node</td>
+            <td>WAN, Corporate networks (most common WAN topology)</td>
+          </tr>
+          <tr>
+            <td><strong>Mesh</strong></td>
+            <td>All devices connected to each other (point-to-point)</td>
+            <td>High redundancy; multiple paths; fault tolerant</td>
+            <td>Very high cost (many cables); complex management</td>
+            <td>WAN backbone, critical applications, data centers</td>
+          </tr>
+        </table>
+        <p><strong>Important Notes:</strong></p>
+        <ul>
+          <li>LANs typically use: Bus, Ring, Star</li>
+          <li>WANs require: Mesh/Tree approach</li>
+          <li>Generally, Star networks preferred for LAN in current trends</li>
+          <li>Spine-and-Leaf is used for data centers (scalable)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- IP ADDRESSING ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 04–05 – IP Addressing & Routing</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="ip">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain IPv4 address classes and subnetting. Given IP 192.168.2.17/28, calculate: number of IPs, subnet mask, network address, broadcast address, and usable range.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <p><strong>IPv4 Address Classes (First Octet Rule):</strong></p>
+        <table class="data-table">
+          <tr><th>Class</th><th>First Bit(s)</th><th>Range</th><th>Default Mask</th></tr>
+          <tr><td>A</td><td>0</td><td>1–126</td><td>255.0.0.0 (/8)</td></tr>
+          <tr><td>B</td><td>10</td><td>128–191</td><td>255.255.0.0 (/16)</td></tr>
+          <tr><td>C</td><td>110</td><td>192–223</td><td>255.255.255.0 (/24)</td></tr>
+        </table>
+        <p><strong>Private IP Ranges:</strong> 10.0.0.0/8 | 172.16.0.0/12 | 192.168.0.0/16</p>
+        <p><strong>Subnetting Calculation for 192.168.2.17/28:</strong></p>
+        <ul>
+          <li><strong>Prefix:</strong> /28 → 28 network bits → 32-28 = 4 host bits</li>
+          <li><strong>Total IPs:</strong> 2^4 = 16</li>
+          <li><strong>Subnet Mask:</strong> 11111111.11111111.11111111.11110000 = 255.255.255.240</li>
+          <li><strong>Network Address:</strong> 192.168.2.17 AND 255.255.255.240 → 192.168.2.16</li>
+          <li><strong>Broadcast Address:</strong> 192.168.2.31 (last address in subnet)</li>
+          <li><strong>Usable Hosts:</strong> 192.168.2.17 to 192.168.2.30 (14 usable hosts)</li>
+          <li><strong>Gateway:</strong> Typically 192.168.2.17 (first usable) or 192.168.2.30 (last usable)</li>
+        </ul>
+        <div class="formula-box">Usable hosts = 2^(host bits) - 2 &nbsp;|&nbsp; Network AND Broadcast cannot be assigned</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="ip">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain BGP (Border Gateway Protocol). What are the main BGP attributes and how does BGP prevent routing loops?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <p><strong>BGP (Border Gateway Protocol):</strong> De-facto routing algorithm for routing between Autonomous Systems (ASs). Successor to EGP. Propagates 10s–100s of thousands of routes between networks. Runs over TCP.</p>
+        <p><strong>Key BGP Concepts:</strong></p>
+        <ul>
+          <li>Routes are objects ("bags") of attributes in TLV format</li>
+          <li>Only ONE "best" BGP route for any IP block at one time</li>
+          <li>Keepalives avoid resending whole table periodically</li>
+          <li>Allows administrative policy routing</li>
+        </ul>
+        <p><strong>BGP Attributes:</strong></p>
+        <table class="data-table">
+          <tr><th>Attribute</th><th>Type</th><th>Purpose</th><th>Preference</th></tr>
+          <tr><td>AS-Path</td><td>Well-known mandatory</td><td>Sequence of ASs traversed; loop detection</td><td>Shortest preferred</td></tr>
+          <tr><td>Next-Hop</td><td>Well-known mandatory</td><td>Next IP address to reach network</td><td>—</td></tr>
+          <tr><td>Local Preference</td><td>Well-known discretionary</td><td>Influences outbound traffic from AS (iBGP only)</td><td>HIGHEST preferred (default 100)</td></tr>
+          <tr><td>MED</td><td>Optional non-transitive</td><td>Multi-Exit Discriminator</td><td>Lowest preferred</td></tr>
+          <tr><td>Community</td><td>Optional transitive</td><td>Grouping routes</td><td>—</td></tr>
+        </table>
+        <p><strong>Loop Prevention:</strong> BGP peers do NOT accept paths containing their own ASN in the AS_PATH. Router Flapping (rapid up/down) is mitigated by Router Flap Damping.</p>
+        <p><strong>iBGP vs eBGP:</strong> iBGP = within same AS (fully meshed); eBGP = between different ASs (directly connected).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECURITY ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 06 – Network Security & Attacks</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="security">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain the four types of network attacks (Interruption, Interception, Modification, Fabrication). How does each affect the CIA triad? Describe prevention methods for each.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">20 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <table class="data-table">
+          <tr><th>Attack Type</th><th>Description</th><th>CIA Affected</th><th>Prevention</th></tr>
+          <tr>
+            <td><strong>Interruption</strong></td>
+            <td>Causes disruption/unavailability of services (DoS/DDoS). Attacker blocks access or takes down services.</td>
+            <td>Availability</td>
+            <td>Redundancy of devices, Firewalls/IPS, multiple routing paths, load balancers, multiple ISP links, backups</td>
+          </tr>
+          <tr>
+            <td><strong>Interception</strong> (Passive)</td>
+            <td>Attacker observes/copies messages for malicious use. Eavesdropping. DIFFICULT TO DETECT.</td>
+            <td>Confidentiality</td>
+            <td>SSL/TLS, VPN tunnels, MAC-based port security, firewalls and IDS/IPS, multi-factor authentication</td>
+          </tr>
+          <tr>
+            <td><strong>Modification</strong></td>
+            <td>Attacks integrity: Change, Insertion, Deletion of data in transit. Capture and replay of messages.</td>
+            <td>Integrity</td>
+            <td>Hashing, Encryption, Message Authentication Codes (MACs), Access/privilege control, Backup and archiving</td>
+          </tr>
+          <tr>
+            <td><strong>Fabrication</strong></td>
+            <td>Creating false data/services. Denial of Service — hackers gain unauthorized access and block users. SQL injection, email spoofing. Also called masquerade attack.</td>
+            <td>Availability (+ Integrity)</td>
+            <td>Digital certificates, Hashing to identify originals, Message Authentication Codes (MACs)</td>
+          </tr>
+        </table>
+        <div class="highlight-box"><strong>Active Attack</strong> = Interruption, Modification, Fabrication (deliberate action) | <strong>Passive Attack</strong> = Interception (monitoring only, hard to detect)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIREWALL ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 07 – Firewalls</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="firewall">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Describe the five types of firewalls. How has firewall technology evolved through 4 generations?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <p><strong>4 Generations of Firewalls:</strong></p>
+        <ul>
+          <li>1st Gen: Packet Filters (DEC) — simple accept/reject based on IP headers</li>
+          <li>2nd Gen: Stateful/Circuit-level (AT&T Bell Labs) — monitors TCP sessions</li>
+          <li>3rd Gen: Application Layer — integrates user identity into rules</li>
+          <li>4th Gen: NGFW (Palo Alto Networks, 2008) — ML-powered proactive tools</li>
+        </ul>
+        <p><strong>5 Types of Firewalls:</strong></p>
+        <table class="data-table">
+          <tr><th>Type</th><th>OSI Layer</th><th>Key Feature</th><th>Limitation</th></tr>
+          <tr><td>Packet Filtering</td><td>Layer 3 (Network)</td><td>Checks Source/Dest IP; ACLs; fast; first line of defense</td><td>No awareness of higher layers</td></tr>
+          <tr><td>Circuit-level Gateway</td><td>Layer 4-5 (Session)</td><td>Monitors TCP handshakes; once session OK, relays without inspection</td><td>Content not inspected</td></tr>
+          <tr><td>Application-level Gateway (Proxy)</td><td>Layer 7 (Application)</td><td>Filters by service + HTTP strings; single entry/exit point; blocks harmful sites</td><td>Introduces communication delay</td></tr>
+          <tr><td>Stateful Inspection</td><td>Layer 3-5</td><td>Tracks connection state (not just individual packets); more security than packet filter</td><td>Affects network performance</td></tr>
+          <tr><td>NGFW</td><td>Layer 2-7</td><td>DPI + IDS/IPS + malware + antivirus + ML; tracks all layers</td><td>Most expensive; complex integration</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="firewall">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Describe the five Firewall Deployment Architectures. When would you use each, and what is the role of DMZ?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <table class="data-table">
+          <tr><th>Architecture</th><th>Target</th><th>Features</th><th>DMZ?</th></tr>
+          <tr><td>Screening Router</td><td>Basic security</td><td>ACLs on router; Layer 3 only; very fast; not much security alone</td><td>No</td></tr>
+          <tr><td>Simple Firewall</td><td>Small companies, limited security</td><td>Two interfaces (trusted/untrusted); modest security</td><td>No</td></tr>
+          <tr><td>Multi-Legged Firewall</td><td>Small to large businesses</td><td>3+ interfaces; creates secure sandbox for semi-trusted services; flexible and secure</td><td>YES — DMZ for Web/SMTP servers</td></tr>
+          <tr><td>Firewall Sandwich</td><td>Medium to large business</td><td>Inside + Outside firewall; physical separation; policy segregation; reduces admin holes</td><td>YES — between two firewalls</td></tr>
+          <tr><td>Layered Security</td><td>Large enterprise, low risk tolerance</td><td>Multiple internal firewalls; separates User/HR/Dev/Mainframe networks; deters internal attacks</td><td>YES + internal segments</td></tr>
+        </table>
+        <p><strong>DMZ (DeMilitarized Zone):</strong> A semi-trusted network segment between the trusted internal network and the untrusted internet. Houses public-facing servers (Web Server, SMTP/Email Server). Provides an isolated area where internet traffic can reach without accessing the internal trusted network directly.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="security">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Compare IDS and IPS. Describe the types of IDS and IPS systems and their detection methods.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <p><strong>IDS (Intrusion Detection System):</strong> PASSIVE — monitors network/system activities for malicious activities or policy violations and produces reports. Focused on identifying, logging, and reporting incidents. Does NOT affect incoming packets. Reporting: Alerts, Alarms, SMS, Email, auto-generated calls.</p>
+        <p><strong>IPS (Intrusion Prevention System):</strong> ACTIVE — placed in-line, continuously monitors, can actively prevent/block intrusions. Combines IDS capabilities with improved firewall technologies. Makes access control decisions based on application content (not just IP/ports).</p>
+        <p><strong>IDS Types:</strong></p>
+        <ul>
+          <li><strong>NIDS (Network-based):</strong> Examines network traffic, monitors multiple hosts. Sensors at choke points (DMZ/borders). Access via hub, port mirroring, or tap. Example: Snort</li>
+          <li><strong>HIDS (Host-based):</strong> Agent on a host analyzing system calls, logs, file-system changes. Examples: Tripwire, OSSEC</li>
+          <li><strong>SIDS (Stack-based):</strong> Examines packets through the TCP/IP stack, OS-dependent</li>
+        </ul>
+        <p><strong>IPS Types:</strong></p>
+        <ul>
+          <li><strong>NIPS:</strong> Network-based — monitors entire network for suspicious traffic</li>
+          <li><strong>WIPS:</strong> Wireless — monitors wireless networks</li>
+          <li><strong>NBA:</strong> Network Behavior Analysis — identifies unusual traffic flows (DDoS detection)</li>
+          <li><strong>HIPS:</strong> Host-based — scans events on a single host</li>
+        </ul>
+        <p><strong>IPS Detection Methods:</strong> Signature-Based | Anomaly-Based | Policy-Based</p>
+        <div class="highlight-box">Key: IDS = Passive (detect+report) | IPS = Active (detect+prevent). IPS can also correct CRC errors, defragment packets, mitigate TCP sequencing issues.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRYPTOGRAPHY ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 09–10 – Cryptography & PKI</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="crypto">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Compare DES, 3DES, and AES symmetric encryption algorithms. Why was AES developed and what makes it the current standard?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <table class="data-table">
+          <tr><th>Algorithm</th><th>Key Size</th><th>Block Size</th><th>Status</th><th>Notes</th></tr>
+          <tr><td>DES</td><td>64-bit (56 effective)</td><td>64-bit</td><td>Deprecated (withdrawn 2005)</td><td>Very small key — highly susceptible to brute force; first symmetric algorithm</td></tr>
+          <tr><td>3DES (TDEA)</td><td>168-bit (3×56-bit K1,K2,K3)</td><td>64-bit</td><td>Deprecated</td><td>Created late 1990s; 3x slower than DES; uses 2 or 3 keys; process: Encrypt-Decrypt-Encrypt</td></tr>
+          <tr><td>AES</td><td>128, 192, or 256 bits</td><td>128-bit</td><td>Current standard</td><td>Based on substitution-permutation network; brute force "futile"; AES-128/192/256 variants</td></tr>
+        </table>
+        <p><strong>Why AES was developed:</strong> NIST called for proposals in 1997 because 3DES was: too slow (3x DES rounds), inefficient (64-bit block size), not suitable for long-term use.</p>
+        <p><strong>AES Requirements (NIST):</strong></p>
+        <ul>
+          <li>Symmetric block cipher</li>
+          <li>Block length of 128 bits</li>
+          <li>Support key lengths of 128, 192, and 256 bits</li>
+          <li>Security equal to or better than 3DES with significantly improved efficiency</li>
+          <li>Evaluation: security, computational efficiency, memory requirements, hardware/software suitability, flexibility</li>
+        </ul>
+        <p><strong>AES today:</strong> Used in wireless security, processor security, file encryption, and SSL/TLS. AES encryption is practically unbreakable by brute force with modern computers.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="crypto">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain Public Key Cryptography and the process of Digital Signatures. How does PKI help achieve certificate validation?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <p><strong>Public Key (Asymmetric) Cryptography:</strong> Uses TWO separate keys — Public Key and Private Key. First proposed by Diffie and Hellman in 1976. Based on mathematical functions (unlike symmetric which uses simple bit operations). The use of two keys has profound consequences for confidentiality, key distribution, and authentication.</p>
+        <p><strong>How it works:</strong></p>
+        <ul>
+          <li>Each user generates a public/private key pair</li>
+          <li>Public key is placed in a public register</li>
+          <li>Private key is kept secret</li>
+          <li>If Bob sends to Alice: BOB encrypts with ALICE's PUBLIC KEY → only Alice decrypts with her PRIVATE KEY</li>
+        </ul>
+        <p><strong>Digital Signature Process:</strong></p>
+        <ul>
+          <li>User A creates a HASH of the document (MD5/SHA-1/SHA-256)</li>
+          <li>User A encrypts the hash using their PRIVATE KEY → this is the digital signature</li>
+          <li>Document + signature is sent to User B</li>
+          <li>User B decrypts signature using User A's PUBLIC KEY</li>
+          <li>User B computes the hash of the received document and compares with decrypted hash</li>
+          <li>If they match → Authentication + Integrity + Non-repudiation verified!</li>
+        </ul>
+        <p><strong>PKI (Public Key Infrastructure):</strong></p>
+        <ul>
+          <li><strong>CA (Certificate Authority)</strong> — binds public keys to user identities; issues digital certificates</li>
+          <li><strong>VA (Validation Authority)</strong> — provides validation information on behalf of CA</li>
+          <li><strong>RA (Registration Authority)</strong> — handles registration and issuance on behalf of CA</li>
+        </ul>
+        <p><strong>Digital Certificate contains:</strong> Owner's name, Owner's PUBLIC key, Issuer's name, Issuer's digital signature, Certificate serial number, Expiration date. Prevents man-in-the-middle attacks.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="crypto">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain symmetric vs asymmetric key cryptography. Compare their advantages, disadvantages, and use cases. Include key sizes.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ Very High</span><span class="type-badge">12 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <table class="data-table">
+          <tr><th>Feature</th><th>Symmetric</th><th>Asymmetric</th></tr>
+          <tr><td>Keys</td><td>Single shared secret key</td><td>Two keys: Public + Private</td></tr>
+          <tr><td>Key Size</td><td>128, 192, 256 bits</td><td>2048 bits or greater</td></tr>
+          <tr><td>Speed</td><td>Fast (bulk ciphers)</td><td>Slower (mathematical functions)</td></tr>
+          <tr><td>Key Distribution</td><td>Problem — must share secret key securely</td><td>Solved — public key can be shared openly</td></tr>
+          <tr><td>Security Basis</td><td>Secrecy of the key</td><td>Mathematical difficulty (factoring, elliptic curves)</td></tr>
+          <tr><td>Examples</td><td>DES, 3DES, AES, RC4</td><td>RSA, ECDSA, DSA, Diffie-Hellman</td></tr>
+          <tr><td>Used For</td><td>Bulk data encryption (faster)</td><td>Digital signatures, key exchange, certificates</td></tr>
+        </table>
+        <p><strong>Hybrid approach:</strong> In practice, asymmetric encryption is used to securely exchange a symmetric key, then symmetric encryption is used for the bulk data transfer (e.g., SSL/TLS uses this hybrid approach).</p>
+        <div class="warning-box">⚠️ Remember: Symmetric keys 128/192/256 bits | Asymmetric keys should be 2048+ bits for comparable security</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="req">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain the concept of Requirement Specification and Requirement Mapping in network design. What are the outcomes of Requirement Analysis?</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">10 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-label">✦ Model Answer</div>
+      <div class="answer-content">
+        <p><strong>Requirements Analysis:</strong> The process of identifying, collecting, and evaluating requirements for the network.</p>
+        <p><strong>Requirement Specification:</strong> A document that lists and prioritizes requirements gathered for the network architecture and design. Contains two parts:</p>
+        <ul>
+          <li>Part 1: Initial conditions — type of project, scope, goals, political/administrative/financial forces</li>
+          <li>Part 2: Gathered and derived requirements — from management, staff, users (via questionnaire)</li>
+        </ul>
+        <p><strong>Requirement Map:</strong> Shows location dependencies between applications and devices. Maps requirements to a geographical description (building, campus, metropolitan, WAN). Enables estimation of where traffic flows will occur.</p>
+        <p><strong>Methods of Gathering:</strong> Discussions/meetings | Interviews (CTO, CFO, IT mgrs) | Questionnaires (staff, end users) | Observations (devices, networks, systems)</p>
+        <p><strong>Outcomes of Requirement Analysis:</strong></p>
+        <ul>
+          <li>Analyzing the network and environment</li>
+          <li>Gathering user, application, device, and network requirements</li>
+          <li>Determining variables to measure (RMA: Reliability, Maintainability, Availability)</li>
+          <li>Service metrics: Speed, Delay, Packet Loss</li>
+          <li>Producing Requirement Specification + Requirement Map (inputs to flow analysis)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end essay -->
+
+<!-- CHEAT SHEET -->
+<div id="cheat" class="section fade-in">
+  <div class="section-header">
+    <h2>⚡ Quick Cheat Sheet – netRECAP2</h2>
+    <p>Last-minute key facts for your exam tomorrow!</p>
+  </div>
+
+  <div class="highlight-box">🧠 <strong>KEY RULES:</strong> IPv4 = 32-bit | Usable hosts = 2^n - 2 | 80% operational cost | CIA triad: Confidentiality, Integrity, Availability | IDS=passive, IPS=active</div>
+
+  <div class="cheat-grid" style="margin-top:20px">
+
+    <div class="cheat-card teal-card">
+      <h4>🌊 Flow Analysis Key Terms</h4>
+      <ul>
+        <li>Individual = single app session (basic unit)</li>
+        <li>Composite = multiple apps on same path (most common)</li>
+        <li>Critical = mission-critical, RT, rate-critical → highest priority</li>
+        <li>Data Source → generates flow; Data Sink → terminates flow</li>
+        <li>Flowspec = flow specification document</li>
+        <li>80% operational cost, 20% implementation</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>📊 Flow Models</h4>
+      <ul>
+        <li>P2P → equivalent flows, peer hierarchy</li>
+        <li>Client-Server → asymmetric, server=SOURCE, client=SINK</li>
+        <li>Hierarchical CS → multiple server tiers</li>
+        <li>Distributed Computing → inverse CS or P2P hybrid</li>
+        <li>CDN = Content Delivery Network (YouTube example)</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🔗 Topology Quick Ref</h4>
+      <ul>
+        <li>Star → most common LAN; hub failure = all down</li>
+        <li>Bus → simplest; cable failure = all down; IEEE 802.3/802.4</li>
+        <li>Ring → token passing; min collision; FDDI/Token Ring</li>
+        <li>Tree → best for WAN; corporate networks</li>
+        <li>Mesh → routing+flooding; redundancy; high cost</li>
+        <li>Spine-Leaf → data centers; Google uses this</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🌐 IPv4 Classes</h4>
+      <ul>
+        <li>Class A: 1–126 (bit: 0); mask /8</li>
+        <li>Class B: 128–191 (bits: 10); mask /16</li>
+        <li>Class C: 192–223 (bits: 110); mask /24</li>
+        <li>Private: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</li>
+        <li>Loopback: 127.x.x.x</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🔢 Subnetting Formula</h4>
+      <ul>
+        <li>Host bits = 32 - prefix</li>
+        <li>Total IPs = 2^(host bits)</li>
+        <li>Usable hosts = 2^n - 2</li>
+        <li>Network = IP AND Subnet Mask</li>
+        <li>Broadcast = last address in subnet</li>
+        <li>/28 → 4 host bits → 16 IPs → 14 usable</li>
+        <li>/26 → 6 host bits → 64 IPs → 62 usable</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🛣️ BGP Key Facts</h4>
+      <ul>
+        <li>iBGP = within same AS (fully meshed)</li>
+        <li>eBGP = between different ASs (directly connected)</li>
+        <li>AS-Path: loop detection; shortest preferred</li>
+        <li>Local-Pref: default 100; HIGHEST preferred</li>
+        <li>MED: LOWEST preferred</li>
+        <li>Next-Hop: IP to reach network</li>
+        <li>Runs over TCP; keepalives used</li>
+        <li>Router Flapping → Router Flap Damping</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card red-card">
+      <h4>🔒 Security Attacks → CIA</h4>
+      <ul>
+        <li>Interruption (DoS/DDoS) → AVAILABILITY</li>
+        <li>Interception (passive, eavesdrop) → CONFIDENTIALITY</li>
+        <li>Modification (change/insert/delete) → INTEGRITY</li>
+        <li>Fabrication (masquerade, SQL inject) → AVAILABILITY</li>
+        <li>Passive = hard to detect (monitoring only)</li>
+        <li>Active = deliberate action</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card orange-card">
+      <h4>🔥 Firewall Types</h4>
+      <ul>
+        <li>Packet Filter → Layer 3, Source/Dest IP, fast</li>
+        <li>Circuit-level → TCP handshake, session check</li>
+        <li>Application (Proxy) → Layer 7, HTTP strings, delay</li>
+        <li>Stateful → connection state, more secure, slower</li>
+        <li>NGFW → DPI + IDS/IPS + malware + ML</li>
+        <li>WAF → web app: SQL, XSS, file inclusion</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🏗️ Firewall Architectures</h4>
+      <ul>
+        <li>Screening Router → ACL only, basic, fast</li>
+        <li>Simple Firewall → 2 interfaces, modest security</li>
+        <li>Multi-Legged → DMZ added, semi-trusted zone</li>
+        <li>Sandwich → inside + outside FW, best separation</li>
+        <li>Layered → large enterprise, multiple internal FWs</li>
+        <li>DMZ = semi-trusted zone for web/SMTP servers</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🕵️ IDS vs IPS</h4>
+      <ul>
+        <li>IDS = PASSIVE (detect + report only)</li>
+        <li>IPS = ACTIVE (detect + prevent/block)</li>
+        <li>NIDS: network-wide; uses port mirroring; Snort</li>
+        <li>HIDS: host-based; Tripwire, OSSEC</li>
+        <li>NIPS: monitors whole network</li>
+        <li>WIPS: wireless IPS</li>
+        <li>Detection: Signature / Anomaly / Policy</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card teal-card">
+      <h4>🔑 Cryptography Quick Ref</h4>
+      <ul>
+        <li>Substitution → replace chars (identity changes)</li>
+        <li>Transposition → rearrange position</li>
+        <li>Symmetric → 1 key; DES, 3DES, AES, RC4</li>
+        <li>Asymmetric → 2 keys (public/private); RSA, ECDSA</li>
+        <li>Block cipher → fixed blocks (AES=128-bit blocks)</li>
+        <li>Stream cipher → 1 bit at a time (RC4)</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🛡️ DES → 3DES → AES</h4>
+      <ul>
+        <li>DES: 64-bit key, 64-bit block, DEPRECATED 2005</li>
+        <li>3DES: 168-bit (3×56), 64-bit block, SLOWER, deprecated</li>
+        <li>AES: 128/192/256-bit key, 128-bit block, CURRENT STANDARD</li>
+        <li>RC4: stream cipher, WEP, WPA, SSL/TLS</li>
+        <li>Symmetric keys: 128–256 bit</li>
+        <li>Asymmetric keys: 2048+ bit</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card red-card">
+      <h4>🔐 PKI Key Authorities</h4>
+      <ul>
+        <li>CA = Certificate Authority (issues certificates)</li>
+        <li>VA = Validation Authority (validates on behalf of CA)</li>
+        <li>RA = Registration Authority (registers users)</li>
+        <li>Digital cert = owner name + public key + issuer + serial + expiry</li>
+        <li>Hash functions: MD5 (128-bit), SHA-1, SHA-2</li>
+        <li>Digital Sig: Private key signs → Public key verifies</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card orange-card">
+      <h4>⚡ Attack Prevention Summary</h4>
+      <ul>
+        <li>Interception → SSL, VPN, Multi-factor auth, MAC-based port sec</li>
+        <li>Interruption → Redundancy, Load balancers, Multiple ISP links</li>
+        <li>Modification → Hashing, Encryption, MACs, backup</li>
+        <li>Fabrication → Digital certs, Hashing, MACs</li>
+        <li>End-to-end → IDS/IPS, Firewalls, Access Control, PKI</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🌐 Public Key Process</h4>
+      <ul>
+        <li>Encrypt with RECIPIENT's PUBLIC key</li>
+        <li>Decrypt with RECIPIENT's PRIVATE key</li>
+        <li>Sign with SENDER's PRIVATE key</li>
+        <li>Verify with SENDER's PUBLIC key</li>
+        <li>Public key algorithms: RSA, ECDSA, DSA, DH</li>
+        <li>First proposed: Diffie & Hellman, 1976</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🔁 Routing Table Codes</h4>
+      <ul>
+        <li>C = Connected (directly connected network)</li>
+        <li>S = Static (manually configured route)</li>
+        <li>0.0.0.0/0 = default route (everything else)</li>
+        <li>Next hop = IP address of next router</li>
+        <li>Interface = outgoing interface (e0, e1, s0)</li>
+        <li>AS 0-65535 range for BGP</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="highlight-box" style="margin-top:24px">
+    <strong>🚨 CRITICAL EXAM REMINDERS:</strong><br>
+    ✦ CIA Triad: Confidentiality (Interception) | Integrity (Modification) | Availability (Interruption/Fabrication)<br>
+    ✦ Firewall Generations: 1=Packet Filter | 2=Stateful/Circuit | 3=Application | 4=NGFW(ML)<br>
+    ✦ BGP Attributes: AS-Path (loop detection, shortest) | Local-Pref (HIGHEST, iBGP only) | MED (lowest)<br>
+    ✦ Crypto: DES→deprecated | 3DES→slow | AES→current | Symmetric→same key | Asymmetric→public/private<br>
+    ✦ Digital Sig = Private key to SIGN, Public key to VERIFY | PKI = CA + VA + RA<br>
+    ✦ IDS = passive (detect+report) | IPS = active (detect+block) | NIDS example = Snort | HIDS = Tripwire, OSSEC
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+function showSection(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById(id).classList.remove('fade-in');
+  void document.getElementById(id).offsetWidth;
+  document.getElementById(id).classList.add('fade-in');
+}
+function gotoTopic(section,anchorId){
+  const tab=document.querySelector(`[onclick="showSection('${section}',this)"]`);
+  showSection(section,tab);
+  setTimeout(()=>{const el=document.getElementById(anchorId);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},150);
+}
+let scoreC=0,scoreW=0,scoreT=0;
+function answerMCQ(el,result){
+  const opts=el.closest('.options').querySelectorAll('.opt');
+  const already=Array.from(opts).some(o=>o.classList.contains('selected-correct')||o.classList.contains('selected-wrong'));
+  if(already)return;
+  scoreT++;
+  if(result==='correct'){el.classList.add('selected-correct');scoreC++;}
+  else{
+    el.classList.add('selected-wrong');scoreW++;
+    opts.forEach(o=>{if(o.getAttribute('onclick')&&o.getAttribute('onclick').includes("'correct'"))o.classList.add('reveal-correct');});
+  }
+  updateScore();
+}
+function revealAnswer(btn){
+  const box=btn.closest('.mcq-item').querySelector('.answer-reveal');
+  box.classList.toggle('shown');
+  btn.textContent=box.classList.contains('shown')?'Hide Answer':'Show Answer';
+}
+function resetMCQ(btn){
+  const item=btn.closest('.mcq-item');
+  item.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected-correct','selected-wrong','reveal-correct'));
+  const box=item.querySelector('.answer-reveal');
+  box.classList.remove('shown');
+  item.querySelector('.btn-reveal').textContent='Show Answer';
+}
+function updateScore(){
+  document.getElementById('scoreCorrect').textContent=scoreC;
+  document.getElementById('scoreWrong').textContent=scoreW;
+  document.getElementById('scoreTotal').textContent=scoreT;
+  const pct=scoreT>0?Math.round((scoreC/scoreT)*100):0;
+  document.getElementById('scorePct').textContent=pct+'% Accuracy';
+  document.getElementById('mainProgress').style.width=pct+'%';
+}
+function toggleEssay(header){
+  header.closest('.essay-item').classList.toggle('open');
+}
+function filterMCQ(topic,btn){
+  document.querySelectorAll('.filter-bar .filter-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#mcq-container .mcq-item').forEach(item=>{
+    item.style.display=(topic==='all'||item.dataset.topic===topic)?'':'none';
+  });
+}
+function filterEssay(topic,btn){
+  const bar=btn.closest('.filter-bar');
+  bar.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#essay .essay-item').forEach(item=>{
+    item.style.display=(topic==='all'||item.dataset.topic===topic)?'':'none';
+  });
+}
+</script>
+</body>
+</html>

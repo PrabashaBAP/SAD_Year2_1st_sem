@@ -1,0 +1,2591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CN201 – Network Exam Prep | 2nd Year 1st Sem</title>
+  <meta name="description" content="Comprehensive exam preparation for Computer Networks CN201. MCQ and essay questions covering all lecture topics from netRECAP." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0b14;
+      --bg2: #10121f;
+      --bg3: #161929;
+      --card: #1a1e35;
+      --card2: #1f2440;
+      --accent: #6c63ff;
+      --accent2: #a78bfa;
+      --teal: #14b8a6;
+      --pink: #ec4899;
+      --gold: #f59e0b;
+      --green: #22c55e;
+      --red: #ef4444;
+      --text: #e2e8f0;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --border: #2d3555;
+      --glow: rgba(108,99,255,0.25);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* ===== BACKGROUND ORBS ===== */
+    .bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.25;animation:float 8s ease-in-out infinite}
+    .orb1{width:500px;height:500px;background:radial-gradient(circle,#6c63ff,transparent);top:-100px;left:-150px;animation-delay:0s}
+    .orb2{width:400px;height:400px;background:radial-gradient(circle,#14b8a6,transparent);bottom:-100px;right:-100px;animation-delay:3s}
+    .orb3{width:300px;height:300px;background:radial-gradient(circle,#ec4899,transparent);top:40%;left:60%;animation-delay:1.5s}
+    @keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
+
+    /* ===== HERO ===== */
+    .hero{
+      position:relative;z-index:1;
+      text-align:center;
+      padding:60px 24px 40px;
+      background:linear-gradient(180deg,rgba(108,99,255,.08) 0%,transparent 100%);
+      border-bottom:1px solid var(--border);
+    }
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(108,99,255,.15);
+      border:1px solid rgba(108,99,255,.35);
+      color:var(--accent2);
+      border-radius:999px;
+      padding:6px 16px;font-size:.8rem;font-weight:600;
+      margin-bottom:20px;letter-spacing:.05em;
+      animation:pulse-border 2s ease-in-out infinite;
+    }
+    @keyframes pulse-border{0%,100%{box-shadow:0 0 0 0 rgba(108,99,255,.4)}50%{box-shadow:0 0 0 6px rgba(108,99,255,0)}}
+    .hero h1{
+      font-size:clamp(2rem,5vw,3.5rem);
+      font-weight:900;
+      background:linear-gradient(135deg,#fff 30%,var(--accent2),var(--teal));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      line-height:1.15;margin-bottom:16px;
+    }
+    .hero p{color:var(--text2);font-size:1.05rem;max-width:620px;margin:0 auto 32px;line-height:1.7}
+    .hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+    .stat{text-align:center}
+    .stat-num{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .stat-label{font-size:.75rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+
+    /* ===== NAV TABS ===== */
+    .nav-wrap{
+      position:sticky;top:0;z-index:100;
+      background:rgba(10,11,20,.9);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      padding:0 16px;
+    }
+    .nav-tabs{
+      display:flex;overflow-x:auto;gap:4px;
+      max-width:1200px;margin:0 auto;
+      scrollbar-width:none;
+      padding:10px 0;
+    }
+    .nav-tabs::-webkit-scrollbar{display:none}
+    .tab-btn{
+      flex-shrink:0;
+      padding:8px 18px;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:transparent;
+      color:var(--text2);
+      font-size:.82rem;font-weight:500;
+      cursor:pointer;transition:all .2s;
+      white-space:nowrap;
+      font-family:'Inter',sans-serif;
+    }
+    .tab-btn:hover{background:var(--card);color:var(--text);border-color:var(--border)}
+    .tab-btn.active{
+      background:linear-gradient(135deg,var(--accent),#8b83ff);
+      color:#fff;border-color:transparent;
+      box-shadow:0 0 16px var(--glow);
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .main{max-width:1200px;margin:0 auto;padding:32px 20px;position:relative;z-index:1}
+    .section{display:none}
+    .section.active{display:block}
+
+    /* ===== TOPIC OVERVIEW ===== */
+    .overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:8px}
+    .topic-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;padding:20px;
+      cursor:pointer;transition:all .25s;
+      position:relative;overflow:hidden;
+    }
+    .topic-card::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,transparent,rgba(108,99,255,.06));
+      opacity:0;transition:opacity .25s;
+    }
+    .topic-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(108,99,255,.2)}
+    .topic-card:hover::before{opacity:1}
+    .topic-num{font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
+    .topic-title{font-size:1.05rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+    .topic-bullets{list-style:none;font-size:.82rem;color:var(--text2);line-height:1.8}
+    .topic-bullets li::before{content:'▸ ';color:var(--teal)}
+    .topic-tag{
+      display:inline-block;margin-top:12px;
+      padding:3px 10px;border-radius:999px;
+      font-size:.72rem;font-weight:600;
+      background:rgba(20,184,166,.12);color:var(--teal);
+      border:1px solid rgba(20,184,166,.25);
+    }
+
+    /* ===== SECTION TITLE ===== */
+    .section-header{margin-bottom:28px}
+    .section-header h2{
+      font-size:1.8rem;font-weight:800;
+      background:linear-gradient(135deg,#fff,var(--accent2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .section-header p{color:var(--text2);margin-top:6px;font-size:.9rem}
+
+    /* ===== CHAPTER LABEL ===== */
+    .chapter-label{
+      display:flex;align-items:center;gap:12px;
+      margin:36px 0 16px;
+    }
+    .chapter-label span{
+      font-size:.7rem;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--accent2);
+      white-space:nowrap;
+    }
+    .chapter-label .line{flex:1;height:1px;background:var(--border)}
+
+    /* ===== MCQ QUESTION ===== */
+    .mcq-item{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:16px;padding:24px;margin-bottom:16px;
+      transition:border-color .2s;
+    }
+    .mcq-item:hover{border-color:rgba(108,99,255,.4)}
+    .q-num{font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+    .q-text{font-size:.98rem;font-weight:600;color:var(--text);margin-bottom:18px;line-height:1.6}
+    .options{display:flex;flex-direction:column;gap:10px}
+    .opt{
+      display:flex;align-items:flex-start;gap:12px;
+      padding:12px 16px;border-radius:12px;
+      border:1px solid var(--border);
+      cursor:pointer;transition:all .2s;
+      background:var(--bg3);
+      font-size:.88rem;line-height:1.5;
+      color:var(--text2);
+    }
+    .opt:hover{border-color:var(--accent);color:var(--text);background:var(--card2)}
+    .opt.selected-correct{background:rgba(34,197,94,.12);border-color:var(--green);color:#86efac}
+    .opt.selected-wrong{background:rgba(239,68,68,.12);border-color:var(--red);color:#fca5a5}
+    .opt.reveal-correct{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.4);color:#86efac}
+    .opt-letter{
+      width:24px;height:24px;border-radius:6px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.75rem;font-weight:700;flex-shrink:0;
+      background:rgba(108,99,255,.15);color:var(--accent2);
+      transition:all .2s;
+    }
+    .opt.selected-correct .opt-letter{background:var(--green);color:#fff}
+    .opt.selected-wrong .opt-letter{background:var(--red);color:#fff}
+    .opt.reveal-correct .opt-letter{background:var(--green);color:#fff}
+    .answer-reveal{
+      margin-top:16px;padding:14px 16px;
+      border-radius:12px;
+      background:rgba(108,99,255,.08);
+      border:1px solid rgba(108,99,255,.2);
+      font-size:.85rem;color:var(--text2);
+      display:none;line-height:1.7;
+    }
+    .answer-reveal.shown{display:block}
+    .answer-reveal strong{color:var(--accent2)}
+    .mcq-actions{display:flex;gap:10px;margin-top:16px}
+    .btn-reveal,.btn-reset{
+      padding:8px 16px;border-radius:8px;
+      font-size:.8rem;font-weight:600;cursor:pointer;
+      border:1px solid;transition:all .2s;
+      font-family:'Inter',sans-serif;
+    }
+    .btn-reveal{background:rgba(108,99,255,.15);border-color:rgba(108,99,255,.4);color:var(--accent2)}
+    .btn-reveal:hover{background:rgba(108,99,255,.3)}
+    .btn-reset{background:transparent;border-color:var(--border);color:var(--text3)}
+    .btn-reset:hover{border-color:var(--text2);color:var(--text2)}
+
+    /* ===== ESSAY QUESTIONS ===== */
+    .essay-item{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:16px;margin-bottom:16px;overflow:hidden;
+    }
+    .essay-header{
+      padding:20px 24px;cursor:pointer;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+      transition:background .2s;
+    }
+    .essay-header:hover{background:var(--card2)}
+    .essay-q{
+      font-size:.95rem;font-weight:600;color:var(--text);line-height:1.6;flex:1;
+    }
+    .essay-marks{
+      display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;
+    }
+    .marks-badge{
+      font-size:.72rem;font-weight:700;
+      padding:3px 10px;border-radius:999px;
+      background:rgba(245,158,11,.12);
+      border:1px solid rgba(245,158,11,.3);
+      color:var(--gold);letter-spacing:.05em;white-space:nowrap;
+    }
+    .type-badge{
+      font-size:.7rem;padding:2px 8px;border-radius:999px;
+      background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.25);color:var(--teal);
+      white-space:nowrap;
+    }
+    .chevron{color:var(--text3);transition:transform .3s;font-size:1.1rem;margin-top:2px}
+    .essay-item.open .chevron{transform:rotate(180deg)}
+    .essay-body{
+      display:none;
+      padding:0 24px 24px;border-top:1px solid var(--border);
+    }
+    .essay-item.open .essay-body{display:block}
+    .answer-block{
+      margin-top:16px;
+    }
+    .answer-label{
+      font-size:.72rem;font-weight:700;letter-spacing:.1em;
+      color:var(--teal);text-transform:uppercase;margin-bottom:10px;
+    }
+    .answer-content{
+      font-size:.88rem;color:var(--text2);line-height:1.85;
+    }
+    .answer-content p{margin-bottom:10px}
+    .answer-content strong{color:var(--text)}
+    .answer-content ul{list-style:none;padding:0}
+    .answer-content ul li{
+      padding:5px 0 5px 20px;position:relative;border-bottom:1px solid rgba(255,255,255,.04);
+    }
+    .answer-content ul li::before{content:'→';position:absolute;left:0;color:var(--accent2)}
+    .key-points{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;
+    }
+    .kp{
+      padding:4px 12px;border-radius:999px;font-size:.75rem;font-weight:500;
+      background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.2);color:var(--accent2);
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-wrap{
+      background:var(--card);border:1px solid var(--border);border-radius:16px;
+      padding:20px 24px;margin-bottom:28px;
+      display:flex;align-items:center;gap:20px;
+    }
+    .progress-info{flex:1}
+    .progress-title{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:6px}
+    .progress-bar{height:8px;background:var(--bg3);border-radius:999px;overflow:hidden}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--teal));border-radius:999px;transition:width .5s ease;width:0%}
+    .progress-pct{font-size:1.5rem;font-weight:800;color:var(--accent2);white-space:nowrap}
+
+    /* ===== FILTER BAR ===== */
+    .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+    .filter-chip{
+      padding:6px 14px;border-radius:999px;border:1px solid var(--border);
+      background:transparent;color:var(--text2);font-size:.78rem;font-weight:500;
+      cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;
+    }
+    .filter-chip:hover,.filter-chip.active{
+      background:rgba(108,99,255,.15);border-color:rgba(108,99,255,.4);color:var(--accent2);
+    }
+
+    /* ===== FORMULA BOXES ===== */
+    .formula-box{
+      background:var(--bg3);border:1px solid rgba(245,158,11,.3);
+      border-radius:12px;padding:16px 20px;margin:12px 0;
+      font-family:'JetBrains Mono',monospace;font-size:.9rem;
+      color:var(--gold);
+    }
+
+    /* ===== TABLE STYLES ===== */
+    .data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.83rem}
+    .data-table th{
+      background:rgba(108,99,255,.15);color:var(--accent2);
+      padding:10px 14px;text-align:left;font-weight:600;
+      border-bottom:1px solid var(--border);
+    }
+    .data-table td{
+      padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.04);
+      color:var(--text2);vertical-align:top;
+    }
+    .data-table tr:last-child td{border-bottom:none}
+    .data-table tr:hover td{background:rgba(108,99,255,.05)}
+
+    /* ===== CHEAT SHEET ===== */
+    .cheat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .cheat-card{
+      background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;
+    }
+    .cheat-card h4{font-size:.9rem;font-weight:700;color:var(--accent2);margin-bottom:10px}
+    .cheat-card ul{list-style:none;font-size:.82rem;color:var(--text2);line-height:1.9}
+    .cheat-card ul li::before{content:'• ';color:var(--teal)}
+
+    /* ===== SCORE BOARD ===== */
+    .scoreboard{
+      display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px;
+    }
+    .score-card{
+      background:var(--card);border:1px solid var(--border);border-radius:14px;
+      padding:18px 24px;flex:1;min-width:160px;text-align:center;
+    }
+    .score-val{font-size:2rem;font-weight:800;margin-bottom:4px}
+    .score-val.green{background:linear-gradient(135deg,var(--green),#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .score-val.red{background:linear-gradient(135deg,var(--red),#fca5a5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .score-val.gold{background:linear-gradient(135deg,var(--gold),#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .score-lbl{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--card2);border-radius:3px}
+
+    /* ===== HIGHLIGHT BOX ===== */
+    .highlight-box{
+      background:rgba(108,99,255,.08);
+      border:1px solid rgba(108,99,255,.2);
+      border-left:3px solid var(--accent);
+      border-radius:0 12px 12px 0;
+      padding:14px 18px;margin:14px 0;
+      font-size:.87rem;color:var(--text2);line-height:1.7;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:600px){
+      .hero h1{font-size:1.8rem}
+      .hero-stats{gap:20px}
+      .tab-btn{padding:7px 12px;font-size:.78rem}
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-in{animation:fadeIn .4s ease forwards}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  </style>
+</head>
+<body>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🎓 2nd Year · 1st Semester · Exam in 2 Days</div>
+  <h1>CN201 Computer Networks<br>Exam Prep</h1>
+  <p>Master every topic from your netRECAP lecture slides — with MCQs, essay questions & model answers. Your all-in-one exam survival kit!</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">171</div><div class="stat-label">Slides Covered</div></div>
+    <div class="stat"><div class="stat-num">80+</div><div class="stat-label">MCQ Questions</div></div>
+    <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Essay Questions</div></div>
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Key Topics</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showSection('overview',this)" id="tab-overview">📋 Overview</button>
+    <button class="tab-btn" onclick="showSection('mcq',this)" id="tab-mcq">✅ MCQ Quiz</button>
+    <button class="tab-btn" onclick="showSection('essay',this)" id="tab-essay">📝 Essay Q&A</button>
+    <button class="tab-btn" onclick="showSection('cheat',this)" id="tab-cheat">⚡ Cheat Sheet</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== SECTION: OVERVIEW ===== -->
+<div id="overview" class="section active fade-in">
+  <div class="section-header">
+    <h2>📚 Topic Overview</h2>
+    <p>All key topics from your netRECAP.pdf — click any card to jump to related questions</p>
+  </div>
+  <div class="overview-grid">
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-hw')">
+      <div class="topic-num">Topic 01</div>
+      <div class="topic-title">Network Hardware & Devices</div>
+      <ul class="topic-bullets">
+        <li>Active vs Passive Devices</li>
+        <li>Repeaters, Hubs, Switches</li>
+        <li>Bridges, Routers, Gateways</li>
+        <li>Access Points</li>
+      </ul>
+      <span class="topic-tag">8 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-types')">
+      <div class="topic-num">Topic 02</div>
+      <div class="topic-title">Network Types & Categorization</div>
+      <ul class="topic-bullets">
+        <li>PAN, LAN, MAN, WAN</li>
+        <li>SAN, EPN, VPN</li>
+        <li>SOHO, Campus, Enterprise</li>
+        <li>Peer-to-Peer vs Client-Server</li>
+      </ul>
+      <span class="topic-tag">10 MCQs · 5 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-media')">
+      <div class="topic-num">Topic 03</div>
+      <div class="topic-title">Transmission Media</div>
+      <ul class="topic-bullets">
+        <li>Guided vs Unguided</li>
+        <li>Coaxial Cables</li>
+        <li>Twisted Pair (UTP/STP) & CAT categories</li>
+        <li>Optical Fiber (Multimode/Singlemode)</li>
+      </ul>
+      <span class="topic-tag">12 MCQs · 5 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-wireless')">
+      <div class="topic-num">Topic 04</div>
+      <div class="topic-title">Wireless Communication</div>
+      <ul class="topic-bullets">
+        <li>RF, Microwave, Infrared</li>
+        <li>Satellite vs Terrestrial</li>
+        <li>Bluetooth, Wi-Fi (802.11)</li>
+        <li>Mobile Generations (1G–5G)</li>
+      </ul>
+      <span class="topic-tag">12 MCQs · 5 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-design')">
+      <div class="topic-num">Topic 05</div>
+      <div class="topic-title">Network Design & Implementation</div>
+      <ul class="topic-bullets">
+        <li>Design Goals (FASM)</li>
+        <li>PPDIOO Framework</li>
+        <li>Traditional Top-Down Approach</li>
+        <li>Requirements Analysis</li>
+      </ul>
+      <span class="topic-tag">10 MCQs · 5 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-req')">
+      <div class="topic-num">Topic 06</div>
+      <div class="topic-title">Network Requirements</div>
+      <ul class="topic-bullets">
+        <li>User, Application, Device Reqs</li>
+        <li>Network Integration Issues</li>
+        <li>Security & Management</li>
+        <li>Prioritization</li>
+      </ul>
+      <span class="topic-tag">8 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-cabling')">
+      <div class="topic-num">Topic 07</div>
+      <div class="topic-title">Structured Cabling</div>
+      <ul class="topic-bullets">
+        <li>TIA/EIA-568 Standards</li>
+        <li>568A vs 568B Wiring</li>
+        <li>Straight vs Crossover Cables</li>
+        <li>PoE (Power over Ethernet)</li>
+      </ul>
+      <span class="topic-tag">8 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-6elem')">
+      <div class="topic-num">Topic 08</div>
+      <div class="topic-title">Six Elements of Structured Cabling</div>
+      <ul class="topic-bullets">
+        <li>Entrance Facility</li>
+        <li>Equipment Room</li>
+        <li>Backbone & Horizontal Cabling</li>
+        <li>Telecom Closet & Work Area</li>
+      </ul>
+      <span class="topic-tag">8 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-comms')">
+      <div class="topic-num">Topic 09</div>
+      <div class="topic-title">Data Communication Fundamentals</div>
+      <ul class="topic-bullets">
+        <li>Bandwidth vs Data Rate</li>
+        <li>Components of Data Comm</li>
+        <li>Communication Requirements</li>
+        <li>Protocols</li>
+      </ul>
+      <span class="topic-tag">6 MCQs · 4 Essays</span>
+    </div>
+
+    <div class="topic-card" onclick="gotoTopic('mcq','topic-physical')">
+      <div class="topic-num">Topic 10</div>
+      <div class="topic-title">Physical Network Design</div>
+      <ul class="topic-bullets">
+        <li>Equipment Room Specs</li>
+        <li>Cable Trays, Ducts</li>
+        <li>Power Cabling Separation</li>
+        <li>Cost: 20% physical / 80% maintenance</li>
+      </ul>
+      <span class="topic-tag">6 MCQs · 4 Essays</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SECTION: MCQ ===== -->
+<div id="mcq" class="section fade-in">
+  <div class="section-header">
+    <h2>✅ MCQ Practice Quiz</h2>
+    <p>Click an option to answer — then use "Show Answer" to see the explanation. Track your score below!</p>
+  </div>
+
+  <div class="scoreboard">
+    <div class="score-card"><div class="score-val green" id="scoreCorrect">0</div><div class="score-lbl">Correct</div></div>
+    <div class="score-card"><div class="score-val red" id="scoreWrong">0</div><div class="score-lbl">Wrong</div></div>
+    <div class="score-card"><div class="score-val gold" id="scoreTotal">0</div><div class="score-lbl">Attempted</div></div>
+    <div class="score-card">
+      <div class="progress-bar" style="height:12px;border-radius:999px;background:var(--bg3);overflow:hidden;margin-bottom:6px">
+        <div class="progress-fill" id="mainProgress" style="width:0%"></div>
+      </div>
+      <div class="score-lbl" id="scorePct">0% Accuracy</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-chip active" onclick="filterMCQ('all',this)">All Topics</button>
+    <button class="filter-chip" onclick="filterMCQ('hw',this)">Hardware</button>
+    <button class="filter-chip" onclick="filterMCQ('types',this)">Network Types</button>
+    <button class="filter-chip" onclick="filterMCQ('media',this)">Media</button>
+    <button class="filter-chip" onclick="filterMCQ('wireless',this)">Wireless</button>
+    <button class="filter-chip" onclick="filterMCQ('design',this)">Design</button>
+    <button class="filter-chip" onclick="filterMCQ('cabling',this)">Cabling</button>
+  </div>
+
+  <div id="mcq-container">
+
+    <!-- TOPIC: HARDWARE -->
+    <div class="chapter-label" id="topic-hw"><div class="line"></div><span>Topic 01 – Network Hardware & Devices</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="hw">
+      <div class="q-num">Question 01</div>
+      <div class="q-text">Which of the following is a characteristic of a PASSIVE networking device?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>It requires its own power supply</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>It only creates a physical connection without changing data</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>It amplifies and regenerates signals</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>It routes packets across networks</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Passive devices (e.g., cables, patch panels, connectors) are involved in data transmission but do NOT change or affect the data. They are typically unpowered and simply create a physical connection.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="hw">
+      <div class="q-num">Question 02</div>
+      <div class="q-text">A Repeater operates at which layer of the OSI model?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Data Link Layer (Layer 2)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Network Layer (Layer 3)</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Physical Layer (Layer 1)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Transport Layer (Layer 4)</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — A Repeater works at the Physical Layer (Layer 1) of the OSI model. It amplifies and regenerates the incoming signal and requires power to do so.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="hw">
+      <div class="q-num">Question 03</div>
+      <div class="q-text">Why are Hubs generally NOT recommended for large networks?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>They use the wrong cable type</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>They operate only at Layer 3</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>They broadcast traffic to ALL ports causing network slowdown</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>They cannot support Ethernet</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Hubs broadcast all traffic to all connected ports. The more devices added, the more network collisions and congestion occur, eventually making the network unusable.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="hw">
+      <div class="q-num">Question 04</div>
+      <div class="q-text">What is the key difference between a Switch and a Hub?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>A switch only works with fiber optic cables</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>A switch sends traffic only to the intended destination port, not all ports</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>A switch operates at Layer 1, a hub operates at Layer 2</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>A switch cannot connect multiple devices simultaneously</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — A switch intelligently forwards frames only to the intended device port using MAC address tables, while a hub broadcasts to all ports. This allows multiple users to communicate simultaneously without slowdown.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="hw">
+      <div class="q-num">Question 05</div>
+      <div class="q-text">A Bridge connects two LANs that use:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Completely different protocols at all layers</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>The SAME logical link control protocol (may have different MAC protocols)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Only fiber optic connections</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>WAN connections only</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — A Bridge interconnects two LANs using the SAME logical link control (LLC) protocol but may use different medium access control (MAC) protocols. E.g., Ethernet-to-Ethernet or Ethernet-to-Token Ring.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="hw">
+      <div class="q-num">Question 06</div>
+      <div class="q-text">What does a Router use to determine the best path for forwarding packets?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>MAC address table</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>ARP table only</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Routing table with distance and cost algorithms</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Physical cable connections only</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — A router creates and maintains a routing table of available routes and uses distance and cost algorithms to determine the best route for each packet toward its destination.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="hw">
+      <div class="q-num">Question 07</div>
+      <div class="q-text">A Gateway is used to interconnect:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>Two different networks with different protocols/equipment</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Two identical LANs using the same media</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Only two WAN connections</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Only wireless to wired networks</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — A Gateway acts as an entrance to another network and can connect completely different network types. Gateway nodes control traffic between internal networks and external networks/ISPs.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="hw">
+      <div class="q-num">Question 08</div>
+      <div class="q-text">Which of the following are active network devices? (Best answer)</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Patch panels, coaxial cables, connectors</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Fiber optic cables, switchboards</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Repeaters, Hubs, Switches, Bridges, Routers, Gateways, Access Points</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Cable trays and ducts</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Active devices require their own power supply and actively process network signals. They include Repeaters, Hubs, Switches, Bridges, Routers, Gateways, and Access Points. Passive devices (cables, connectors, patch panels) do NOT require power.</div>
+    </div>
+
+    <!-- TOPIC: NETWORK TYPES -->
+    <div class="chapter-label" id="topic-types"><div class="line"></div><span>Topic 02 – Network Types</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 09</div>
+      <div class="q-text">Which network type is organized around an individual person within a single building?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>LAN</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>PAN</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>MAN</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>WAN</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — A Personal Area Network (PAN) is organized around an individual person within a single building. It typically uses Bluetooth, ZigBee, or Wi-Fi and includes phones, laptops, headsets, and game consoles.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 10</div>
+      <div class="q-text">What is the maximum number of interconnected devices in a typical LAN?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Less than 100</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Less than 500</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Less than 1000</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">D</span>Less than 5000</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: D</strong> — According to the lecture, a LAN consists of less than 5000 interconnected devices across several buildings. It covers limited areas like schools, labs, homes, and office buildings.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 11</div>
+      <div class="q-text">Which WAN component sits between the router and the WAN connection, converting digital signals?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>DTE (Data Terminal Equipment)</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>CSU/DSU (Channel/Data Service Unit)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>DCE (Data Circuit-terminating Equipment)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Access Point</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — CSU/DSU (Channel Service Unit / Data Service Unit) sits between the router and WAN connection, converting digital signals from the WAN into a format the router understands and vice versa.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 12</div>
+      <div class="q-text">SOHO networks typically consist of which combination?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Multiple routers, many switches, no wireless</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>One Ethernet switch, one router, one wireless access point</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Only fiber connections and dedicated servers</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Multiple hubs and coaxial cabling</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — SOHO (Small Office / Home Office) networks serve 1–10 workers and are typically built with one Ethernet switch, one router, and one wireless access point.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 13</div>
+      <div class="q-text">Which characteristic best describes a Peer-to-Peer (P2P) network?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Centralized control with dedicated servers</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Requires sophisticated configuration</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Decentralized, self-organizing with no centralized hardware</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Requires extra peripherals and faster processors</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — P2P networks have no centralized HW or control (decentralized), are self-organizing, easy to implement, low-cost, and have high scalability — but issues with controllability and management.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 14</div>
+      <div class="q-text">What are the 5 main functions of a Wireless Router in a home network?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Switching, Amplifying, DNS, FTP, SSH</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Routing, Switching, Access Point, DNS, Firewall (packet filtering)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Bridging, Repeating, NAT, DHCP, SMTP</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Routing, NTP, SSH, FTP, DNS</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — A Wireless Router in a home network performs 5 main functions: Routing, Switching, Access Point functionality, DNS, and can also be configured for packet filtering (Firewall). It's called the "Magic Device".</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 15</div>
+      <div class="q-text">Which technology is primarily used for last-mile internet connectivity in home networks?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Token Ring</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Fiber/Microwave (FTTH, 4G/5G) and DSL/Cellular</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Coaxial Ethernet only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Satellite only</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Last-mile connectivity for home networks uses Fiber/Microwave (FTTH, 4G/5G) or DSL/Cellular. ADSL (Asymmetric Digital Subscriber Line) is also used for home internet connections.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 16</div>
+      <div class="q-text">A Campus Network differs from a simple LAN because it:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>Spans several buildings with high intranet data volumes and multiple network services</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Uses only wireless connections</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Connects directly to the internet without a router</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Is limited to a single floor of a building</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — A Campus Network spreads over several buildings with many network services, high intranet data volumes, different user types, more covering area with open space, and may connect external branch networks.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 17</div>
+      <div class="q-text">Which technologies are used in WAN connectivity?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Bluetooth, ZigBee, Wi-Fi</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Patch panels, switchboards</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Leased lines (Metro Ethernet T1/T3), WiMAX, DSL</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Only satellite connections</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — WAN technologies include: Leased lines (Metro Ethernet - Fiber, T1/T3/E1/E3), Wireless Connections (WiMAX), and Shared networks (DSL). WANs cover large geographical areas connecting multiple LANs.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="types">
+      <div class="q-num">Question 18</div>
+      <div class="q-text">What is a key LIMITATION of a SOHO network?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>No guaranteed connection and no permanent IP address block</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Cannot use wireless connections</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Requires leased lines only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Cannot connect more than 2 devices</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — SOHO networks have two key limitations: No guaranteed internet connection (dynamic/shared), and No permanent IP address block (no static public IP block assigned by ISP).</div>
+    </div>
+
+    <!-- TOPIC: MEDIA -->
+    <div class="chapter-label" id="topic-media"><div class="line"></div><span>Topic 03 – Transmission Media</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 19</div>
+      <div class="q-text">What is the formula for calculating Data Rate from Bandwidth?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Data Rate = Bandwidth × 8</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Data Rate = Bandwidth / 8</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Data Rate = Bandwidth × 1024</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Data Rate = Bandwidth / 1000</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Data rate is measured in Bytes. Since 1 Byte = 8 bits, Data Rate = Bandwidth / 8. Example: 100 Mbps bandwidth = 12.5 MBps data rate (100,000,000 / 8).</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 20</div>
+      <div class="q-text">Coaxial cable can transmit signals over how far with low attenuation?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>100m</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>200m</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>500m</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>1000m</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Coaxial cable can transmit signals over 500m with low attenuation. It can transmit over longer distances using repeaters. It was first used in 1850s and is used for cable TV, telephone, and LAN.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 21</div>
+      <div class="q-text">Which twisted pair category supports 1000 Mbps (Gigabit Ethernet)?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>CAT 3</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>CAT 4</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>CAT 5</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">D</span>CAT 5e/6</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: D</strong> — CAT 5e/6 supports 1000 Mbps (Gigabit Ethernet) and is used for LAN, CCTV, and data communication. CAT 5 only supports 100 Mbps, CAT 3 supports 16 Mbps.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 22</div>
+      <div class="q-text">Why are wires TWISTED in twisted pair cables?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>To increase signal strength</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>To reduce cross-talk (electromagnetic interference)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>To save manufacturing costs</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>To increase the cable's flexibility</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The wires in twisted pair cables are twisted together specifically to reduce cross-talk (electromagnetic interference between adjacent wires). Each pair has a different twist rate to minimize interference.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 23</div>
+      <div class="q-text">What is the core diameter range of optical fiber?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>2 to 125 micrometers (µm)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>1 to 10 millimeters (mm)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>50 to 500 micrometers</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>1 to 5 centimeters</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — Optical fiber has a glass or plastic core of 2 to 125 µm (micrometers). The core is surrounded by cladding (insulating) and a jacket (protective cover). Light is transmitted via laser or LED.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 24</div>
+      <div class="q-text">What is the difference between Multimode and Single Mode optical fiber?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Multimode is used for longer distances; single mode for shorter</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Multimode carries multiple light rays simultaneously; single mode carries one ray for longer distances</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Single mode is cheaper; multimode is more expensive</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>They are identical except for the cable color</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Multimode fiber carries multiple light rays at slightly different reflection angles. Single mode (monomode) uses a single ray as a carrier and is used for LONGER distances due to less dispersion.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 25</div>
+      <div class="q-text">Which is a key advantage of optical fiber over copper cables?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Lower cost</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Easier to splice and connect</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Electromagnetic isolation (immune to external EM interference)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Can carry electrical power</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Optical fiber provides electromagnetic isolation — it is not affected by external electromagnetic environments, providing more privacy and security. Other advantages: lower attenuation, greater capacity (2 Gb/s), smaller/lighter, greater repeater spacing.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 26</div>
+      <div class="q-text">Which category of Guided Medium is used for long-distance telecommunication with 2 Gb/s capacity?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Coaxial Cable</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>UTP Cable</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Optical Fiber</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>STP Cable</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Optical Fiber supports 2 Gb/s over tens of kilometers and is used for long-distance telecommunication. It has lower attenuation, smaller size, lighter weight, and greater repeater spacing than copper cables.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 27</div>
+      <div class="q-text">CAT 1 twisted pair cable is primarily used for:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>Analog voice (plain old telephone service) and doorbell wiring</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Gigabit Ethernet</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Token Ring networks at 4 Mbps</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Server room connections</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — CAT 1 supports less than 1 Mbps and is used for analog voice (POTS - Plain Old Telephone Service), ISDN Basic Rate Interface, and doorbell wiring. Not suitable for data networks.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="media">
+      <div class="q-num">Question 28</div>
+      <div class="q-text">What are the THREE layers/components of an optical fiber cable?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Copper, Insulator, Jacket</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Core (glass/plastic), Cladding (insulating), Jacket (protective)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Shield, Copper, PVC wrap</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Core, Mesh, Sheath</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Optical fiber structure: (1) Core — glass or plastic, 2–125 µm diameter; (2) Cladding — insulating material surrounding the core; (3) Jacket — protective outer cover. Light travels through the core via total internal reflection.</div>
+    </div>
+
+    <!-- TOPIC: WIRELESS -->
+    <div class="chapter-label" id="topic-wireless"><div class="line"></div><span>Topic 04 – Wireless Communication</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 29</div>
+      <div class="q-text">Who first proposed the idea of electromagnetic waves for wireless communication in 1873?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Guglielmo Marconi</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>James Clerk Maxwell</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Oliver Heaviside</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Alexander Graham Bell</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — In 1873, Maxwell proposed the idea of using electromagnetic waves to propagate message signals. Marconi later invented the wireless Telegraph in 1896 and the first wireless message "Are you ready?" was sent across 6km in 1897.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 30</div>
+      <div class="q-text">Bluetooth follows which IEEE standard?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>IEEE 802.11</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>IEEE 802.3</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>IEEE 802.15.1</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>IEEE 802.16</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Bluetooth follows IEEE 802.15.1 specification. It's a high-speed, low-powered wireless technology designed to connect portable equipment. IEEE 802.11 is Wi-Fi, 802.3 is Ethernet, 802.16 is WiMAX.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 31</div>
+      <div class="q-text">What is the frequency range used by Radio Frequency (RF) signals?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>1 Hz to 1 kHz</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>3 kHz to 300 GHz</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>300 MHz to 300 GHz only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>100 GHz to 1 THz</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — RF signals range from 3 kHz to 300 GHz. They are used in wireless communication because they can penetrate through objects and travel long distances. Microwave is specifically 300 MHz to 300 GHz.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 32</div>
+      <div class="q-text">Satellite Microwave Transmission (SMTS): At what altitude does a geostationary satellite orbit?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>6,000 miles</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>12,000 miles (low orbit)</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>22,000–22,300 miles</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>50,000 miles</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Geostationary satellites orbit at approximately 22,000–22,300 miles above Earth. Low orbit satellites orbit at 12,000 miles. Geostationary orbit allows the satellite to appear stationary relative to Earth's surface.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 33</div>
+      <div class="q-text">What is the key requirement for Terrestrial Microwave Transmission (TMTS)?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Underwater cables</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Satellite relay stations</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Line-of-sight communication between towers</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Omnidirectional antennas only</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — TMTS requires line-of-sight (LOS) communication between pairs of Earth-based transmitters and receivers. Signals are highly concentrated and relay towers are used for extension. Uses directional parabolic antennas at 4-23 GHz.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 34</div>
+      <div class="q-text">Wi-Fi (IEEE 802.11) operates at which radio frequencies?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>900 MHz and 1.8 GHz</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>2.4 GHz and 5 GHz</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>300 MHz and 3 GHz</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>26 GHz and 40 GHz</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Wi-Fi (WLAN, IEEE 802.11) uses 2.4 GHz and 5 GHz frequency bands. The first 802.11 standard (1997) provided 2 Mbit/s. 802.11b (1999) provided 11 Mbit/s. "Wi-Fi" stands for Wireless Fidelity.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 35</div>
+      <div class="q-text">When was Bluetooth invented and what generation of mobile telephony was released in 2000?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>1995, 2G</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>2000, 3G</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>2007, 4G</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>2010, 5G</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Bluetooth was invented in 2000 along with the release of 3G mobile telephony. Timeline: 1990s – GSM/2G; Late 1990s – Wi-Fi; 2000 – Bluetooth + 3G; 2007 – First iPhone; 2010 – 4G/LTE; 2020 – 5G.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 36</div>
+      <div class="q-text">Infrared (IR) transmission signals do NOT pass through:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Glass windows</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Air</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Solid objects</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Thin fabric</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — IR signals do NOT pass through solid objects. They use electromagnetic radiation with longer wavelengths than visible light, typically 100 GHz to 1,000 THz, for short-range communications (TV remotes, security systems).</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 37</div>
+      <div class="q-text">What was the global mobile data traffic growth from 2016 to 2021?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>7 to 20 exabytes per month</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>7 to 49 exabytes per month</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>7 to 100 exabytes per month</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>7 to 500 exabytes per month</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Global mobile data traffic increased from 7 exabytes per month in 2016 to 49 exabytes per month by 2021. As of June 2017, mobile wireless subscriptions worldwide were at 7.7 billion.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="wireless">
+      <div class="q-num">Question 38</div>
+      <div class="q-text">What are the THREE types of wireless data transmission listed in the lecture?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>DSL, Fiber, Satellite</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Radio Frequency, Microwave, Infrared, Lightwave Transmission</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Wi-Fi, Bluetooth, Cellular</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>AM, FM, PM modulation</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The four types of wireless data transmission are: (1) Radio Frequency Transmission, (2) Microwave Transmission (SMTS and TMTS), (3) Infrared Transmission, and (4) Lightwave Transmission.</div>
+    </div>
+
+    <!-- TOPIC: DESIGN -->
+    <div class="chapter-label" id="topic-design"><div class="line"></div><span>Topic 05 – Network Design & PPDIOO</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 39</div>
+      <div class="q-text">What does PPDIOO stand for?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Plan, Prepare, Design, Install, Operate, Optimize</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Prepare, Plan, Design, Implement, Operate, Optimize</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Prepare, Plan, Deploy, Install, Operate, Optimize</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Plan, Prototype, Design, Implement, Operate, Optimize</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — PPDIOO stands for: <strong>P</strong>repare, <strong>P</strong>lan, <strong>D</strong>esign, <strong>I</strong>mplement, <strong>O</strong>perate, <strong>O</strong>ptimize. This is CISCO's network lifecycle framework that lowers total cost of ownership and improves business agility.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 40</div>
+      <div class="q-text">What are the five Design Goals of a network? (FASM + CE)</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Speed, Cost, Security, Privacy, Reliability</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Functionality, Adaptability, Scalability, Manageability, Cost-Effectiveness</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Planning, Design, Testing, Deployment, Monitoring</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Hardware, Software, People, Process, Technology</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The five design goals: (1) <strong>Functionality</strong> – proper functionalities, (2) <strong>Adaptability</strong> – integrate new tech, (3) <strong>Scalability</strong> – grow without issues, (4) <strong>Manageability</strong> – control IT systems, (5) <strong>Cost-Effectiveness</strong> – profitable IT costs.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 41</div>
+      <div class="q-text">What is a key limitation of the Traditional Top-Down design approach?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>It requires too many meetings</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>It is expensive/time-consuming and doesn't adapt well to rapidly changing technology</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>It skips the testing phase</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>It doesn't involve users</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Three forces make traditional design less appropriate: (1) Rapidly changing technology (client/server computers, networking devices), (2) Immense growth in network traffic, (3) Cost factors of hardware, software, and HR. It works well only for static/slowly evolving networks.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 42</div>
+      <div class="q-text">A "Good Design" must include which characteristic?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Use only vendor-specific equipment</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Be the most expensive solution</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Be expandable without major redesigning and well documented</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Be implemented by a single vendor only</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — A good network design must: deliver required services, provide acceptable throughput/response time, be reliable, be expandable without major redesigning, be easy to manage/maintain, be within budget, and be well documented.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 43</div>
+      <div class="q-text">What are the KEY CONSTRAINTS in network design?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">A</span>Budget, Staff, Schedule/Time, Policies, Politics, Organizational conditions</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Hardware, Software, People only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Cable length, bandwidth, distance</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>IP addressing, routing, switching</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: A</strong> — Network design constraints include: Budget, Staff, Schedule/Time, Policies and legal requirements, Internal and external Politics, and Organizational Socioeconomic conditions.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 44</div>
+      <div class="q-text">Current network design must address which emerging technology trends?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Token Ring and FDDI</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>VLAN, VPN, SDN, 5G, SD-WAN, Cloud/NFV, BYOD</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Coaxial and analog modems</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Hub-based networks</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Current network improvements include: VLAN, VPN, SDN (Network Improvements); Cloud services, NFV, Virtualization, Backup/DR, CDN (Reliability/Availability); 5G, SD-WAN (Quality); BYOD (Remote access/flexibility).</div>
+    </div>
+
+    <!-- TOPIC: CABLING -->
+    <div class="chapter-label" id="topic-cabling"><div class="line"></div><span>Topic 07 – Structured Cabling Standards</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 45</div>
+      <div class="q-text">TIA/EIA-568 was first published in which year?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>1985</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>1991</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>1995</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>2001</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — In 1991, TIA and EIA published the first version of "Commercial Building Telecommunications Cabling Standards – TIA/EIA-568." Before this (pre-1990), cabling systems were proprietary and vendor-specific, causing vendor lock-in.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 46</div>
+      <div class="q-text">What is the ONLY difference between TIA/EIA 568A and 568B wiring standards?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>568A uses 4 pairs, 568B uses 2 pairs</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>568B supports Gigabit, 568A only supports 100 Mbps</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>The positions of Green and Orange wires are switched</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>568A is for fiber, 568B is for copper</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Functionally, TIA/EIA 568A and 568B are identical. The ONLY difference is that the positions of Green and Orange wires are switched. Sri Lanka uses the 568-B standard.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 47</div>
+      <div class="q-text">In 100BaseT (100 Mbps), which pin pairs are used for data communication?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Pins 4, 5, 7, 8</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Pins 1, 2 (TX) and 3, 6 (RX)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>All 8 pins</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Pins 2, 4, 6, 8 only</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — In 100BaseT (100 Mbps), only 2 pairs are used: Pins 1,2 for TX (Transmit) and Pins 3,6 for RX (Receive). The remaining pairs (4,5,7,8) can be used for Power over Ethernet (PoE) to power small devices like CCTV cameras and Access Points.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 48</div>
+      <div class="q-text">1000BaseT (Gigabit Ethernet) requires:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Only 1 pair of wires</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Only 2 pairs of wires</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>3 pairs of wires</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">D</span>All 4 pairs of wires, max 100m distance</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: D</strong> — 1000BaseT (Gigabit Ethernet) uses ALL 4 pairs for data communication. It uses CAT 5e, CAT 6, or CAT 7 UTP cables. Maximum distance is 100m. This differs from 100BaseT which uses only 2 pairs.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 49</div>
+      <div class="q-text">Which cabling standard is most widely used and used in Sri Lanka?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>ISO/CENELEC</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>ANSI</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>TIA/EIA (568-B)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>BICSI</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — TIA/EIA is the most widely used standard globally. Sri Lanka uses the 568-B standard. ISO/CENELEC is used in European countries, ANSI is used by Americans. TIA/EIA-568 is for commercial buildings, TIA-942 for data centers.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 50</div>
+      <div class="q-text">A crossover cable is used to connect:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>A computer to a switch</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Two end devices directly (e.g., computer to computer)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>A switch to a router</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Fiber optic to copper cables</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Crossover cables connect two END devices directly (e.g., PC to PC, switch to switch). Straight cables connect intermediate devices with end devices (e.g., PC to switch, PC to router).</div>
+    </div>
+
+    <!-- MORE MCQ: REQUIREMENTS -->
+    <div class="chapter-label" id="topic-req"><div class="line"></div><span>Topic 06 – Network Requirements Analysis</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 51</div>
+      <div class="q-text">Application requirements that are delay-sensitive are described as:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Mission-critical only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Rate-critical only</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>Real-time and/or interactive (Delay Sensitive)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Batch-processing applications</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Applications can be: Mission-critical (must always work), Rate-critical (need specific bandwidth), or Real-time/Interactive (Delay Sensitive) — e.g., VoIP, video conferencing. Each requires different network QoS handling.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 52</div>
+      <div class="q-text">What does RMA stand for in network application requirements?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Rate, Memory, Availability</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Reliability, Maintainability, Availability</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Routing, Management, Addressing</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Resource, Media, Architecture</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — RMA stands for Reliability, Maintainability, and Availability. When analyzing application requirements, you need to know how sensitive apps are to RMA of the network, what capacity is needed, and what delay time is acceptable.</div>
+    </div>
+
+    <!-- MORE MCQ: 6 ELEMENTS -->
+    <div class="chapter-label" id="topic-6elem"><div class="line"></div><span>Topic 08 – Six Elements of Structured Cabling</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 53</div>
+      <div class="q-text">What is the minimum recommended size for an Equipment Room (ER)?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>5 m²</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>10 m²</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>14 m² (150 ft²)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>20 m²</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — Minimum Equipment Room size is 14 m² (150 ft²). The recommended practice is 0.07 m² of ER space for every 10 m² of usable floor space. The ER door must be >90 cm wide (120 cm preferred) and 2 m in height.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 54</div>
+      <div class="q-text">The Entrance Facility is equivalent electrically to which household component?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Light switches</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>Power outlets</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>The meter panel with main circuit breaker</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>The distribution board</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — The Entrance Facility is where outside cabling interfaces with backbone cabling. The electrical equivalent is the meter panel with main circuit breaker. The Equipment Room is like the Main Distribution Panel, and the Telecom Closet is like the Circuit Breaker Panel/Distribution Board.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 55</div>
+      <div class="q-text">What is the general rule for Work Area (WA) space allocation?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>One WA = 5 m²</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>One WA = 10 m²</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>One WA = 20 m²</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>One WA = 50 m²</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The general rule is one Work Area = 10 m². Work areas are where building occupants interact with telecommunications devices (PCs, phones, printers). Enough outlets must be placed depending on the application.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="cabling">
+      <div class="q-num">Question 56</div>
+      <div class="q-text">The maximum horizontal cable run from Telecom Closet to Work Area is:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>50m</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>75m</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>90m (295 ft)</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>100m</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — The maximum horizontal cable run from the Telecom Closet to the Work Area is 90m (295 ft). If the floor area exceeds 1000 m² or 75% of the floor, multiple TCs are required.</div>
+    </div>
+
+    <!-- TOPIC: PHYSICAL DESIGN -->
+    <div class="chapter-label" id="topic-physical"><div class="line"></div><span>Topic 10 – Physical Design & Cost</span><div class="line"></div></div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 57</div>
+      <div class="q-text">What percentage of total network cost is the physical implementation?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>50%</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">B</span>30%</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">C</span>20%</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>80%</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: C</strong> — The physical implementation cost is only 20% of the entire network cost. The remaining 80% is spent on maintaining the network over its expected lifespan. This is why proper physical design is crucial — it reduces both implementation and running costs.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="design">
+      <div class="q-num">Question 58</div>
+      <div class="q-text">What is the typical lifespan difference between active and passive network components?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Active: 10 years, Passive: 10 years</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Active: ~5 years, Passive: ~15 years</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Active: 20 years, Passive: 5 years</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Active: 2 years, Passive: 25 years</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — Current lifespan is approximately 5 years for active components (switches, routers — technology changes fast) and 15 years for passive components (cables, patch panels). These lifespans are getting shorter with faster technology advancement.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="comms">
+      <div class="q-num">Question 59</div>
+      <div class="q-text">What are the main components of Data Communication?</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Router, Switch, Hub</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>Message, Sender, Receiver, Communication Medium, Protocol</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>IP address, MAC address, DNS</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Bandwidth, Latency, Jitter</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The main components of Data Communication are: Message, Sender and Receiver, Communication medium, and Protocol. Data communication refers to the exchange of data between a source and receiver via transmission media.</div>
+    </div>
+
+    <div class="mcq-item" data-topic="comms">
+      <div class="q-num">Question 60</div>
+      <div class="q-text">Requirements for effective technological communication include:</div>
+      <div class="options">
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">A</span>Only high speed</div>
+        <div class="opt" onclick="answerMCQ(this,'correct')"><span class="opt-letter">B</span>High speed, Accuracy, Privacy, Authenticity</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">C</span>Low cost and simplicity only</div>
+        <div class="opt" onclick="answerMCQ(this,'wrong')"><span class="opt-letter">D</span>Wired connections only</div>
+      </div>
+      <div class="mcq-actions">
+        <button class="btn-reveal" onclick="revealAnswer(this)">Show Answer</button>
+        <button class="btn-reset" onclick="resetMCQ(this)">Reset</button>
+      </div>
+      <div class="answer-reveal"><strong>Answer: B</strong> — The requirements for technological communication are: High speed (align with dynamic world), Accuracy (no errors), Privacy (only authorized parties), and Authenticity (validate sender/recipient, non-repudiation).</div>
+    </div>
+
+  </div><!-- end mcq-container -->
+</div><!-- end mcq section -->
+
+<!-- ===== SECTION: ESSAY ===== -->
+<div id="essay" class="section fade-in">
+  <div class="section-header">
+    <h2>📝 Essay Questions & Model Answers</h2>
+    <p>Click any question to expand the model answer. These cover the most likely exam essay questions!</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-chip active" onclick="filterEssay('all',this)">All Topics</button>
+    <button class="filter-chip" onclick="filterEssay('hw',this)">Hardware</button>
+    <button class="filter-chip" onclick="filterEssay('types',this)">Network Types</button>
+    <button class="filter-chip" onclick="filterEssay('media',this)">Media</button>
+    <button class="filter-chip" onclick="filterEssay('wireless',this)">Wireless</button>
+    <button class="filter-chip" onclick="filterEssay('design',this)">Design</button>
+    <button class="filter-chip" onclick="filterEssay('cabling',this)">Cabling</button>
+  </div>
+
+  <!-- HARDWARE ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 01 – Network Hardware</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="hw">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Differentiate between Active and Passive network devices. Give three examples of each and explain their functions in a network.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">10 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>Passive Devices:</strong> Passive networking hardware are components involved in data transmission that do NOT change or affect the data. They are typically unpowered and only create a physical connection.</p>
+          <ul>
+            <li><strong>Cables (Fiber Optic/Coaxial/Twisted Pair)</strong> — Physical medium for signal transmission</li>
+            <li><strong>Connectors (RJ45)</strong> — Physical interface between cable and device</li>
+            <li><strong>Patch Panels/Switchboards</strong> — Terminate and organize cable connections in equipment rooms</li>
+          </ul>
+          <p><strong>Active Devices:</strong> Active network devices require their own power supply. They amplify, process, and clean network signals before forwarding them.</p>
+          <ul>
+            <li><strong>Repeater</strong> — Amplifies/regenerates signals at Physical Layer (Layer 1). Used as Wi-Fi extenders</li>
+            <li><strong>Switch</strong> — Directs frames to specific ports using MAC address tables. Allows multiple simultaneous communications</li>
+            <li><strong>Router</strong> — Routes packets between different networks using routing tables and cost algorithms (Layer 3)</li>
+            <li><strong>Hub</strong> — Broadcasts all traffic to all ports (less efficient than switches)</li>
+            <li><strong>Bridge</strong> — Connects two LANs using same LLC protocol</li>
+            <li><strong>Gateway</strong> — Connects different types of networks</li>
+          </ul>
+        </div>
+        <div class="key-points">
+          <span class="kp">Active = needs power</span>
+          <span class="kp">Passive = no power</span>
+          <span class="kp">Repeater = Layer 1</span>
+          <span class="kp">Switch = Layer 2</span>
+          <span class="kp">Router = Layer 3</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="hw">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Compare and contrast Bridge, Router, and Gateway. In what scenario would you use each device?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">12 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>Bridge:</strong> A device that interconnects two LANs using the SAME logical link control (LLC) protocol but may use different medium access control (MAC) protocols.</p>
+          <ul>
+            <li>Examines each message on a LAN, passes those within the same LAN, forwards those to other LANs</li>
+            <li><strong>Use case:</strong> Connecting two Ethernet segments (e.g., extending a LAN to a new floor)</li>
+          </ul>
+          <p><strong>Router:</strong> A device that determines the next network point to which a packet should be forwarded toward its destination. Connects SIMILAR networks (similar protocols).</p>
+          <ul>
+            <li>Creates and maintains a routing table of available routes with distance/cost algorithms</li>
+            <li>A packet travels through many routers before reaching its destination</li>
+            <li><strong>Use case:</strong> Connecting your office LAN to the internet or connecting multiple branch offices</li>
+          </ul>
+          <p><strong>Gateway:</strong> A network point acting as an entrance to another network. Connects two DIFFERENT networks with different protocols/equipment.</p>
+          <ul>
+            <li>Controls traffic within a company's network or at an ISP</li>
+            <li><strong>Use case:</strong> Connecting a corporate network to a different network protocol system or ISP connection point</li>
+          </ul>
+          <div class="highlight-box">Key distinction: Bridge = same LLC protocol | Router = similar networks | Gateway = different networks</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="hw">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain the differences between a Hub and a Switch. Why are hubs not recommended for modern networks?</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">8 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>Hub:</strong></p>
+          <ul>
+            <li>A place where data converges from one or more directions and is forwarded out in ALL directions</li>
+            <li>Broadcasts all traffic to ALL ports regardless of destination</li>
+            <li>As more devices are added, the network becomes slower (collisions increase)</li>
+            <li>All devices share the same bandwidth — inefficient</li>
+          </ul>
+          <p><strong>Switch:</strong></p>
+          <ul>
+            <li>Allows different nodes of a network to communicate DIRECTLY with each other (point-to-point)</li>
+            <li>Uses MAC address tables to forward frames ONLY to the intended destination port</li>
+            <li>Allows SEVERAL users to send information simultaneously without slowing each other down</li>
+            <li>Provides dedicated bandwidth per port</li>
+          </ul>
+          <p><strong>Why hubs fail in modern networks:</strong> Hubs cannot support large networks because they broadcast traffic to all devices, creating collisions and congestion. More devices = slower network, eventually becoming unusable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="hw">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">List and explain the key components needed to establish a functional computer network.</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">8 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p>Five key components of a network:</p>
+          <ul>
+            <li><strong>Network-enabled device</strong> — End devices capable of sending/receiving data (PCs, smartphones, servers)</li>
+            <li><strong>Interfacing Hardware (NIC)</strong> — Hardware that interfaces the device to the network medium</li>
+            <li><strong>OS capable of interconnecting devices</strong> — Operating system with network protocol stack</li>
+            <li><strong>Protocol</strong> — Standard set of instructions understandable by both sender, receiver, and connecting hardware (ensures communication works)</li>
+            <li><strong>Communication Medium</strong> — A medium that enables hosts to communicate (cables, wireless signals)</li>
+          </ul>
+          <p>Additionally, for an effective network: Two or more devices with a common goal + a medium + a standard method/protocol to exchange messages.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NETWORK TYPES ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 02 – Network Types</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="types">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Compare PAN, LAN, MAN, and WAN in terms of coverage area, technologies used, and typical applications.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <table class="data-table">
+            <tr><th>Network</th><th>Coverage</th><th>Technologies</th><th>Examples</th></tr>
+            <tr><td><strong>PAN</strong></td><td>Individual person, single building (meters)</td><td>Bluetooth, ZigBee, Wi-Fi</td><td>Laptop, phone, headset, game console</td></tr>
+            <tr><td><strong>LAN</strong></td><td>Limited area – school, office, building (&lt;5000 devices)</td><td>Ethernet, Wi-Fi</td><td>Office network, home network, school lab</td></tr>
+            <tr><td><strong>MAN</strong></td><td>Metropolitan area – city or town</td><td>Metro Ethernet, WiMAX</td><td>City-wide ISP network</td></tr>
+            <tr><td><strong>WAN</strong></td><td>Large geographical area – countries/continents</td><td>Leased lines (T1/E1), WiMAX, DSL</td><td>Internet, multinational corporate network</td></tr>
+          </table>
+          <p><strong>Special Purpose Networks:</strong></p>
+          <ul>
+            <li><strong>SAN</strong> — Storage Area Network: dedicated network for storage devices</li>
+            <li><strong>EPN</strong> — Enterprise Private Network: private network for enterprise use</li>
+            <li><strong>VPN</strong> — Virtual Private Network: secure tunnel over public networks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="types">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Compare Peer-to-Peer (P2P) and Client-Server network architectures. What are the advantages and disadvantages of each?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">12 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>Peer-to-Peer (P2P):</strong></p>
+          <ul>
+            <li>No centralized hardware or control — decentralized</li>
+            <li>Self-organizing with no sophisticated configurations</li>
+            <li>Low-cost (minimal HW required)</li>
+            <li>Easy to manage and maintain</li>
+            <li>High scalability</li>
+            <li><strong>Disadvantages:</strong> Issues with controllability and management at larger scales</li>
+          </ul>
+          <p><strong>Client-Server (Central/Server-Based):</strong></p>
+          <ul>
+            <li>Centralized control of resources</li>
+            <li>Utilizes faster processors and memory at central points</li>
+            <li>Higher controllability than P2P</li>
+            <li>Controlled scalability</li>
+            <li>Extra peripherals required</li>
+            <li><strong>Disadvantage:</strong> Single point of failure — failure in central point makes network unusable</li>
+          </ul>
+          <div class="highlight-box">P2P = decentralized, simple, cheap | Client-Server = centralized, controlled, expensive but more powerful</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="types">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Describe the components of a LAN and explain their roles.</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">10 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p>A LAN (Local Area Network) consists of:</p>
+          <ul>
+            <li><strong>End Devices</strong> — Users' devices (PCs, laptops), Sensors, Video/Audio devices. These are the source/destination of data.</li>
+            <li><strong>Connection Media</strong>
+              <ul>
+                <li>Guided media — Copper cables (UTP/STP), fiber optic</li>
+                <li>Unguided media — Wi-Fi, Bluetooth</li>
+              </ul>
+            </li>
+            <li><strong>Intermediate Devices</strong>
+              <ul>
+                <li>Active — Access points, Switches (amplify/direct traffic)</li>
+                <li>Passive — Patch panels, Sockets (physical connections)</li>
+              </ul>
+            </li>
+            <li><strong>Core Network & External Connections</strong> — Network Servers, Routers (to route to WAN/internet), Internet Links</li>
+          </ul>
+          <p>A LAN covers a limited area (school, office, home) with less than 5000 interconnected devices. It enables resource sharing (files, printers, applications) and information sharing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="types">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">What is a SOHO network? Describe its components and limitations.</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">8 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>SOHO (Small Office/Home Office) Network:</strong></p>
+          <ul>
+            <li>Business category involving small number of workers (1–10 people)</li>
+            <li>One of the most common LAN deployments</li>
+            <li>Usually built with: one Ethernet switch + one router + one wireless access point</li>
+            <li>Uses Ethernet cables to connect end-devices to switch ports</li>
+            <li>Internal LAN is mainly Wi-Fi for flexibility</li>
+            <li>Internet connectivity via DSL/Cellular or Fiber/Microwave (FTTH, 4G/5G)</li>
+          </ul>
+          <p><strong>Limitations of SOHO:</strong></p>
+          <ul>
+            <li>No guaranteed internet connection (shared/dynamic)</li>
+            <li>No permanent IP address block (no static public IP assigned by ISP)</li>
+          </ul>
+          <div class="highlight-box">Wireless Router in SOHO = 5 functions: Routing + Switching + Access Point + DNS + Firewall (Packet Filtering)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEDIA ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 03 – Transmission Media</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="media">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Compare Coaxial Cable, Twisted Pair Cable, and Optical Fiber as transmission media. Discuss their construction, advantages, disadvantages, and typical applications.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">20 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>1. Coaxial Cable</strong></p>
+          <ul>
+            <li><strong>Construction:</strong> Inner solid copper core → insulating material → outer braided shield (ground) → outer sheath. Used since 1850s, theory by Oliver Heaviside.</li>
+            <li><strong>Advantages:</strong> Transmits 500m with low attenuation; can carry high-frequency signals; used for cable TV</li>
+            <li><strong>Disadvantages:</strong> Bulky and heavy; half duplex; low efficient for complex networks</li>
+            <li><strong>Applications:</strong> Cable TV distribution, long-distance telephone, LANs</li>
+          </ul>
+          <p><strong>2. Twisted Pair Cable (UTP/STP)</strong></p>
+          <ul>
+            <li><strong>Construction:</strong> Pairs of insulated copper wires twisted together (to reduce cross-talk). Unshielded (UTP) or Shielded (STP)</li>
+            <li><strong>Categories:</strong> CAT 3 (16 Mbps) → CAT 5 (100 Mbps) → CAT 5e/6 (1000 Mbps) → CAT 6a/7/8 (10–40 Gbps)</li>
+            <li><strong>Advantages:</strong> Most economical, widely used for Ethernet and telephone</li>
+            <li><strong>Disadvantages:</strong> Limited in distance, bandwidth, data rate</li>
+          </ul>
+          <p><strong>3. Optical Fiber</strong></p>
+          <ul>
+            <li><strong>Construction:</strong> Glass/plastic core (2–125 µm) + cladding + jacket. Light source: laser or LED. Multimode (multiple rays) or Single mode (one ray, longer distances)</li>
+            <li><strong>Advantages:</strong> 2 Gb/s over tens of km; electromagnetic isolation; lower attenuation; greater repeater spacing; smaller/lighter</li>
+            <li><strong>Applications:</strong> Long-distance telecom, backbone connections</li>
+          </ul>
+          <div class="formula-box">Data Rate = Bandwidth / 8 &nbsp;|&nbsp; 100 Mbps → 12.5 MBps</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="media">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain the categories of Twisted Pair cabling. What category is recommended for modern Gigabit Ethernet networks and why?</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">10 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <table class="data-table">
+            <tr><th>Category</th><th>Max Data Rate</th><th>Application</th></tr>
+            <tr><td>CAT 1</td><td>&lt;1 Mbps</td><td>Analog voice (POTS), doorbell wiring</td></tr>
+            <tr><td>CAT 2</td><td>4 Mbps</td><td>IBM Token Ring networks</td></tr>
+            <tr><td>CAT 3</td><td>16 Mbps</td><td>Voice and 10BASE-T Ethernet</td></tr>
+            <tr><td>CAT 4</td><td>20 Mbps</td><td>16 Mbps Token Ring</td></tr>
+            <tr><td>CAT 5</td><td>100 Mbps</td><td>100 Mbps TPDDI, ATM</td></tr>
+            <tr><td>CAT 5e/6</td><td>1000 Mbps</td><td>LAN, CCTV, data communications</td></tr>
+            <tr><td>CAT 6a/7/8</td><td>10–40 Gbps</td><td>Server rooms, high-speed LAN</td></tr>
+          </table>
+          <p><strong>Recommendation for Gigabit Ethernet:</strong> CAT 5e or CAT 6 is recommended. CAT 5e supports 1000BaseT using all 4 pairs over maximum 100m distance. CAT 6 provides better performance with reduced cross-talk for more reliable Gigabit connections.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIRELESS ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 04 – Wireless Communication</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="wireless">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Describe the evolution of wireless communication from 1G to 5G. What key technology was introduced at each generation?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">12 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <ul>
+            <li><strong>1873</strong> — Maxwell: theory of electromagnetic waves</li>
+            <li><strong>1896</strong> — Marconi: first wireless Telegraph; first message "Are you ready?" sent 6km in 1897</li>
+            <li><strong>0G/1G (Pre-1990s)</strong> — Early cellular/analog telephony</li>
+            <li><strong>2G (1990s)</strong> — GSM introduced; digital mobile telephony; SMS</li>
+            <li><strong>Late 1990s</strong> — Wi-Fi (IEEE 802.11) introduced; 2 Mbit/s initially</li>
+            <li><strong>2000</strong> — Bluetooth invented + 3G released; faster data transfer; smartphones begin</li>
+            <li><strong>2007</strong> — First iPhone (Apple); exponential increase in smartphones</li>
+            <li><strong>2010</strong> — 4G/LTE; Voice over LTE; higher data rates</li>
+            <li><strong>2020</strong> — 5G; ultra-low latency, massive IoT support, mmWave</li>
+          </ul>
+          <div class="highlight-box">Global mobile wireless subscriptions reached 7.7 billion by June 2017, with GSM, LTE, HSPA accounting for almost all connections.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="wireless">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Compare Satellite Microwave Transmission (SMTS) and Terrestrial Microwave Transmission (TMTS). What are the advantages and limitations of each?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>Satellite Microwave Transmission (SMTS):</strong></p>
+          <ul>
+            <li>Self-contained wireless technology; worldwide coverage</li>
+            <li>Signal (modulated microwave beam) sent to satellite → amplified → returned to receiver on Earth</li>
+            <li>Geostationary orbit: 22,000–22,300 miles above Earth</li>
+            <li>Two components: Space segment (satellite) + Ground segment (fixed/mobile equipment)</li>
+            <li>Receives on one frequency (uplink), transmits on another (downlink) — Full duplex</li>
+            <li><strong>Applications:</strong> TV distribution, long-distance telephone, private business networks</li>
+            <li><strong>Limitations:</strong> Very difficult to repair; greater signal delay; attenuation issues; mostly one-directional for broadcast; limited to ~90 satellites in GEO</li>
+          </ul>
+          <p><strong>Terrestrial Microwave Transmission (TMTS):</strong></p>
+          <ul>
+            <li>Uses line-of-sight (LOS) communication between Earth-based transmitters/receivers</li>
+            <li>Signals are highly concentrated; must have clear LOS path</li>
+            <li>Extended using Relay towers (&lt;60 miles between towers preferred)</li>
+            <li>Uses directional parabolic antennas at 4–23 GHz frequency</li>
+            <li>Speed: 1 Mbps to 10 Mbps</li>
+            <li><strong>Advantages:</strong> Less expensive than fiber/coaxial; fewer amplifiers/repeaters; low latency (IP microwave)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="wireless">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain the Electromagnetic Spectrum and its relevance to wireless communication. Describe the different frequency bands used.</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">10 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p>Electromagnetic energy travels in waves spanning a broad spectrum. EM waves travel through vacuum at the speed of light (~300,000 km/s) without needing a medium.</p>
+          <p><strong>Frequency bands in wireless networking:</strong></p>
+          <ul>
+            <li><strong>Radio Frequency (RF):</strong> 3 kHz to 300 GHz — penetrates objects, long range. Used in AM/FM radio, cellular</li>
+            <li><strong>Microwave:</strong> 300 MHz to 300 GHz — line of sight, used for point-to-point (TMTS) and satellite (SMTS)</li>
+            <li><strong>Wi-Fi/WLAN:</strong> 2.4 GHz and 5 GHz bands (IEEE 802.11)</li>
+            <li><strong>Infrared:</strong> 100 GHz to 1,000 THz — short range, cannot penetrate solid objects</li>
+            <li><strong>Microwave for terrestrial:</strong> 26–40 GHz (highly directional); 30 MHz–10 GHz (omnidirectional)</li>
+          </ul>
+          <div class="highlight-box">Key: Higher frequency = shorter wavelength = more data capacity but shorter range and less penetration</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 05 – Network Design & PPDIOO</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="design">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Describe the PPDIOO framework for network design. Why is it preferred over the Traditional Top-Down approach?</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>PPDIOO (Cisco's Network Lifecycle Framework):</strong></p>
+          <ul>
+            <li><strong>P — Prepare:</strong> Identify organizational requirements, establish a network strategy, propose high-level concepts</li>
+            <li><strong>P — Plan:</strong> Identify network requirements, determine project details, characterize existing network</li>
+            <li><strong>D — Design:</strong> Create detailed design based on requirements; topology, technology, security, routing</li>
+            <li><strong>I — Implement:</strong> Install and configure network equipment; build the actual network</li>
+            <li><strong>O — Operate:</strong> Maintain network health; manage day-to-day operations; troubleshoot</li>
+            <li><strong>O — Optimize:</strong> Improve performance, fix problems proactively, adapt to changes</li>
+          </ul>
+          <p><strong>Benefits of PPDIOO:</strong></p>
+          <ul>
+            <li>Lowers total cost of network ownership</li>
+            <li>Improves business agility (rapid response to changes)</li>
+            <li>Increases availability with proper Disaster Recovery (DR)</li>
+          </ul>
+          <p><strong>Traditional Top-Down Limitations (why PPDIOO is better):</strong></p>
+          <ul>
+            <li>Traditional approach: meet users → estimate data → design circuits → build network (1-2 years later)</li>
+            <li>Too slow — technology changes rapidly</li>
+            <li>Cannot handle immense growth in network traffic</li>
+            <li>Expensive in hardware, software, and HR costs</li>
+            <li>Works only for static/slowly evolving networks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="design">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">What are the different types of requirements that need to be identified when designing a network? Explain each type with examples.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p>Network requirements come from multiple aspects:</p>
+          <ul>
+            <li><strong>User Requirements:</strong> Requirements gathered from end users, network admins, and management. What users need to successfully accomplish tasks. Speed requirements depend on user perception and hardware.</li>
+            <li><strong>Application Requirements:</strong>
+              <ul>
+                <li>Types: Mission-critical, Rate-critical, Real-time/Interactive (delay-sensitive)</li>
+                <li>App categories: Web services, VoIP/teleconference, DNS/SMTP/SNMP, ERP/CRM, FTP, IoT</li>
+                <li>Hosting: Cloud, Data center, or Own servers</li>
+              </ul>
+            </li>
+            <li><strong>Device Requirements:</strong> PCs, servers, specialized devices (CCTV, POS terminals, medical equipment, IoT). Consider: I/O rates, interfacing technology, delay time, CPU/memory/storage performance</li>
+            <li><strong>Network Requirements:</strong> Integration with existing networks, scaling dependencies, location dependencies, performance constraints, DNS/DHCP/security, QoS implementation</li>
+            <li><strong>Other Requirements:</strong> Customers, legal requirements, enterprise policies. Operational suitability, supportability, conformity to standards</li>
+          </ul>
+          <div class="highlight-box">Process: Identify → Classify & Prioritize → Verify → Address in Design</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="design">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain the five network design goals and why each is important for a modern organization.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">10 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <ul>
+            <li><strong>1. Functionality:</strong> Proper functionalities must be implemented. The network must deliver what users need — internet access, file sharing, communication services.</li>
+            <li><strong>2. Adaptability:</strong> Successful integration of new technology into the business. The network must be able to incorporate new technologies (5G, cloud) without complete redesign.</li>
+            <li><strong>3. Scalability:</strong> Ability of IT systems to continue functioning properly when changed in size or volume. The network must grow with the organization without performance degradation.</li>
+            <li><strong>4. Manageability:</strong> Ability of controlling the IT system/services. Network admins must be able to monitor, configure, and troubleshoot easily.</li>
+            <li><strong>5. Cost-Effectiveness:</strong> Whether the IT cost gains a profit for the business. The network must deliver ROI — implementation and maintenance costs must be justified.</li>
+          </ul>
+          <p>Current expectations also include: Mobility/flexibility, Security, Resiliency (fault tolerance), and Business Continuity/Disaster Recovery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CABLING ESSAYS -->
+  <div class="chapter-label"><div class="line"></div><span>Topic 07–08 – Structured Cabling</span><div class="line"></div></div>
+
+  <div class="essay-item" data-topic="cabling">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Describe the Six Elements of Structured Cabling as defined by TIA/EIA-568. Explain the role of each element.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">15 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p>The Six Elements of Structured Cabling (TIA/EIA-568):</p>
+          <ul>
+            <li><strong>1. Building Entrance Facility:</strong> Where outside cabling/services interface with backbone cabling. (Electrical equivalent: meter panel with main circuit breaker). Requirements: dry area, clear pathways, easy access for service persons, space for expansion.</li>
+            <li><strong>2. Equipment Room (ER):</strong> Where incoming cabling interfaces with electronic equipment. Main Cross-Connect (MC) to backbone. (Electrical equivalent: Main Distribution Panel). Must be: minimum 14m², secured, proper HVAC, close to backbone, proper grounding (&lt;5Ω).</li>
+            <li><strong>3. Building Backbone Cabling:</strong> Connects different floors and different buildings (vertical/inter-building cabling). The highway of the structured cabling system.</li>
+            <li><strong>4. Horizontal Cabling:</strong> Pathway and cabling between the Telecom Room and Work Area. Like streets connecting backbone highways to individual offices.</li>
+            <li><strong>5. Telecommunications Closet (TC):</strong> Space acting as common access point between backbone and horizontal cabling. Houses patch panels for cross-connection. (Electrical equivalent: circuit breaker panel/distribution board). Horizontal cable max: 90m. Multiple TCs needed if floor &gt;1000m².</li>
+            <li><strong>6. Work Area:</strong> Where PCs, phones, printers are located. Includes equipment cords. General rule: 1 WA = 10 m². Sufficient outlets must be placed based on application.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="cabling">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain the TIA/EIA 568A and 568B standards. What is the practical difference between straight-through and crossover cables?</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">10 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>TIA/EIA 568A vs 568B:</strong></p>
+          <ul>
+            <li>Both standards describe the order of wires in the RJ45 connector</li>
+            <li>Functionally IDENTICAL — no performance difference</li>
+            <li>Only difference: positions of <strong>Green and Orange wires are switched</strong></li>
+            <li>Sri Lanka uses 568-B standard</li>
+          </ul>
+          <p><strong>Straight-Through Cable (568B on both ends):</strong></p>
+          <ul>
+            <li>Used to connect intermediate devices with end devices</li>
+            <li>Example: PC to Switch, PC to Router, Switch to Router</li>
+            <li>In 100BaseT: uses Pins 1,2 (TX) and 3,6 (RX)</li>
+          </ul>
+          <p><strong>Crossover Cable (568A on one end, 568B on other):</strong></p>
+          <ul>
+            <li>Used to connect two END devices directly</li>
+            <li>Example: PC to PC, Switch to Switch, Hub to Hub</li>
+            <li>TX pins connect to RX pins of the other device</li>
+          </ul>
+          <p><strong>PoE (Power over Ethernet):</strong> In 100BaseT, pins 4,5,7,8 are unused for data and can carry power for CCTV cameras and Access Points. Requires PoE switches.</p>
+          <p><strong>Gigabit Ethernet (1000BaseT):</strong> Uses ALL 4 pairs (pins 1-8) for data. Requires CAT 5e/6/7 cables. Maximum distance: 100m.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="design">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Discuss the importance of the 20%/80% rule in network physical design. How does proper physical design reduce long-term costs?</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">8 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p>The 20%/80% rule in network design:</p>
+          <ul>
+            <li><strong>Physical implementation = only 20%</strong> of total network cost</li>
+            <li><strong>80% is spent on maintenance</strong> over the expected lifespan of the network</li>
+          </ul>
+          <p><strong>How proper physical design reduces costs:</strong></p>
+          <ul>
+            <li>Proper cabling paths reduce future rewiring expenses</li>
+            <li>Following standards (TIA/EIA-568) ensures compatibility and avoids vendor lock-in</li>
+            <li>Good documentation reduces troubleshooting time and cost</li>
+            <li>Scalable design prevents costly redesigns when expansion is needed</li>
+            <li>Correct equipment room specs (power, cooling, grounding) prevent equipment failures</li>
+          </ul>
+          <p><strong>Component lifespans:</strong></p>
+          <ul>
+            <li>Active components (switches, routers): ~5 years lifespan</li>
+            <li>Passive components (cables, patch panels): ~15 years lifespan</li>
+            <li>These lifespans are getting shorter with technology advancement</li>
+          </ul>
+          <div class="highlight-box">Key rule: Do NOT over-engineer — it increases cost and wastes resources without proportional benefit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="design">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">What factors should be considered when designing a physical network? Describe the step-by-step process of physical network design.</div>
+      <div class="essay-marks"><span class="marks-badge">★★★ High Importance</span><span class="type-badge">12 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>Factors to consider in Network Physical Design:</strong></p>
+          <ul>
+            <li>Requirements for the network (current + future)</li>
+            <li>Connection Media and Devices (cable types, active devices)</li>
+            <li>Cost/Investment (within budget)</li>
+            <li>Passive Materials and Topologies (cable trays, pathways)</li>
+            <li>Active Component Technologies (switch/router capabilities)</li>
+            <li>Deployment and Reliability</li>
+            <li>Scalability (room for growth)</li>
+          </ul>
+          <p><strong>Physical Design Process:</strong></p>
+          <ul>
+            <li>1. Identify port requirements in each area/department/floor/building separately</li>
+            <li>2. Map ports on floor design/diagram (including working areas, meeting spaces, guest areas)</li>
+            <li>3. Identify equipment rack locations</li>
+            <li>4. Calculate/estimate network load and traffic types per rack</li>
+            <li>5. Identify the cable path</li>
+            <li>6. Select materials based on physical/regulatory requirements</li>
+            <li>7. Finalize backbone path — connect all buildings to main server room</li>
+            <li>8. Consider WAN connectivity and service provider requirements</li>
+          </ul>
+          <p>Power cabling must be separated from data cabling to prevent noise coupling. Use surge protectors, grounded metallic raceway, and shielded cables where required.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="types">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">What is Computer Networking? Explain why networking is essential in today's world with specific examples of what networking enables.</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">8 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>Computer Network Definition:</strong> A system of two or more interconnected computers linked to share resources, exchange files, or allow electronic communications. Links can be: cables, telephone lines, radio waves, satellites, or infrared beams.</p>
+          <p><strong>Why Networking is Essential:</strong></p>
+          <ul>
+            <li>Today, less than 5% of device usage is offline — we are constantly connected</li>
+            <li>Without networking: No e-learning, e-marketing, entertainment, communication, or social media</li>
+          </ul>
+          <p><strong>What Networking Enables:</strong></p>
+          <ul>
+            <li><strong>Sharing Information & Resources:</strong> Media, news sites, file storage, cloud computational resources, IT services</li>
+            <li><strong>Digitalized Services:</strong> E-banking, E-learning, E-health, E-business</li>
+            <li><strong>Entertainment & Social Networking:</strong> Streaming, social media, gaming</li>
+            <li><strong>Communication:</strong> Video conferencing, VoIP, messaging</li>
+          </ul>
+          <p><strong>Requirements for Effective Communication:</strong> High speed, Accuracy, Privacy, Authenticity (non-repudiation)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essay-item" data-topic="wireless">
+    <div class="essay-header" onclick="toggleEssay(this)">
+      <div class="essay-q">Explain why wireless communication has become so popular. What are its three main advantages? Describe Infrared transmission and its limitations.</div>
+      <div class="essay-marks"><span class="marks-badge">★★ Medium</span><span class="type-badge">10 Marks</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="essay-body">
+      <div class="answer-block">
+        <div class="answer-label">✦ Model Answer</div>
+        <div class="answer-content">
+          <p><strong>Why wireless is popular (3 main advantages):</strong></p>
+          <ul>
+            <li><strong>Speed:</strong> 4G technology and Voice-over-LTE enable higher data transfer rates to wider audiences without sacrificing connectivity strength</li>
+            <li><strong>Convenience:</strong> User mobility — unlike wired, the destination address doesn't mean a fixed location. Freedom to move while connected.</li>
+            <li><strong>Cost-effectiveness:</strong> No need for additional infrastructure for every new network member. Lower installation cost per person. Lower maintenance costs as components are not physical entities.</li>
+          </ul>
+          <p><strong>Infrared (IR) Transmission:</strong></p>
+          <ul>
+            <li>Electromagnetic radiation with longer wavelengths than visible light</li>
+            <li>Frequency: 100 GHz to 1,000 THz</li>
+            <li>Type 1 (Point-to-Point): Limited range, line of sight, speed 100 Kbps–16 Mbps</li>
+            <li>Type 2 (Diffuse): Broadcast system using reflective material; 100 GHz to 1,000 THz; limited speed 1 Mbps</li>
+            <li>Uses: Security control, TV remote, short-range communications</li>
+          </ul>
+          <p><strong>Key Limitation:</strong> IR signals do NOT pass through solid objects. Requires clear line of sight or reflective surfaces.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end essay section -->
+
+<!-- ===== SECTION: CHEAT SHEET ===== -->
+<div id="cheat" class="section fade-in">
+  <div class="section-header">
+    <h2>⚡ Quick Cheat Sheet</h2>
+    <p>Last-minute revision — key facts, formulas, and comparisons to memorize before your exam!</p>
+  </div>
+
+  <div class="highlight-box">
+    <strong>🧠 MOST IMPORTANT FORMULA:</strong> &nbsp; Data Rate = Bandwidth / 8 &nbsp; | &nbsp; 100 Mbps → 12.5 MBps &nbsp; | &nbsp; 1 Byte = 8 bits
+  </div>
+
+  <div class="cheat-grid" style="margin-top:20px">
+
+    <div class="cheat-card">
+      <h4>🔌 Active vs Passive Devices</h4>
+      <ul>
+        <li><strong>Active:</strong> Requires power, processes signals</li>
+        <li>Repeater, Hub, Switch, Bridge, Router, Gateway, AP</li>
+        <li><strong>Passive:</strong> No power, only physical connection</li>
+        <li>Cables, Connectors, Patch Panels</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🌐 Network Size Hierarchy</h4>
+      <ul>
+        <li><strong>PAN</strong> — 1 person, Bluetooth/ZigBee/Wi-Fi</li>
+        <li><strong>LAN</strong> — Building, &lt;5000 devices, Ethernet</li>
+        <li><strong>MAN</strong> — City, Metro Ethernet, WiMAX</li>
+        <li><strong>WAN</strong> — Country/Global, T1/E1/DSL</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>📡 Coaxial Cable</h4>
+      <ul>
+        <li>Used since 1850s (Oliver Heaviside)</li>
+        <li>Max range: 500m (low attenuation)</li>
+        <li>Structure: Cu core → insulator → braid → sheath</li>
+        <li>Apps: Cable TV, telephone, LAN</li>
+        <li>Limits: Bulky, Half duplex, inefficient</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🔁 Twisted Pair CAT Speeds</h4>
+      <ul>
+        <li>CAT 1: &lt;1 Mbps (analog voice)</li>
+        <li>CAT 3: 16 Mbps (10BaseT)</li>
+        <li>CAT 5: 100 Mbps (100BaseT)</li>
+        <li>CAT 5e/6: 1000 Mbps (Gigabit)</li>
+        <li>CAT 6a/7/8: 10–40 Gbps</li>
+        <li>SL uses TIA/EIA-568B</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>💡 Optical Fiber</h4>
+      <ul>
+        <li>Core: 2–125 µm (glass/plastic)</li>
+        <li>Multimode = multiple rays (shorter dist)</li>
+        <li>Single mode = one ray (longer dist)</li>
+        <li>Capacity: 2 Gb/s over 10s of km</li>
+        <li>EM isolation = more privacy</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>📶 Wireless Frequencies</h4>
+      <ul>
+        <li>RF: 3 kHz – 300 GHz</li>
+        <li>Microwave: 300 MHz – 300 GHz</li>
+        <li>Wi-Fi: 2.4 GHz & 5 GHz (802.11)</li>
+        <li>Bluetooth: IEEE 802.15.1</li>
+        <li>IR: 100 GHz – 1,000 THz</li>
+        <li>TMTS: 4–23 GHz, LOS required</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🛰️ Satellite Key Facts</h4>
+      <ul>
+        <li>Geostationary: 22,000–22,300 miles</li>
+        <li>Low orbit: 12,000 miles</li>
+        <li>4° separation (4/6 GHz band)</li>
+        <li>3° separation (12/14 GHz band)</li>
+        <li>Max ~90 GEO satellites</li>
+        <li>Uplink + downlink = full duplex</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>📋 PPDIOO Framework</h4>
+      <ul>
+        <li><strong>P</strong>repare → Identify requirements</li>
+        <li><strong>P</strong>lan → Detailed project plan</li>
+        <li><strong>D</strong>esign → Topology, tech, security</li>
+        <li><strong>I</strong>mplement → Build network</li>
+        <li><strong>O</strong>perate → Day-to-day management</li>
+        <li><strong>O</strong>ptimize → Improve performance</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🎯 Design Goals (FASMC)</h4>
+      <ul>
+        <li><strong>F</strong>unctionality</li>
+        <li><strong>A</strong>daptability</li>
+        <li><strong>S</strong>calability</li>
+        <li><strong>M</strong>anageability</li>
+        <li><strong>C</strong>ost-Effectiveness</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🏗️ 6 Elements of Structured Cabling</h4>
+      <ul>
+        <li>1. Building Entrance Facility (= meter box)</li>
+        <li>2. Equipment Room (= main distrib panel) min 14m²</li>
+        <li>3. Backbone Cabling (floors/buildings)</li>
+        <li>4. Horizontal Cabling (TC to Work Area)</li>
+        <li>5. Telecom Closet (= circuit breaker panel) max 90m run</li>
+        <li>6. Work Area (= 10m² each)</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🔌 Cable Wiring Quick Guide</h4>
+      <ul>
+        <li><strong>Straight:</strong> PC↔Switch, PC↔Router</li>
+        <li><strong>Crossover:</strong> PC↔PC, Switch↔Switch</li>
+        <li>568A vs 568B: only Green/Orange swapped</li>
+        <li>100BaseT: use 2 pairs (1,2,3,6)</li>
+        <li>1000BaseT: use all 4 pairs</li>
+        <li>PoE: unused pairs power devices</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>📊 Cost & Lifespan Facts</h4>
+      <ul>
+        <li>Physical implementation = 20% of total cost</li>
+        <li>Maintenance = 80% of total cost</li>
+        <li>Active components lifespan: ~5 years</li>
+        <li>Passive components lifespan: ~15 years</li>
+        <li>Don't over-engineer!</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>📱 Mobile Generation Timeline</h4>
+      <ul>
+        <li>1873: Maxwell's EM theory</li>
+        <li>1896: Marconi's wireless Telegraph</li>
+        <li>1990s: GSM / 2G</li>
+        <li>Late 1990s: Wi-Fi + 802.11</li>
+        <li>2000: Bluetooth + 3G</li>
+        <li>2007: First iPhone (Apple)</li>
+        <li>2010: 4G/LTE</li>
+        <li>2020: 5G</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🔑 Key Definitions</h4>
+      <ul>
+        <li><strong>Protocol:</strong> Standard instructions for sender/receiver</li>
+        <li><strong>Bandwidth:</strong> Bits per second through a point</li>
+        <li><strong>Attenuation:</strong> Reduction in signal strength</li>
+        <li><strong>Cross-talk:</strong> EM interference between wire pairs</li>
+        <li><strong>PoE:</strong> Power over Ethernet</li>
+        <li><strong>LOS:</strong> Line of Sight</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>🏢 SOHO vs Enterprise Network</h4>
+      <ul>
+        <li><strong>SOHO:</strong> 1–10 users, 1 switch + 1 router + 1 AP</li>
+        <li>Limits: No permanent IP, no guaranteed connection</li>
+        <li><strong>Enterprise:</strong> Many users, heterogeneous tech</li>
+        <li>High security, centralized admin, LAN+WAN</li>
+        <li>May have 100s of managed APs</li>
+      </ul>
+    </div>
+
+    <div class="cheat-card">
+      <h4>⚡ Network Requirements Types</h4>
+      <ul>
+        <li>User Requirements (end users + admins)</li>
+        <li>Application Requirements (mission/rate/real-time critical)</li>
+        <li>Device Requirements (CPU/memory/I/O)</li>
+        <li>Network Requirements (integration, QoS, DNS, security)</li>
+        <li>Other Requirements (legal, customer, partner)</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="highlight-box" style="margin-top:24px">
+    <strong>📌 Remember:</strong> Bridge = same LLC protocol | Router = similar networks | Gateway = different networks<br>
+    <strong>🔢 TIA standards:</strong> 568-C.1 General | 568-C.2 UTP | 568-C.3 Fiber | 568-C.4 Coaxial<br>
+    <strong>⚡ P2P vs Client-Server:</strong> P2P = decentralized, scalable, hard to control | CS = centralized, controllable, single point of failure
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+// ===== TAB NAVIGATION =====
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById(id).classList.remove('fade-in');
+  void document.getElementById(id).offsetWidth;
+  document.getElementById(id).classList.add('fade-in');
+}
+
+// ===== JUMP TO TOPIC =====
+function gotoTopic(section, anchorId) {
+  const tab = document.getElementById('tab-' + section);
+  showSection(section, tab);
+  setTimeout(() => {
+    const el = document.getElementById(anchorId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+}
+
+// ===== MCQ LOGIC =====
+let scoreC = 0, scoreW = 0, scoreT = 0;
+
+function answerMCQ(el, result) {
+  const opts = el.closest('.options').querySelectorAll('.opt');
+  const alreadyAnswered = Array.from(opts).some(o => o.classList.contains('selected-correct') || o.classList.contains('selected-wrong'));
+  if (alreadyAnswered) return;
+
+  scoreT++;
+  if (result === 'correct') {
+    el.classList.add('selected-correct');
+    scoreC++;
+  } else {
+    el.classList.add('selected-wrong');
+    scoreW++;
+    // reveal correct
+    opts.forEach(o => {
+      if (o.getAttribute('onclick') && o.getAttribute('onclick').includes("'correct'")) {
+        o.classList.add('reveal-correct');
+      }
+    });
+  }
+  updateScore();
+}
+
+function revealAnswer(btn) {
+  const box = btn.closest('.mcq-item').querySelector('.answer-reveal');
+  box.classList.toggle('shown');
+  btn.textContent = box.classList.contains('shown') ? 'Hide Answer' : 'Show Answer';
+}
+
+function resetMCQ(btn) {
+  const item = btn.closest('.mcq-item');
+  item.querySelectorAll('.opt').forEach(o => {
+    o.classList.remove('selected-correct','selected-wrong','reveal-correct');
+  });
+  const box = item.querySelector('.answer-reveal');
+  box.classList.remove('shown');
+  item.querySelector('.btn-reveal').textContent = 'Show Answer';
+}
+
+function updateScore() {
+  document.getElementById('scoreCorrect').textContent = scoreC;
+  document.getElementById('scoreWrong').textContent = scoreW;
+  document.getElementById('scoreTotal').textContent = scoreT;
+  const pct = scoreT > 0 ? Math.round((scoreC/scoreT)*100) : 0;
+  document.getElementById('scorePct').textContent = pct + '% Accuracy';
+  document.getElementById('mainProgress').style.width = pct + '%';
+}
+
+// ===== ESSAY TOGGLE =====
+function toggleEssay(header) {
+  const item = header.closest('.essay-item');
+  item.classList.toggle('open');
+}
+
+// ===== FILTER MCQ =====
+function filterMCQ(topic, btn) {
+  document.querySelectorAll('.filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#mcq-container .mcq-item').forEach(item => {
+    if (topic === 'all' || item.dataset.topic === topic) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// ===== FILTER ESSAY =====
+function filterEssay(topic, btn) {
+  const bar = btn.closest('.filter-bar');
+  bar.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#essay .essay-item').forEach(item => {
+    if (topic === 'all' || item.dataset.topic === topic) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>
