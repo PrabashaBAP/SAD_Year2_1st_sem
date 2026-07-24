@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Systems - MCQ Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .controls {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(30, 60, 114, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .question-card {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-left: 4px solid #1e3c72;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: #1e3c72;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #1e3c72;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .option.selected {
+            border-color: #1e3c72;
+            background: #e8ecff;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .answer-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .correct-feedback {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .incorrect-feedback {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .show-answer-btn {
+            background: #ffc107;
+            color: #2d3748;
+            margin-top: 15px;
+        }
+
+        .show-answer-btn:hover {
+            background: #ffb300;
+        }
+
+        .footer {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            transition: width 0.3s ease;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(30, 60, 114, 0.1);
+            border-left: 3px solid #1e3c72;
+            border-radius: 4px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .question-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💼 CRM Systems</h1>
+            <p>Master Customer Relationship Management fundamentals</p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="totalQuestions">25</span>
+                    <span class="stat-label">Total Questions</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="answered">0</span>
+                    <span class="stat-label">Answered</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="correct">0</span>
+                    <span class="stat-label">Correct</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="percentage">0%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <button class="btn-secondary" onclick="resetQuiz()">Reset Quiz</button>
+                <button class="btn-primary" onclick="toggleAnswerMode()">Toggle Answer Mode</button>
+            </div>
+        </div>
+
+        <div class="content" id="questionsContainer"></div>
+
+        <div class="footer">
+            <p>💡 Study Tip: Read each question carefully and think before selecting an answer!</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const allQuestions = [
+            {
+                id: 1,
+                category: 'Basics',
+                question: 'CRM stands for:',
+                options: [
+                    { text: 'Customer Resource Management', letter: 'A' },
+                    { text: 'Customer Relationship Management', letter: 'B' },
+                    { text: 'Client Retention Model', letter: 'C' },
+                    { text: 'Customer Response Mechanism', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'CRM stands for Customer Relationship Management - a business strategy to manage customer interactions.'
+            },
+            {
+                id: 2,
+                category: 'CRM Types',
+                question: 'CRM is mainly categorized into:',
+                options: [
+                    { text: 'Manual and Automated CRM', letter: 'A' },
+                    { text: 'Strategic and Tactical CRM', letter: 'B' },
+                    { text: 'Operational, Analytical, and Collaborative CRM', letter: 'C' },
+                    { text: 'Internal and External CRM', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'CRM has three main categories: Operational (automates processes), Analytical (data analysis), and Collaborative (multi-channel interaction).'
+            },
+            {
+                id: 3,
+                category: 'Operational CRM',
+                question: 'Operational CRM mainly focuses on:',
+                options: [
+                    { text: 'Data mining', letter: 'A' },
+                    { text: 'Automating sales, marketing, and service processes', letter: 'B' },
+                    { text: 'Financial accounting', letter: 'C' },
+                    { text: 'Network security', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Operational CRM automates and streamlines sales, marketing, and customer service processes.'
+            },
+            {
+                id: 4,
+                category: 'Analytical CRM',
+                question: 'Analytical CRM primarily uses:',
+                options: [
+                    { text: 'Hardware systems', letter: 'A' },
+                    { text: 'Manual records', letter: 'B' },
+                    { text: 'Data analysis and reporting', letter: 'C' },
+                    { text: 'Paper-based reports', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Analytical CRM focuses on analyzing customer data and generating insights through reporting and data mining.'
+            },
+            {
+                id: 5,
+                category: 'Collaborative CRM',
+                question: 'Collaborative CRM emphasizes:',
+                options: [
+                    { text: 'Inventory management', letter: 'A' },
+                    { text: 'Supplier coordination', letter: 'B' },
+                    { text: 'Interaction with customers across multiple channels', letter: 'C' },
+                    { text: 'Internal auditing', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Collaborative CRM enables customer interaction across multiple channels like email, phone, social media, and web.'
+            },
+            {
+                id: 6,
+                category: 'CRM Components',
+                question: 'Which of the following is a key component of CRM?',
+                options: [
+                    { text: 'Payroll system', letter: 'A' },
+                    { text: 'Customer database', letter: 'B' },
+                    { text: 'Operating system', letter: 'C' },
+                    { text: 'Firewall', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A customer database is a core component of CRM, storing all customer information and interaction history.'
+            },
+            {
+                id: 7,
+                category: 'CRM Benefits',
+                question: 'One major benefit of CRM is:',
+                options: [
+                    { text: 'Increased production cost', letter: 'A' },
+                    { text: 'Reduced customer satisfaction', letter: 'B' },
+                    { text: 'Improved customer relationships', letter: 'C' },
+                    { text: 'Limited communication', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'CRM improves customer relationships by enabling better communication, personalization, and service quality.'
+            },
+            {
+                id: 8,
+                category: 'CRM Benefits',
+                question: 'CRM helps in increasing:',
+                options: [
+                    { text: 'Employee turnover', letter: 'A' },
+                    { text: 'Customer retention', letter: 'B' },
+                    { text: 'Data redundancy', letter: 'C' },
+                    { text: 'System downtime', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'CRM increases customer retention by improving satisfaction, loyalty, and personalized service.'
+            },
+            {
+                id: 9,
+                category: 'CRM Data',
+                question: 'Centralized customer data in CRM leads to:',
+                options: [
+                    { text: 'Data duplication', letter: 'A' },
+                    { text: 'Better decision-making', letter: 'B' },
+                    { text: 'Reduced collaboration', letter: 'C' },
+                    { text: 'Poor communication', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Centralized data enables better decision-making by providing a single source of truth for customer information.'
+            },
+            {
+                id: 10,
+                category: 'CRM Features',
+                question: 'Marketing automation is associated with:',
+                options: [
+                    { text: 'Manual advertising', letter: 'A' },
+                    { text: 'CRM systems', letter: 'B' },
+                    { text: 'Accounting systems', letter: 'C' },
+                    { text: 'Hardware maintenance', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Marketing automation is a key CRM feature that automates marketing campaigns and customer communications.'
+            },
+            {
+                id: 11,
+                category: 'CRM Implementation',
+                question: 'The first step in CRM implementation is:',
+                options: [
+                    { text: 'User training', letter: 'A' },
+                    { text: 'Data migration', letter: 'B' },
+                    { text: 'Planning and strategy', letter: 'C' },
+                    { text: 'Monitoring performance', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Planning and strategy must come first to align CRM implementation with business objectives.'
+            },
+            {
+                id: 12,
+                category: 'CRM Selection',
+                question: 'Selecting the right CRM software is important because:',
+                options: [
+                    { text: 'It reduces electricity usage', letter: 'A' },
+                    { text: 'It ensures alignment with business needs', letter: 'B' },
+                    { text: 'It replaces employees', letter: 'C' },
+                    { text: 'It eliminates customers', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Proper CRM selection ensures the system aligns with organizational needs and objectives.'
+            },
+            {
+                id: 13,
+                category: 'CRM Data Migration',
+                question: 'Data migration in CRM refers to:',
+                options: [
+                    { text: 'Deleting old data', letter: 'A' },
+                    { text: 'Transferring data from old systems to the new CRM', letter: 'B' },
+                    { text: 'Printing data', letter: 'C' },
+                    { text: 'Encrypting passwords', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Data migration is the process of transferring existing customer and business data to the new CRM system.'
+            },
+            {
+                id: 14,
+                category: 'CRM Adoption',
+                question: 'User training and adoption ensure:',
+                options: [
+                    { text: 'System failure', letter: 'A' },
+                    { text: 'Effective use of CRM', letter: 'B' },
+                    { text: 'Increased errors', letter: 'C' },
+                    { text: 'Reduced productivity', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Proper user training and adoption are critical for CRM success and effective utilization.'
+            },
+            {
+                id: 15,
+                category: 'CRM Monitoring',
+                question: 'Performance monitoring in CRM helps to:',
+                options: [
+                    { text: 'Ignore system issues', letter: 'A' },
+                    { text: 'Optimize system effectiveness', letter: 'B' },
+                    { text: 'Reduce data collection', letter: 'C' },
+                    { text: 'Stop reporting', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Monitoring helps identify issues and optimize CRM performance for better business outcomes.'
+            },
+            {
+                id: 16,
+                category: 'CRM Segmentation',
+                question: 'Customer segmentation in CRM is used to:',
+                options: [
+                    { text: 'Divide customers into groups based on characteristics', letter: 'A' },
+                    { text: 'Delete inactive customers', letter: 'B' },
+                    { text: 'Increase system errors', letter: 'C' },
+                    { text: 'Limit communication', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Customer segmentation divides customers into groups for targeted marketing and personalized service.'
+            },
+            {
+                id: 17,
+                category: 'Advanced CRM',
+                question: 'Predictive analytics in CRM helps to:',
+                options: [
+                    { text: 'Predict weather', letter: 'A' },
+                    { text: 'Analyze customer behavior and future trends', letter: 'B' },
+                    { text: 'Design hardware', letter: 'C' },
+                    { text: 'Manage payroll', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Predictive analytics uses historical data to forecast customer behavior and identify future opportunities.'
+            },
+            {
+                id: 18,
+                category: 'CRM Personalization',
+                question: 'Personalization in CRM improves:',
+                options: [
+                    { text: 'Generic marketing', letter: 'A' },
+                    { text: 'Customer experience', letter: 'B' },
+                    { text: 'System complexity', letter: 'C' },
+                    { text: 'Manual processes', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Personalization tailors customer interactions to individual preferences, improving satisfaction and loyalty.'
+            },
+            {
+                id: 19,
+                category: 'CRM Trends',
+                question: 'AI-driven CRM is a trend that enhances:',
+                options: [
+                    { text: 'Manual filing', letter: 'A' },
+                    { text: 'Intelligent customer insights', letter: 'B' },
+                    { text: 'Paper documentation', letter: 'C' },
+                    { text: 'Hardware replacement', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'AI in CRM provides intelligent insights, automation, and predictive capabilities for better customer management.'
+            },
+            {
+                id: 20,
+                category: 'CRM Features',
+                question: 'Chatbots in CRM are mainly used for:',
+                options: [
+                    { text: 'Inventory control', letter: 'A' },
+                    { text: 'Customer interaction and support', letter: 'B' },
+                    { text: 'Data deletion', letter: 'C' },
+                    { text: 'Accounting', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Chatbots automate customer support, answering questions and providing assistance 24/7.'
+            },
+            {
+                id: 21,
+                category: 'CRM Security',
+                question: 'Blockchain in CRM is mainly related to:',
+                options: [
+                    { text: 'Marketing automation', letter: 'A' },
+                    { text: 'Data security', letter: 'B' },
+                    { text: 'Customer complaints', letter: 'C' },
+                    { text: 'Sales forecasting', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Blockchain enhances CRM security by providing secure, transparent, and tamper-proof data storage.'
+            },
+            {
+                id: 22,
+                category: 'CRM Integration',
+                question: 'IoT integration with CRM allows businesses to:',
+                options: [
+                    { text: 'Disconnect devices', letter: 'A' },
+                    { text: 'Gather real-time customer data', letter: 'B' },
+                    { text: 'Reduce automation', letter: 'C' },
+                    { text: 'Eliminate analytics', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'IoT integration enables CRM to collect real-time data from connected devices for better insights.'
+            },
+            {
+                id: 23,
+                category: 'CRM Impact',
+                question: 'CRM contributes to enhanced sales performance through:',
+                options: [
+                    { text: 'Better customer insights', letter: 'A' },
+                    { text: 'Reduced communication', letter: 'B' },
+                    { text: 'Limited marketing', letter: 'C' },
+                    { text: 'Ignoring customer data', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'CRM improves sales through better customer insights, enabling targeted strategies and upselling opportunities.'
+            },
+            {
+                id: 24,
+                category: 'CRM Applications',
+                question: 'One example discussed related to CRM application is:',
+                options: [
+                    { text: 'Hospital emergency system', letter: 'A' },
+                    { text: 'Fast-food drive-thru', letter: 'B' },
+                    { text: 'Airport security system', letter: 'C' },
+                    { text: 'Library management', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Fast-food drive-thrus use CRM-like systems to track customer orders and preferences.'
+            },
+            {
+                id: 25,
+                category: 'CRM Decision Making',
+                question: 'CRM supports data-driven decision-making by:',
+                options: [
+                    { text: 'Ignoring reports', letter: 'A' },
+                    { text: 'Using analyzed customer data', letter: 'B' },
+                    { text: 'Deleting records', letter: 'C' },
+                    { text: 'Reducing collaboration', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'CRM enables data-driven decisions by providing analyzed customer data and actionable insights.'
+            }
+        ];
+
+        let userAnswers = {};
+        let showAnswerMode = false;
+
+        function displayQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = allQuestions.map(q => `
+                <div class="question-card">
+                    <div class="question-number">Question ${q.id} • ${q.category}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map(opt => `
+                            <label class="option">
+                                <input type="radio" name="q${q.id}" value="${opt.letter}" 
+                                    onchange="selectAnswer(${q.id}, '${opt.letter}')"
+                                    ${userAnswers[q.id] === opt.letter ? 'checked' : ''}>
+                                <span><strong>${opt.letter})</strong> ${opt.text}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    ${showAnswerMode ? `
+                        <div class="answer-feedback ${userAnswers[q.id] === q.correct ? 'correct-feedback' : 'incorrect-feedback'}">
+                            <strong>Correct Answer: ${q.correct}</strong>
+                            <div class="explanation">${q.explanation}</div>
+                        </div>
+                    ` : `
+                        <button class="btn-secondary show-answer-btn" onclick="showAnswerFor(${q.id})">Show Answer</button>
+                    `}
+                </div>
+            `).join('');
+
+            updateStats();
+        }
+
+        function selectAnswer(questionId, answer) {
+            userAnswers[questionId] = answer;
+            updateStats();
+            if (showAnswerMode) displayQuestions();
+        }
+
+        function showAnswerFor(questionId) {
+            const q = allQuestions.find(q => q.id === questionId);
+            if (!q) return;
+            alert(`Correct Answer: ${q.correct}\n\n${q.explanation}`);
+        }
+
+        function toggleAnswerMode() {
+            showAnswerMode = !showAnswerMode;
+            displayQuestions();
+        }
+
+        function updateStats() {
+            const answered = Object.keys(userAnswers).length;
+            const correct = Object.entries(userAnswers).filter(([id, ans]) => {
+                const q = allQuestions.find(q => q.id === parseInt(id));
+                return q && q.correct === ans;
+            }).length;
+            const percentage = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+
+            document.getElementById('answered').textContent = answered;
+            document.getElementById('correct').textContent = correct;
+            document.getElementById('percentage').textContent = `${percentage}%`;
+            document.getElementById('progressBar').style.width = `${(answered / allQuestions.length) * 100}%`;
+        }
+
+        function resetQuiz() {
+            if (confirm('Reset all answers? This cannot be undone.')) {
+                userAnswers = {};
+                displayQuestions();
+                updateStats();
+            }
+        }
+
+        displayQuestions();
+    </script>
+</body>
+</html>

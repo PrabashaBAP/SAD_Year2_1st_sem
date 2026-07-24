@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systems & Advanced Topics - MCQ Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdance, sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .controls {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        select {
+            padding: 8px 15px;
+            border: 2px solid #3949ab;
+            border-radius: 6px;
+            font-size: 0.95em;
+            cursor: pointer;
+            background: white;
+            color: #2d3748;
+        }
+
+        button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(26, 35, 126, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .question-card {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-left: 4px solid #3949ab;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: #3949ab;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #3949ab;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .answer-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .correct-feedback {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .incorrect-feedback {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .show-answer-btn {
+            background: #ffc107;
+            color: #2d3748;
+            margin-top: 15px;
+        }
+
+        .show-answer-btn:hover {
+            background: #ffb300;
+        }
+
+        .footer {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            transition: width 0.3s ease;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(57, 73, 171, 0.1);
+            border-left: 3px solid #3949ab;
+            border-radius: 4px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .question-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Systems & Advanced Topics</h1>
+            <p>Master system thinking, competitive advantage, and information systems evolution</p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="totalQuestions">35</span>
+                    <span class="stat-label">Total Questions</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="answered">0</span>
+                    <span class="stat-label">Answered</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="correct">0</span>
+                    <span class="stat-label">Correct</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="percentage">0%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="sectionFilter">Filter by Topic:</label>
+                <select id="sectionFilter">
+                    <option value="all">All Questions</option>
+                    <option value="systems-basics">System Basics (20)</option>
+                    <option value="advanced">Advanced Topics (15)</option>
+                </select>
+            </div>
+            <button class="btn-secondary" onclick="resetQuiz()">Reset Quiz</button>
+            <button class="btn-primary" onclick="toggleAnswerMode()">Toggle Answer Mode</button>
+        </div>
+
+        <div class="content" id="questionsContainer"></div>
+
+        <div class="footer">
+            <p>💡 Study Tip: Understanding systems thinking is key to modern business analysis!</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const allQuestions = [
+            // System Basics (1-20)
+            {
+                id: 1,
+                section: 'systems-basics',
+                category: 'System Definition',
+                question: 'Which of the following best defines a system?',
+                options: [
+                    { text: 'A random group of unrelated items', letter: 'A' },
+                    { text: 'A collection of interdependent parts interacting to function as a whole', letter: 'B' },
+                    { text: 'A single process without components', letter: 'C' },
+                    { text: 'A set of identical elements performing the same task', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A system is defined by its interdependent parts that interact to achieve a common purpose.'
+            },
+            {
+                id: 2,
+                section: 'systems-basics',
+                category: 'System Components',
+                question: 'What does every system consist of?',
+                options: [
+                    { text: 'One process only', letter: 'A' },
+                    { text: 'Unrelated components', letter: 'B' },
+                    { text: 'Interdependent parts that interact', letter: 'C' },
+                    { text: 'A static environment', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Every system consists of interdependent parts that interact with each other.'
+            },
+            {
+                id: 3,
+                section: 'systems-basics',
+                category: 'System Elements',
+                question: 'The components of a system are bound by what?',
+                options: [
+                    { text: 'Physical structure only', letter: 'A' },
+                    { text: 'A mission and an environment', letter: 'B' },
+                    { text: 'A random goal', letter: 'C' },
+                    { text: 'An external input', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'System components are bound together by a shared mission and environment.'
+            },
+            {
+                id: 4,
+                section: 'systems-basics',
+                category: 'System Model',
+                question: 'Which of the following represents the General System Model?',
+                options: [
+                    { text: 'Input → Process → Output with Feedback', letter: 'A' },
+                    { text: 'Data → Storage → Information', letter: 'B' },
+                    { text: 'Input → Output only', letter: 'C' },
+                    { text: 'Process → Feedback → Environment', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'The General System Model shows: Input (resources) → Process (transformation) → Output (results) → Feedback.'
+            },
+            {
+                id: 5,
+                section: 'systems-basics',
+                category: 'System Environment',
+                question: 'The environment that influences the system from outside its boundary is called:',
+                options: [
+                    { text: 'Internal environment', letter: 'A' },
+                    { text: 'System boundary', letter: 'B' },
+                    { text: 'External environment', letter: 'C' },
+                    { text: 'Subsystem', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'The external environment consists of external factors that influence the system.'
+            },
+            {
+                id: 6,
+                section: 'systems-basics',
+                category: 'System Feedback',
+                question: 'What is the role of feedback in a system?',
+                options: [
+                    { text: 'To create random disturbances', letter: 'A' },
+                    { text: 'To compare intended outputs with actual results', letter: 'B' },
+                    { text: 'To generate new elements', letter: 'C' },
+                    { text: 'To stop the system from functioning', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Feedback allows systems to monitor performance and adjust toward desired outcomes.'
+            },
+            {
+                id: 7,
+                section: 'systems-basics',
+                category: 'System Characteristics',
+                question: 'Which of the following is not true about systems?',
+                options: [
+                    { text: 'Systems have boundaries', letter: 'A' },
+                    { text: 'Inputs are transformed into outputs', letter: 'B' },
+                    { text: 'Systems have no feedback', letter: 'C' },
+                    { text: 'Systems interact with their environment', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Systems DO have feedback - this is essential for self-regulation and improvement.'
+            },
+            {
+                id: 8,
+                section: 'systems-basics',
+                category: 'System Examples',
+                question: 'Which of the following is an example of a system?',
+                options: [
+                    { text: 'A pile of sand', letter: 'A' },
+                    { text: 'A cricket team', letter: 'B' },
+                    { text: 'A broken clock', letter: 'C' },
+                    { text: 'A set of stones', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A cricket team is a system with interdependent players working toward a common goal.'
+            },
+            {
+                id: 9,
+                section: 'systems-basics',
+                category: 'System Purpose',
+                question: 'In the cricket team example, the purpose of the system is:',
+                options: [
+                    { text: 'To play randomly without objectives', letter: 'A' },
+                    { text: 'To win games and achieve goals', letter: 'B' },
+                    { text: 'To remain inactive', letter: 'C' },
+                    { text: 'To perform no coordinated action', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A cricket team\'s purpose is to win games and achieve collective goals.'
+            },
+            {
+                id: 10,
+                section: 'systems-basics',
+                category: 'System Interconnections',
+                question: 'In a cricket team system, which of the following represents interconnections?',
+                options: [
+                    { text: 'Cricketers and bats', letter: 'A' },
+                    { text: 'Rules of the game and player communication', letter: 'B' },
+                    { text: 'The stadium and uniforms', letter: 'C' },
+                    { text: 'The cricket ball and wickets', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Interconnections are the relationships and rules that bind elements together - like game rules and communication.'
+            },
+            {
+                id: 11,
+                section: 'systems-basics',
+                category: 'Non-Systems',
+                question: 'Which of the following cannot be called a system?',
+                options: [
+                    { text: 'A bank', letter: 'A' },
+                    { text: 'An ocean', letter: 'B' },
+                    { text: 'A pile of sand', letter: 'C' },
+                    { text: 'An atom', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'A pile of sand lacks interconnections and clear purpose, so it\'s not a system.'
+            },
+            {
+                id: 12,
+                section: 'systems-basics',
+                category: 'System Identification',
+                question: 'What differentiates a system from a non-system?',
+                options: [
+                    { text: 'The presence of more components', letter: 'A' },
+                    { text: 'Having interconnections and a purpose', letter: 'B' },
+                    { text: 'Being physically large', letter: 'C' },
+                    { text: 'Being static', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A system must have interconnected parts and a clear purpose or function.'
+            },
+            {
+                id: 13,
+                section: 'systems-basics',
+                category: 'System Analysis',
+                question: 'What is the first step in identifying a system?',
+                options: [
+                    { text: 'Counting its size', letter: 'A' },
+                    { text: 'Identifying its parts', letter: 'B' },
+                    { text: 'Removing its boundary', letter: 'C' },
+                    { text: 'Eliminating feedback', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'The first step is identifying the parts or elements that make up the system.'
+            },
+            {
+                id: 14,
+                section: 'systems-basics',
+                category: 'System Analysis',
+                question: 'Which question helps determine if something is a system?',
+                options: [
+                    { text: 'Are there parts that affect each other?', letter: 'A' },
+                    { text: 'Does it exist naturally?', letter: 'B' },
+                    { text: 'Is it made of the same material?', letter: 'C' },
+                    { text: 'Does it look complex?', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'If parts affect each other and have interdependencies, it\'s likely a system.'
+            },
+            {
+                id: 15,
+                section: 'systems-basics',
+                category: 'System Behavior',
+                question: 'A system\'s behavior over time should:',
+                options: [
+                    { text: 'Be constant and unchanging', letter: 'A' },
+                    { text: 'Persist across circumstances', letter: 'B' },
+                    { text: 'Be random', letter: 'C' },
+                    { text: 'Depend only on one part', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'System behavior should be consistent and persist despite changing circumstances.'
+            },
+            {
+                id: 16,
+                section: 'systems-basics',
+                category: 'System Elements',
+                question: 'What is an example of a visible element in a system?',
+                options: [
+                    { text: 'Pride in the university', letter: 'A' },
+                    { text: 'Recognition', letter: 'B' },
+                    { text: 'Lecturers and buildings', letter: 'C' },
+                    { text: 'Motivation', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Visible (tangible) elements are physical components like lecturers and buildings.'
+            },
+            {
+                id: 17,
+                section: 'systems-basics',
+                category: 'System Elements',
+                question: 'What are intangible elements of a system?',
+                options: [
+                    { text: 'Physical structures', letter: 'A' },
+                    { text: 'Human resources', letter: 'B' },
+                    { text: 'Academic expertise and reputation', letter: 'C' },
+                    { text: 'Computers and books', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Intangible elements are non-physical components like knowledge, expertise, and reputation.'
+            },
+            {
+                id: 18,
+                section: 'systems-basics',
+                category: 'System Boundary',
+                question: 'Which of the following statements about a system boundary is correct?',
+                options: [
+                    { text: 'It isolates the system completely', letter: 'A' },
+                    { text: 'It defines the limits of the system\'s interactions with the environment', letter: 'B' },
+                    { text: 'It stops input and output', letter: 'C' },
+                    { text: 'It is only symbolic', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A system boundary defines what is inside the system and how it interacts with the external environment.'
+            },
+            {
+                id: 19,
+                section: 'systems-basics',
+                category: 'System Processes',
+                question: 'The transformation of inputs into outputs is performed by:',
+                options: [
+                    { text: 'Interconnections', letter: 'A' },
+                    { text: 'Feedback', letter: 'B' },
+                    { text: 'Processes', letter: 'C' },
+                    { text: 'Boundaries', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Processes are the mechanisms that transform inputs into outputs.'
+            },
+            {
+                id: 20,
+                section: 'systems-basics',
+                category: 'System Classification',
+                question: 'Systems that lack interconnections or functions are classified as:',
+                options: [
+                    { text: 'Dynamic systems', letter: 'A' },
+                    { text: 'Open systems', letter: 'B' },
+                    { text: 'Non-systems', letter: 'C' },
+                    { text: 'Subsystems', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Without interconnections and function, something is not a system - it\'s a non-system.'
+            },
+            // Advanced Topics (21-35)
+            {
+                id: 21,
+                section: 'advanced',
+                category: 'Visible Elements',
+                question: 'Which of the following best describes visible elements of a system?',
+                options: [
+                    { text: 'Elements that cannot be seen but influence behavior', letter: 'A' },
+                    { text: 'Tangible parts such as buildings, books, or roots', letter: 'B' },
+                    { text: 'Processes that connect different subsystems', letter: 'C' },
+                    { text: 'Purposes that guide system behaviours', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Visible elements are tangible, physical components of a system.'
+            },
+            {
+                id: 22,
+                section: 'advanced',
+                category: 'System Hierarchy',
+                question: 'Which of the following is an intangible element of a university system?',
+                options: [
+                    { text: 'Classrooms', letter: 'A' },
+                    { text: 'Computers', letter: 'B' },
+                    { text: 'Academic expertise', letter: 'C' },
+                    { text: 'Students', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Academic expertise is intangible knowledge; physical items are tangible elements.'
+            },
+            {
+                id: 23,
+                section: 'advanced',
+                category: 'System Relationships',
+                question: 'What do interconnections in a system represent?',
+                options: [
+                    { text: 'The purpose of the system', letter: 'A' },
+                    { text: 'The boundaries of the system', letter: 'B' },
+                    { text: 'The relationships that hold system elements together', letter: 'C' },
+                    { text: 'The outputs of the system', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Interconnections are the relationships and flows that bind system elements together.'
+            },
+            {
+                id: 24,
+                section: 'advanced',
+                category: 'System Integration',
+                question: 'In a university system, which of the following is an example of an interconnection?',
+                options: [
+                    { text: 'Lecturers', letter: 'A' },
+                    { text: 'Buildings', letter: 'B' },
+                    { text: 'Communication of knowledge', letter: 'C' },
+                    { text: 'Textbooks', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Communication of knowledge represents the flow and relationships between system elements.'
+            },
+            {
+                id: 25,
+                section: 'advanced',
+                category: 'System Operations',
+                question: 'Information flows in a system are important because they:',
+                options: [
+                    { text: 'Are always visible and easy to detect', letter: 'A' },
+                    { text: 'Hold the system together and influence operations', letter: 'B' },
+                    { text: 'Replace all tangible elements', letter: 'C' },
+                    { text: 'Exist only in closed systems', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Information flows are critical interconnections that enable system coordination and function.'
+            },
+            {
+                id: 26,
+                section: 'advanced',
+                category: 'System Understanding',
+                question: 'The best way to understand a system\'s purpose is to:',
+                options: [
+                    { text: 'Read the organization\'s policy statements', letter: 'A' },
+                    { text: 'Observe how the system behaves over time', letter: 'B' },
+                    { text: 'Identify visible components', letter: 'C' },
+                    { text: 'Eliminate intangible components', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Observing actual behavior reveals true system purpose better than policies alone.'
+            },
+            {
+                id: 27,
+                section: 'advanced',
+                category: 'System Purpose',
+                question: 'What is the primary function of a tree system?',
+                options: [
+                    { text: 'Absorb sunlight', letter: 'A' },
+                    { text: 'Produce seeds and create more trees', letter: 'B' },
+                    { text: 'Provide shade', letter: 'C' },
+                    { text: 'Store water', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A tree\'s primary function is reproduction - producing seeds and creating new trees.'
+            },
+            {
+                id: 28,
+                section: 'advanced',
+                category: 'Organizational Systems',
+                question: 'The purpose of a university system includes:',
+                options: [
+                    { text: 'Only conducting exams', letter: 'A' },
+                    { text: 'Producing revenue', letter: 'B' },
+                    { text: 'Discovering, preserving, and passing on knowledge', letter: 'C' },
+                    { text: 'Only teaching undergraduate students', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Universities\' core purpose is knowledge discovery, preservation, and transmission.'
+            },
+            {
+                id: 29,
+                section: 'advanced',
+                category: 'System Decomposition',
+                question: 'What does the System Hierarchical Tree illustrate?',
+                options: [
+                    { text: 'How a system generates revenue', letter: 'A' },
+                    { text: 'How systems decompose into subsystems and components', letter: 'B' },
+                    { text: 'How system boundaries are created', letter: 'C' },
+                    { text: 'The external environment around the system', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'The hierarchical tree shows how systems break down into smaller subsystems and components.'
+            },
+            {
+                id: 30,
+                section: 'advanced',
+                category: 'Hierarchy Levels',
+                question: 'Which of the following is an example of hierarchical decomposition?',
+                options: [
+                    { text: 'City – buildings – people', letter: 'A' },
+                    { text: 'Organism – cells – molecules – atoms', letter: 'B' },
+                    { text: 'Teacher – student – exam', letter: 'C' },
+                    { text: 'Team – players – strategies', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Organism → cells → molecules → atoms shows clear hierarchical breakdown from large to small.'
+            },
+            {
+                id: 31,
+                section: 'advanced',
+                category: 'Subsystems',
+                question: 'What is a subsystem?',
+                options: [
+                    { text: 'A complete system unrelated to others', letter: 'A' },
+                    { text: 'A major component made up of interacting components', letter: 'B' },
+                    { text: 'A random collection of elements', letter: 'C' },
+                    { text: 'A system that does not affect the whole', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A subsystem is a system within a larger system, with its own components and interactions.'
+            },
+            {
+                id: 32,
+                section: 'advanced',
+                category: 'System Relationships',
+                question: 'Subsystems interact with each other to:',
+                options: [
+                    { text: 'Avoid performing their own functions', letter: 'A' },
+                    { text: 'Work independently without affecting the main system', letter: 'B' },
+                    { text: 'Attain their own purpose and the purpose of the overall system', letter: 'C' },
+                    { text: 'Increase system boundaries', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Subsystems work together to achieve both their own goals and the overall system\'s purpose.'
+            },
+            {
+                id: 33,
+                section: 'advanced',
+                category: 'System Design',
+                question: 'A system\'s purpose may not be explicitly stated. It becomes clear through:',
+                options: [
+                    { text: 'Study of system boundaries', letter: 'A' },
+                    { text: 'Analysis of system external environment', letter: 'B' },
+                    { text: 'Observation of the system\'s actual operations', letter: 'C' },
+                    { text: 'Counting the number of subsystems', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Actual operational behavior reveals true system purpose better than formal declarations.'
+            },
+            {
+                id: 34,
+                section: 'advanced',
+                category: 'System Elements',
+                question: 'Interconnections within a tree system include:',
+                options: [
+                    { text: 'Leaves and branches', letter: 'A' },
+                    { text: 'Physical flows and chemical reactions among parts', letter: 'B' },
+                    { text: 'Soil nutrients', letter: 'C' },
+                    { text: 'Bark texture', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Tree interconnections include physical flows (water, nutrients) and chemical processes.'
+            },
+            {
+                id: 35,
+                section: 'advanced',
+                category: 'Hierarchy Structure',
+                question: 'Which statement best describes the relationship between systems, subsystems, and components?',
+                options: [
+                    { text: 'Subsystems exist independently of systems', letter: 'A' },
+                    { text: 'Components are made up of subsystems', letter: 'B' },
+                    { text: 'Systems decompose into subsystems, which further decompose into components', letter: 'C' },
+                    { text: 'Components and subsystems are identical', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'There\'s a hierarchy: Systems → Subsystems → Components, each level containing the one below.'
+            }
+        ];
+
+        let userAnswers = {};
+        let showAnswerMode = false;
+
+        function displayQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const filter = document.getElementById('sectionFilter').value;
+            const filtered = filter === 'all' ? allQuestions : allQuestions.filter(q => q.section === filter);
+
+            container.innerHTML = filtered.map(q => `
+                <div class="question-card">
+                    <div class="question-number">Question ${q.id} • ${q.category}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map(opt => `
+                            <label class="option">
+                                <input type="radio" name="q${q.id}" value="${opt.letter}" 
+                                    onchange="selectAnswer(${q.id}, '${opt.letter}')"
+                                    ${userAnswers[q.id] === opt.letter ? 'checked' : ''}>
+                                <span><strong>${opt.letter})</strong> ${opt.text}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    ${showAnswerMode ? `
+                        <div class="answer-feedback ${userAnswers[q.id] === q.correct ? 'correct-feedback' : 'incorrect-feedback'}">
+                            <strong>Correct Answer: ${q.correct}</strong>
+                            <div class="explanation">${q.explanation}</div>
+                        </div>
+                    ` : `
+                        <button class="btn-secondary show-answer-btn" onclick="showAnswerFor(${q.id})">Show Answer</button>
+                    `}
+                </div>
+            `).join('');
+
+            updateStats();
+        }
+
+        function selectAnswer(questionId, answer) {
+            userAnswers[questionId] = answer;
+            updateStats();
+            if (showAnswerMode) displayQuestions();
+        }
+
+        function showAnswerFor(questionId) {
+            const q = allQuestions.find(q => q.id === questionId);
+            if (!q) return;
+            alert(`Correct Answer: ${q.correct}\n\n${q.explanation}`);
+        }
+
+        function toggleAnswerMode() {
+            showAnswerMode = !showAnswerMode;
+            displayQuestions();
+        }
+
+        function updateStats() {
+            const answered = Object.keys(userAnswers).length;
+            const correct = Object.entries(userAnswers).filter(([id, ans]) => {
+                const q = allQuestions.find(q => q.id === parseInt(id));
+                return q && q.correct === ans;
+            }).length;
+            const percentage = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+
+            document.getElementById('answered').textContent = answered;
+            document.getElementById('correct').textContent = correct;
+            document.getElementById('percentage').textContent = `${percentage}%`;
+            document.getElementById('progressBar').style.width = `${(answered / allQuestions.length) * 100}%`;
+        }
+
+        function resetQuiz() {
+            if (confirm('Reset all answers? This cannot be undone.')) {
+                userAnswers = {};
+                displayQuestions();
+                updateStats();
+            }
+        }
+
+        document.getElementById('sectionFilter').addEventListener('change', displayQuestions);
+        displayQuestions();
+    </script>
+</body>
+</html>

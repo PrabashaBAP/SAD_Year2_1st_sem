@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Mixed Topics - MCQ Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d946ef 0%, #ec4899 50%, #f43f5e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d946ef 0%, #ec4899 50%, #f43f5e 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .controls {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        select {
+            padding: 8px 15px;
+            border: 2px solid #d946ef;
+            border-radius: 6px;
+            font-size: 0.95em;
+            cursor: pointer;
+            background: white;
+            color: #2d3748;
+        }
+
+        button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d946ef 0%, #ec4899 50%, #f43f5e 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(217, 70, 239, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .question-card {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-left: 4px solid #d946ef;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: #d946ef;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #d946ef;
+            background: #fdf2f8;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .answer-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .correct-feedback {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .incorrect-feedback {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .show-answer-btn {
+            background: #ffc107;
+            color: #2d3748;
+            margin-top: 15px;
+        }
+
+        .show-answer-btn:hover {
+            background: #ffb300;
+        }
+
+        .footer {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d946ef 0%, #ec4899 50%, #f43f5e 100%);
+            transition: width 0.3s ease;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(217, 70, 239, 0.1);
+            border-left: 3px solid #d946ef;
+            border-radius: 4px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .question-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Comprehensive Mixed Topics</h1>
+            <p>Test your knowledge across data transformation, systems, and IS evolution</p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="totalQuestions">18</span>
+                    <span class="stat-label">Total Questions</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="answered">0</span>
+                    <span class="stat-label">Answered</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="correct">0</span>
+                    <span class="stat-label">Correct</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="percentage">0%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-secondary" onclick="resetQuiz()">Reset Quiz</button>
+            <button class="btn-primary" onclick="toggleAnswerMode()">Toggle Answer Mode</button>
+        </div>
+
+        <div class="content" id="questionsContainer"></div>
+
+        <div class="footer">
+            <p>🎓 Final Exam Prep: Review all these topics thoroughly for maximum score!</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const allQuestions = [
+            {
+                id: 1,
+                category: 'Data Transformation',
+                question: 'Which of the following best describes the transformation from data to information?',
+                options: [
+                    { text: 'Data is collected, stored, and transmitted without modification', letter: 'A' },
+                    { text: 'Data is analyzed, structured, and given meaning through context', letter: 'B' },
+                    { text: 'Data is always numerical, while information is textual', letter: 'C' },
+                    { text: 'Information is collected first, and data is derived from it', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Data transforms to information when it is processed, analyzed, and organized with meaningful context.'
+            },
+            {
+                id: 2,
+                category: 'Data Analysis',
+                question: 'A company collects raw customer feedback through surveys. Which of the following actions converts this data into useful information?',
+                options: [
+                    { text: 'Storing the raw responses in a database', letter: 'A' },
+                    { text: 'Sorting responses alphabetically', letter: 'B' },
+                    { text: 'Analyzing trends and summarizing key issues', letter: 'C' },
+                    { text: 'Deleting irrelevant responses', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Analyzing trends and summarizing creates meaningful information from raw data.'
+            },
+            {
+                id: 3,
+                category: 'TPS Systems',
+                question: 'Which of the following types of decisions is most likely supported by transaction processing systems (TPS)?',
+                options: [
+                    { text: 'Identifying new market opportunities', letter: 'A' },
+                    { text: 'Processing customer orders and payments', letter: 'B' },
+                    { text: 'Formulating company-wide strategic goals', letter: 'C' },
+                    { text: 'Determining long-term resource allocation', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'TPS handles routine operational decisions like order processing and transactions.'
+            },
+            {
+                id: 4,
+                category: 'Information Types',
+                question: 'How does tactical information differ from strategic information?',
+                options: [
+                    { text: 'Tactical information focuses on long-term planning, while strategic information deals with routine operations', letter: 'A' },
+                    { text: 'Tactical information is used for mid-level decision-making, while strategic information supports high-level decisions', letter: 'B' },
+                    { text: 'Tactical information is used by frontline employees, while strategic information is used by IT teams', letter: 'C' },
+                    { text: 'Tactical and strategic information serve the same purpose but differ in format', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Tactical supports middle management decisions; strategic supports top management planning.'
+            },
+            {
+                id: 5,
+                category: 'Information Systems',
+                question: 'Middle-level management typically relies on which type of information system?',
+                options: [
+                    { text: 'Decision Support System (DSS)', letter: 'A' },
+                    { text: 'Executive Information System (EIS)', letter: 'B' },
+                    { text: 'Transaction Processing System (TPS)', letter: 'C' },
+                    { text: 'Knowledge Management System (KMS)', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'DSS provides decision support for middle management project and resource decisions.'
+            },
+            {
+                id: 6,
+                category: 'Real-time Processing',
+                question: 'In a real-time processing system, information is:',
+                options: [
+                    { text: 'Processed and stored in batches before being used', letter: 'A' },
+                    { text: 'Delayed until sufficient data is collected for analysis', letter: 'B' },
+                    { text: 'Processed instantly and used immediately for decision-making', letter: 'C' },
+                    { text: 'Not processed but simply stored for future use', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Real-time processing delivers information instantly for immediate decision-making.'
+            },
+            {
+                id: 7,
+                category: 'Analytics',
+                question: 'Predictive analytics in a business setting is an example of which type of information?',
+                options: [
+                    { text: 'Operational Information', letter: 'A' },
+                    { text: 'Strategic Information', letter: 'B' },
+                    { text: 'Tactical Information', letter: 'C' },
+                    { text: 'Historical Information', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Predictive analytics supports strategic long-term planning and forecasting.'
+            },
+            {
+                id: 8,
+                category: 'Information Sources',
+                question: 'A primary source of information is:',
+                options: [
+                    { text: 'A government website summarizing recent research findings', letter: 'A' },
+                    { text: 'A direct interview with an industry expert', letter: 'B' },
+                    { text: 'A newspaper reporting on a company\'s financial performance', letter: 'C' },
+                    { text: 'A Wikipedia article summarizing an event', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Primary sources are original, direct sources like interviews - not summaries or reports.'
+            },
+            {
+                id: 9,
+                category: 'Internal Information',
+                question: 'Which of the following is an internal source of information for a business?',
+                options: [
+                    { text: 'A competitor\'s product catalog', letter: 'A' },
+                    { text: 'A government economic report', letter: 'B' },
+                    { text: 'A company\'s past sales data', letter: 'C' },
+                    { text: 'Customer reviews from an external website', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Internal sources come from within the organization, like historical sales records.'
+            },
+            {
+                id: 10,
+                category: 'Systems',
+                question: 'A system is considered closed when:',
+                options: [
+                    { text: 'It continuously interacts with its environment', letter: 'A' },
+                    { text: 'It does not interact with external systems', letter: 'B' },
+                    { text: 'It is automated and does not require human input', letter: 'C' },
+                    { text: 'It allows only limited data to be stored', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A closed system has no interaction with its external environment.'
+            },
+            {
+                id: 11,
+                category: 'System Feedback',
+                question: 'In system components, feedback is crucial because:',
+                options: [
+                    { text: 'It prevents the system from functioning autonomously', letter: 'A' },
+                    { text: 'It ensures the system adjusts to changes and improves performance', letter: 'B' },
+                    { text: 'It eliminates the need for system maintenance', letter: 'C' },
+                    { text: 'It reduces system complexity by removing unnecessary processes', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Feedback enables systems to monitor and adjust for improved performance.'
+            },
+            {
+                id: 12,
+                category: 'Systems Thinking',
+                question: 'In systems thinking, which of the following is a key characteristic?',
+                options: [
+                    { text: 'Viewing problems in isolation rather than considering interdependencies', letter: 'A' },
+                    { text: 'Analyzing individual components without understanding their relationships', letter: 'B' },
+                    { text: 'Understanding how different parts interact and influence the whole', letter: 'C' },
+                    { text: 'Focusing only on quantitative data for decision-making', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Systems thinking recognizes interconnections and how parts affect the whole.'
+            },
+            {
+                id: 13,
+                category: 'System Integration',
+                question: 'When a business fails to consider how changes in one department affect other departments, it is neglecting:',
+                options: [
+                    { text: 'Process Automation', letter: 'A' },
+                    { text: 'Functional Decomposition', letter: 'B' },
+                    { text: 'Systems Thinking', letter: 'C' },
+                    { text: 'Centralized Processing', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Systems thinking recognizes interdependencies across departments.'
+            },
+            {
+                id: 14,
+                category: 'System Classification',
+                question: 'Which of the following best classifies an ATM (Automated Teller Machine)?',
+                options: [
+                    { text: 'Open, deterministic, and real-time system', letter: 'A' },
+                    { text: 'Closed, static, and batch processing system', letter: 'B' },
+                    { text: 'Open, stochastic, and manual system', letter: 'C' },
+                    { text: 'Closed, structured, and predictive system', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'ATM is open (interacts with users), deterministic (predictable outputs), and real-time.'
+            },
+            {
+                id: 15,
+                category: 'System Behavior',
+                question: 'A deterministic system is characterized by:',
+                options: [
+                    { text: 'Random behavior with unpredictable outputs', letter: 'A' },
+                    { text: 'Clearly defined rules where the same input always produces the same output', letter: 'B' },
+                    { text: 'Human intervention at every step of the process', letter: 'C' },
+                    { text: 'Open-ended interactions with changing environments', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Deterministic systems produce predictable, consistent outputs from given inputs.'
+            },
+            {
+                id: 16,
+                category: 'IS Components',
+                question: 'In an information system, which component is responsible for data input, storage, processing, and retrieval?',
+                options: [
+                    { text: 'Hardware', letter: 'A' },
+                    { text: 'Software', letter: 'B' },
+                    { text: 'People', letter: 'C' },
+                    { text: 'Procedures', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Hardware (computers, servers) handles data input, storage, processing, and retrieval.'
+            },
+            {
+                id: 17,
+                category: 'DSS vs MIS',
+                question: 'A real-time decision support system (DSS) differs from a traditional management information system (MIS) because:',
+                options: [
+                    { text: 'DSS only processes past data, while MIS is forward-looking', letter: 'A' },
+                    { text: 'DSS provides recommendations based on analysis, while MIS focuses on reporting', letter: 'B' },
+                    { text: 'DSS does not involve human decision-making, while MIS does', letter: 'C' },
+                    { text: 'MIS is more advanced and complex than DSS', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'DSS analyzes and recommends; MIS reports pre-specified information.'
+            },
+            {
+                id: 18,
+                category: 'Strategic IS',
+                question: 'Which type of information system is best suited for long-term strategic planning?',
+                options: [
+                    { text: 'Transaction Processing System (TPS)', letter: 'A' },
+                    { text: 'Decision Support System (DSS)', letter: 'B' },
+                    { text: 'Executive Information System (EIS)', letter: 'C' },
+                    { text: 'Office Automation System (OAS)', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'EIS provides high-level executives with strategic information for long-term planning.'
+            }
+        ];
+
+        let userAnswers = {};
+        let showAnswerMode = false;
+
+        function displayQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = allQuestions.map(q => `
+                <div class="question-card">
+                    <div class="question-number">Question ${q.id} • ${q.category}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map(opt => `
+                            <label class="option">
+                                <input type="radio" name="q${q.id}" value="${opt.letter}" 
+                                    onchange="selectAnswer(${q.id}, '${opt.letter}')"
+                                    ${userAnswers[q.id] === opt.letter ? 'checked' : ''}>
+                                <span><strong>${opt.letter})</strong> ${opt.text}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    ${showAnswerMode ? `
+                        <div class="answer-feedback ${userAnswers[q.id] === q.correct ? 'correct-feedback' : 'incorrect-feedback'}">
+                            <strong>Correct Answer: ${q.correct}</strong>
+                            <div class="explanation">${q.explanation}</div>
+                        </div>
+                    ` : `
+                        <button class="btn-secondary show-answer-btn" onclick="showAnswerFor(${q.id})">Show Answer</button>
+                    `}
+                </div>
+            `).join('');
+
+            updateStats();
+        }
+
+        function selectAnswer(questionId, answer) {
+            userAnswers[questionId] = answer;
+            updateStats();
+            if (showAnswerMode) displayQuestions();
+        }
+
+        function showAnswerFor(questionId) {
+            const q = allQuestions.find(q => q.id === questionId);
+            if (!q) return;
+            alert(`Correct Answer: ${q.correct}\n\n${q.explanation}`);
+        }
+
+        function toggleAnswerMode() {
+            showAnswerMode = !showAnswerMode;
+            displayQuestions();
+        }
+
+        function updateStats() {
+            const answered = Object.keys(userAnswers).length;
+            const correct = Object.entries(userAnswers).filter(([id, ans]) => {
+                const q = allQuestions.find(q => q.id === parseInt(id));
+                return q && q.correct === ans;
+            }).length;
+            const percentage = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+
+            document.getElementById('answered').textContent = answered;
+            document.getElementById('correct').textContent = correct;
+            document.getElementById('percentage').textContent = `${percentage}%`;
+            document.getElementById('progressBar').style.width = `${(answered / allQuestions.length) * 100}%`;
+        }
+
+        function resetQuiz() {
+            if (confirm('Reset all answers? This cannot be undone.')) {
+                userAnswers = {};
+                displayQuestions();
+                updateStats();
+            }
+        }
+
+        displayQuestions();
+    </script>
+</body>
+</html>

@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data, Information & Systems - MCQ Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .controls {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        select {
+            padding: 8px 15px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            font-size: 0.95em;
+            cursor: pointer;
+            background: white;
+            color: #2d3748;
+            transition: all 0.3s ease;
+        }
+
+        select:hover {
+            border-color: #764ba2;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .question-card {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #e8ecff;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .answer-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .correct-feedback {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .incorrect-feedback {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .show-answer-btn {
+            background: #ffc107;
+            color: #2d3748;
+            margin-top: 15px;
+        }
+
+        .show-answer-btn:hover {
+            background: #ffb300;
+        }
+
+        .footer {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 3px solid #667eea;
+            border-radius: 4px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .question-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Data, Information & Systems</h1>
+            <p>Master the fundamentals of data management and system thinking</p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="totalQuestions">55</span>
+                    <span class="stat-label">Total Questions</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="answered">0</span>
+                    <span class="stat-label">Answered</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="correct">0</span>
+                    <span class="stat-label">Correct</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="percentage">0%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="sectionFilter">Filter by Section:</label>
+                <select id="sectionFilter">
+                    <option value="all">All Questions</option>
+                    <option value="part-a">Part A - MCQ (35)</option>
+                    <option value="part-b">Part B - Fill in Blank (20)</option>
+                </select>
+            </div>
+            <button class="btn-secondary" onclick="resetQuiz()">Reset Quiz</button>
+            <button class="btn-primary" onclick="toggleAnswerMode()">Toggle Answer Mode</button>
+        </div>
+
+        <div class="content" id="questionsContainer"></div>
+
+        <div class="footer">
+            <p>💡 Study Tip: Review each question carefully. Use Show Answer to check correct responses.</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const allQuestions = [
+            {
+                id: 1,
+                section: 'part-a',
+                category: 'Data & Information',
+                question: 'Which statement best defines data?',
+                options: [
+                    { text: 'Processed facts with meaning', letter: 'A' },
+                    { text: 'Raw unprocessed facts and figures', letter: 'B' },
+                    { text: 'A decision made by management', letter: 'C' },
+                    { text: 'Knowledge gained from experience', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Data refers to raw, unprocessed facts and figures without context or meaning.'
+            },
+            {
+                id: 2,
+                section: 'part-a',
+                category: 'Data & Information',
+                question: 'Which of the following best describes information?',
+                options: [
+                    { text: 'Data with no context', letter: 'A' },
+                    { text: 'Data that has been formatted, organized, or processed to be useful', letter: 'B' },
+                    { text: 'Random symbols only', letter: 'C' },
+                    { text: 'Unrecorded personal experience', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Information is data that has been processed, organized, and given context to make it meaningful and useful.'
+            },
+            {
+                id: 3,
+                section: 'part-a',
+                category: 'Data & Information',
+                question: 'Why is context important when interpreting data?',
+                options: [
+                    { text: 'It removes the need for analysis', letter: 'A' },
+                    { text: 'It gives meaning and purpose to data', letter: 'B' },
+                    { text: 'It changes data into hardware', letter: 'C' },
+                    { text: 'It makes data confidential', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Context gives meaning and purpose to raw data, transforming it into useful information.'
+            },
+            {
+                id: 4,
+                section: 'part-a',
+                category: 'Data & Information',
+                question: 'A list of numbers such as 60, 250, and 480 becomes information when it is understood as ________.',
+                options: [
+                    { text: 'software code', letter: 'A' },
+                    { text: 'price values on a bill', letter: 'B' },
+                    { text: 'a computer icon', letter: 'C' },
+                    { text: 'a system boundary', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'When numbers like 60, 250, 480 are understood as prices on a bill, they gain context and become information.'
+            },
+            {
+                id: 5,
+                section: 'part-a',
+                category: 'Data & Information',
+                question: 'A train timetable may be considered information when ________.',
+                options: [
+                    { text: 'it is stored without being used', letter: 'A' },
+                    { text: 'it answers a user\'s travel question', letter: 'B' },
+                    { text: 'it has no context', letter: 'C' },
+                    { text: 'it is only a set of symbols', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A timetable becomes information when it answers a practical question like "when is the next train?"'
+            },
+            {
+                id: 6,
+                section: 'part-a',
+                category: 'Information Levels',
+                question: 'People turn data into information by organizing it into a ________.',
+                options: [
+                    { text: 'unit of analysis', letter: 'A' },
+                    { text: 'system boundary', letter: 'B' },
+                    { text: 'random sequence', letter: 'C' },
+                    { text: 'closed system', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Data is transformed into information by organizing it into meaningful units of analysis.'
+            },
+            {
+                id: 7,
+                section: 'part-a',
+                category: 'Information Levels',
+                question: 'Strategic information is mainly used by ________.',
+                options: [
+                    { text: 'lower-level operational staff', letter: 'A' },
+                    { text: 'top-level management for long-term decisions', letter: 'B' },
+                    { text: 'customers only', letter: 'C' },
+                    { text: 'machine operators only', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Strategic information supports top-level management in making long-term organizational decisions.'
+            },
+            {
+                id: 8,
+                section: 'part-a',
+                category: 'Information Levels',
+                question: 'Tactical information is generally used by ________.',
+                options: [
+                    { text: 'middle management for planning and managing projects', letter: 'A' },
+                    { text: 'only shareholders', letter: 'B' },
+                    { text: 'only automated systems', letter: 'C' },
+                    { text: 'external agencies only', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Tactical information helps middle management plan and manage specific projects and resource allocation.'
+            },
+            {
+                id: 9,
+                section: 'part-a',
+                category: 'Information Levels',
+                question: 'Operational information is mainly related to ________.',
+                options: [
+                    { text: 'long-term company vision only', letter: 'A' },
+                    { text: 'day-to-day operations', letter: 'B' },
+                    { text: 'national economic trends', letter: 'C' },
+                    { text: 'abstract theories only', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Operational information supports day-to-day activities and routine business operations.'
+            },
+            {
+                id: 10,
+                section: 'part-a',
+                category: 'Information Levels',
+                question: 'Which type of information is commonly used at the operational level?',
+                options: [
+                    { text: 'Detailed information', letter: 'A' },
+                    { text: 'Aggregated information only', letter: 'B' },
+                    { text: 'Strategic information only', letter: 'C' },
+                    { text: 'External forecasts only', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Operational level uses detailed, granular information to support specific, routine tasks.'
+            },
+            {
+                id: 11,
+                section: 'part-a',
+                category: 'Knowledge & Systems',
+                question: 'Sampled information usually refers to ________.',
+                options: [
+                    { text: 'every item in the full population', letter: 'A' },
+                    { text: 'only selected items', letter: 'B' },
+                    { text: 'unprocessed facts', letter: 'C' },
+                    { text: 'unrecorded knowledge', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Sampled information represents only selected items from a larger population, not all items.'
+            },
+            {
+                id: 12,
+                section: 'part-a',
+                category: 'Knowledge & Systems',
+                question: 'Aggregated information is mainly created by ________.',
+                options: [
+                    { text: 'collecting totals from detailed information', letter: 'A' },
+                    { text: 'removing all context from data', letter: 'B' },
+                    { text: 'storing personal experience only', letter: 'C' },
+                    { text: 'avoiding all calculations', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Aggregated information is created by combining and summarizing detailed data into totals.'
+            },
+            {
+                id: 13,
+                section: 'part-a',
+                category: 'Information Sources',
+                question: 'A source where a piece of information appears for the first time is called a ________ source.',
+                options: [
+                    { text: 'secondary', letter: 'A' },
+                    { text: 'primary', letter: 'B' },
+                    { text: 'external only', letter: 'C' },
+                    { text: 'sampled', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A primary source is where information first appears or originates. Secondary sources cite primary sources.'
+            },
+            {
+                id: 14,
+                section: 'part-a',
+                category: 'Information Sources',
+                question: 'An accounts book prepared from invoices is an example of ________ information.',
+                options: [
+                    { text: 'primary', letter: 'A' },
+                    { text: 'secondary', letter: 'B' },
+                    { text: 'tacit', letter: 'C' },
+                    { text: 'continuous', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'An accounts book is secondary information because it is derived/processed from primary source documents (invoices).'
+            },
+            {
+                id: 15,
+                section: 'part-a',
+                category: 'Information Sources',
+                question: 'Marketing, production, and financial records generated within an organization are examples of ________ information.',
+                options: [
+                    { text: 'internal', letter: 'A' },
+                    { text: 'external', letter: 'B' },
+                    { text: 'probabilistic', letter: 'C' },
+                    { text: 'abstract', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Internal information is generated within the organization from internal sources and operations.'
+            },
+            {
+                id: 16,
+                section: 'part-a',
+                category: 'Information Sources',
+                question: 'Census figures, Central Bank reports, and the Internet are examples of ________ information sources.',
+                options: [
+                    { text: 'internal', letter: 'A' },
+                    { text: 'external', letter: 'B' },
+                    { text: 'tacit', letter: 'C' },
+                    { text: 'manual', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'External sources come from outside the organization, like government reports, databases, and public information.'
+            },
+            {
+                id: 17,
+                section: 'part-a',
+                category: 'Information Types',
+                question: 'Information created from data gathered several times a second is called ________ information.',
+                options: [
+                    { text: 'periodic', letter: 'A' },
+                    { text: 'continuous', letter: 'B' },
+                    { text: 'sampled', letter: 'C' },
+                    { text: 'aggregated', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Continuous information is created from data gathered constantly or at very frequent intervals.'
+            },
+            {
+                id: 18,
+                section: 'part-a',
+                category: 'Information Types',
+                question: 'A monthly bank statement is an example of ________ information.',
+                options: [
+                    { text: 'continuous', letter: 'A' },
+                    { text: 'periodic', letter: 'B' },
+                    { text: 'tacit', letter: 'C' },
+                    { text: 'deterministic', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Periodic information is created at regular intervals (hourly, daily, monthly, annually).'
+            },
+            {
+                id: 19,
+                section: 'part-a',
+                category: 'Knowledge',
+                question: 'Knowledge is best described as the ability to ________.',
+                options: [
+                    { text: 'store random numbers without meaning', letter: 'A' },
+                    { text: 'understand information and make decisions or predictions', letter: 'B' },
+                    { text: 'remove context from information', letter: 'C' },
+                    { text: 'create only raw facts', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Knowledge is the ability to understand information and use it to make informed decisions and predictions.'
+            },
+            {
+                id: 20,
+                section: 'part-a',
+                category: 'Knowledge',
+                question: 'Knowledge is richer than information because it includes ________.',
+                options: [
+                    { text: 'only symbols', letter: 'A' },
+                    { text: 'context, values, experience, rules, and judgement', letter: 'B' },
+                    { text: 'only numbers', letter: 'C' },
+                    { text: 'only external data', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Knowledge incorporates experience, judgment, values, and rules that go beyond simple information.'
+            },
+            {
+                id: 21,
+                section: 'part-a',
+                category: 'Knowledge Types',
+                question: 'Rules, processes, or decisions that can be recorded and stored are called ________ knowledge.',
+                options: [
+                    { text: 'tacit', letter: 'A' },
+                    { text: 'explicit', letter: 'B' },
+                    { text: 'random', letter: 'C' },
+                    { text: 'periodic', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Explicit knowledge can be documented, recorded, and easily communicated to others.'
+            },
+            {
+                id: 22,
+                section: 'part-a',
+                category: 'Knowledge Types',
+                question: 'Knowledge that is difficult to write down or explain and is often created from experience is called ________ knowledge.',
+                options: [
+                    { text: 'explicit', letter: 'A' },
+                    { text: 'tacit', letter: 'B' },
+                    { text: 'secondary', letter: 'C' },
+                    { text: 'aggregated', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Tacit knowledge is experiential, intuitive, and difficult to articulate or formalize in documents.'
+            },
+            {
+                id: 23,
+                section: 'part-a',
+                category: 'Knowledge Conversion',
+                question: 'In knowledge conversion, socialization converts ________.',
+                options: [
+                    { text: 'explicit knowledge to explicit knowledge', letter: 'A' },
+                    { text: 'tacit knowledge to tacit knowledge', letter: 'B' },
+                    { text: 'data to hardware', letter: 'C' },
+                    { text: 'information to entropy', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Socialization is the process where tacit knowledge is shared and transferred between individuals through experience.'
+            },
+            {
+                id: 24,
+                section: 'part-a',
+                category: 'Knowledge Conversion',
+                question: 'Externalization converts ________.',
+                options: [
+                    { text: 'tacit knowledge into explicit knowledge', letter: 'A' },
+                    { text: 'explicit knowledge into tacit knowledge', letter: 'B' },
+                    { text: 'output into input', letter: 'C' },
+                    { text: 'primary sources into external sources', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Externalization is converting tacit knowledge (experience) into explicit knowledge (documentation).'
+            },
+            {
+                id: 25,
+                section: 'part-a',
+                category: 'Knowledge Conversion',
+                question: 'Combination converts ________.',
+                options: [
+                    { text: 'explicit knowledge into another form of explicit knowledge', letter: 'A' },
+                    { text: 'tacit knowledge into tacit knowledge', letter: 'B' },
+                    { text: 'information into disorder', letter: 'C' },
+                    { text: 'a closed system into a manual tool', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Combination is synthesizing different explicit knowledge sources into new forms of explicit knowledge.'
+            },
+            {
+                id: 26,
+                section: 'part-a',
+                category: 'Knowledge Conversion',
+                question: 'Internalization converts ________.',
+                options: [
+                    { text: 'explicit knowledge into tacit knowledge', letter: 'A' },
+                    { text: 'tacit knowledge into explicit knowledge', letter: 'B' },
+                    { text: 'random data into entropy', letter: 'C' },
+                    { text: 'outputs into boundaries', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Internalization is learning explicit knowledge and incorporating it as tacit knowledge through experience.'
+            },
+            {
+                id: 27,
+                section: 'part-a',
+                category: 'Systems',
+                question: 'A system is a collection of interdependent parts that ________.',
+                options: [
+                    { text: 'do not affect one another', letter: 'A' },
+                    { text: 'interact with each other to function as a whole', letter: 'B' },
+                    { text: 'exist without any purpose', letter: 'C' },
+                    { text: 'contain only random objects', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A system consists of interdependent parts that work together toward a common purpose.'
+            },
+            {
+                id: 28,
+                section: 'part-a',
+                category: 'Systems',
+                question: 'A system must consist of ________.',
+                options: [
+                    { text: 'elements, interconnections, and a function or purpose', letter: 'A' },
+                    { text: 'only physical objects', letter: 'B' },
+                    { text: 'only external information', letter: 'C' },
+                    { text: 'only random inputs', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Every system requires elements (parts), interconnections (relationships), and a purpose or function.'
+            },
+            {
+                id: 29,
+                section: 'part-a',
+                category: 'Systems',
+                question: 'In the general system model, inputs are transformed into outputs by ________.',
+                options: [
+                    { text: 'processes', letter: 'A' },
+                    { text: 'boundaries only', letter: 'B' },
+                    { text: 'external agencies', letter: 'C' },
+                    { text: 'data errors', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Processes are the mechanisms that transform inputs into outputs in a system.'
+            },
+            {
+                id: 30,
+                section: 'part-a',
+                category: 'Systems',
+                question: 'Feedback is mainly used to ________.',
+                options: [
+                    { text: 'compare intended outputs with actual results', letter: 'A' },
+                    { text: 'remove all system boundaries', letter: 'B' },
+                    { text: 'avoid system improvement', letter: 'C' },
+                    { text: 'stop the flow of information', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Feedback allows systems to monitor performance and adjust to achieve desired outcomes.'
+            },
+            {
+                id: 31,
+                section: 'part-a',
+                category: 'Systems',
+                question: 'A pile of sand scattered on the road is not a system because it has no clear ________.',
+                options: [
+                    { text: 'colour', letter: 'A' },
+                    { text: 'specific interconnections or function', letter: 'B' },
+                    { text: 'physical size', letter: 'C' },
+                    { text: 'material', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'A pile of sand lacks interconnections between parts and has no clear purpose, so it\'s not a system.'
+            },
+            {
+                id: 32,
+                section: 'part-a',
+                category: 'Systems',
+                question: 'Which of the following is an intangible element of a university system?',
+                options: [
+                    { text: 'Buildings', letter: 'A' },
+                    { text: 'Computers', letter: 'B' },
+                    { text: 'Academic expertise', letter: 'C' },
+                    { text: 'Books', letter: 'D' }
+                ],
+                correct: 'C',
+                explanation: 'Academic expertise is intangible knowledge; buildings, computers, and books are physical (tangible) elements.'
+            },
+            {
+                id: 33,
+                section: 'part-a',
+                category: 'Systems Thinking',
+                question: 'Systems thinking views problems as ________.',
+                options: [
+                    { text: 'isolated events only', letter: 'A' },
+                    { text: 'parts of an overall system', letter: 'B' },
+                    { text: 'unrelated data only', letter: 'C' },
+                    { text: 'manual activities only', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Systems thinking recognizes that problems are interconnected and part of larger systems.'
+            },
+            {
+                id: 34,
+                section: 'part-a',
+                category: 'Systems',
+                question: 'A physical system has elements that are ________.',
+                options: [
+                    { text: 'tangible', letter: 'A' },
+                    { text: 'purely conceptual', letter: 'B' },
+                    { text: 'always invisible', letter: 'C' },
+                    { text: 'only probabilistic', letter: 'D' }
+                ],
+                correct: 'A',
+                explanation: 'Physical systems consist of tangible, material elements that can be observed or touched.'
+            },
+            {
+                id: 35,
+                section: 'part-a',
+                category: 'Systems',
+                question: 'Entropy refers to the amount of ________ in a system.',
+                options: [
+                    { text: 'order only', letter: 'A' },
+                    { text: 'disorder or randomness', letter: 'B' },
+                    { text: 'profit', letter: 'C' },
+                    { text: 'knowledge conversion', letter: 'D' }
+                ],
+                correct: 'B',
+                explanation: 'Entropy is the measure of disorder, randomness, or lack of organization in a system.'
+            }
+        ];
+
+        let userAnswers = {};
+        let showAnswerMode = false;
+
+        function displayQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const filter = document.getElementById('sectionFilter').value;
+            const filtered = filter === 'all' ? allQuestions : allQuestions.filter(q => q.section === filter);
+
+            container.innerHTML = filtered.map((q, idx) => `
+                <div class="question-card">
+                    <div class="question-number">Question ${q.id} • ${q.category}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map(opt => `
+                            <label class="option">
+                                <input type="radio" name="q${q.id}" value="${opt.letter}" 
+                                    onchange="selectAnswer(${q.id}, '${opt.letter}')"
+                                    ${userAnswers[q.id] === opt.letter ? 'checked' : ''}>
+                                <span><strong>${opt.letter})</strong> ${opt.text}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    ${showAnswerMode ? `
+                        <div class="answer-feedback ${userAnswers[q.id] === q.correct ? 'correct-feedback' : 'incorrect-feedback'}">
+                            <strong>Correct Answer: ${q.correct}</strong>
+                            <div class="explanation">${q.explanation}</div>
+                        </div>
+                    ` : `
+                        <button class="btn-secondary show-answer-btn" onclick="showAnswerFor(${q.id})">Show Answer</button>
+                    `}
+                </div>
+            `).join('');
+
+            updateStats();
+        }
+
+        function selectAnswer(questionId, answer) {
+            userAnswers[questionId] = answer;
+            updateStats();
+            if (showAnswerMode) displayQuestions();
+        }
+
+        function showAnswerFor(questionId) {
+            const q = allQuestions.find(q => q.id === questionId);
+            if (!q) return;
+            
+            const card = document.querySelector(`[data-question="${questionId}"]`);
+            alert(`Correct Answer: ${q.correct}\n\n${q.explanation}`);
+        }
+
+        function toggleAnswerMode() {
+            showAnswerMode = !showAnswerMode;
+            displayQuestions();
+        }
+
+        function updateStats() {
+            const answered = Object.keys(userAnswers).length;
+            const correct = Object.entries(userAnswers).filter(([id, ans]) => {
+                const q = allQuestions.find(q => q.id === parseInt(id));
+                return q && q.correct === ans;
+            }).length;
+            const percentage = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+
+            document.getElementById('answered').textContent = answered;
+            document.getElementById('correct').textContent = correct;
+            document.getElementById('percentage').textContent = `${percentage}%`;
+            document.getElementById('progressBar').style.width = `${(answered / allQuestions.length) * 100}%`;
+        }
+
+        function resetQuiz() {
+            if (confirm('Reset all answers? This cannot be undone.')) {
+                userAnswers = {};
+                displayQuestions();
+                updateStats();
+            }
+        }
+
+        document.getElementById('sectionFilter').addEventListener('change', displayQuestions);
+        displayQuestions();
+    </script>
+</body>
+</html>
