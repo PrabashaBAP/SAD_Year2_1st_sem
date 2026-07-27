@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIS 202.3 – Exam Practice Hub | Foundation Information Systems</title>
+    <meta name="description" content="Comprehensive exam practice for Foundation Information Systems 202.3 – Year 02 Semester 01. Covers MCQ, Short Answers, True/False, and Case Studies.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a1a;
+            --bg-secondary: #0f0f2a;
+            --bg-card: #141430;
+            --bg-card-hover: #1a1a3a;
+            --accent-1: #7c3aed;
+            --accent-2: #6d28d9;
+            --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4;
+            --accent-amber: #f59e0b;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: rgba(124, 58, 237, 0.2);
+            --border-light: rgba(255,255,255,0.07);
+            --glow-purple: 0 0 40px rgba(124, 58, 237, 0.3);
+            --glow-cyan: 0 0 40px rgba(6, 182, 212, 0.3);
+            --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ========== ANIMATED BACKGROUND ========== */
+        body::before {
+            content: '';
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(124,58,237,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(6,182,212,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 60% 10%, rgba(236,72,153,0.06) 0%, transparent 50%);
+            pointer-events: none; z-index: 0;
+        }
+
+        /* ========== LANDING PAGE ========== */
+        #landingPage {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative; z-index: 1;
+        }
+
+        .hero-badge {
+            background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.2));
+            border: 1px solid rgba(124,58,237,0.4);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            animation: fadeInDown 0.5s ease;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hero-title .grad {
+            background: linear-gradient(135deg, #a78bfa, #06b6d4, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 580px;
+            line-height: 1.7;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.7s ease;
+        }
+
+        /* ========== MODULE CARDS GRID ========== */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1100px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 28px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 20px;
+        }
+
+        .module-card.purple::before { background: radial-gradient(ellipse at top left, rgba(124,58,237,0.15), transparent 70%); }
+        .module-card.cyan::before { background: radial-gradient(ellipse at top left, rgba(6,182,212,0.15), transparent 70%); }
+        .module-card.pink::before { background: radial-gradient(ellipse at top left, rgba(236,72,153,0.15), transparent 70%); }
+        .module-card.amber::before { background: radial-gradient(ellipse at top left, rgba(245,158,11,0.15), transparent 70%); }
+        .module-card.green::before { background: radial-gradient(ellipse at top left, rgba(16,185,129,0.15), transparent 70%); }
+
+        .module-card:hover { transform: translateY(-6px); border-color: rgba(124,58,237,0.4); box-shadow: var(--shadow-card); }
+        .module-card:hover::before { opacity: 1; }
+        .module-card.purple:hover { border-color: rgba(124,58,237,0.5); box-shadow: 0 20px 60px rgba(124,58,237,0.2); }
+        .module-card.cyan:hover { border-color: rgba(6,182,212,0.5); box-shadow: 0 20px 60px rgba(6,182,212,0.2); }
+        .module-card.pink:hover { border-color: rgba(236,72,153,0.5); box-shadow: 0 20px 60px rgba(236,72,153,0.2); }
+        .module-card.amber:hover { border-color: rgba(245,158,11,0.5); box-shadow: 0 20px 60px rgba(245,158,11,0.2); }
+        .module-card.green:hover { border-color: rgba(16,185,129,0.5); box-shadow: 0 20px 60px rgba(16,185,129,0.2); }
+
+        .module-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(124,58,237,0.5));
+        }
+
+        .module-part {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .module-card.purple .module-part { color: #a78bfa; }
+        .module-card.cyan .module-part { color: #67e8f9; }
+        .module-card.pink .module-part { color: #f9a8d4; }
+        .module-card.amber .module-part { color: #fcd34d; }
+        .module-card.green .module-part { color: #6ee7b7; }
+
+        .module-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+        .module-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px; }
+
+        .module-meta {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 0.8rem; color: var(--text-muted);
+        }
+
+        .module-tag {
+            padding: 4px 12px; border-radius: 50px;
+            font-weight: 600; font-size: 0.75rem;
+        }
+
+        .module-card.purple .module-tag { background: rgba(124,58,237,0.2); color: #a78bfa; }
+        .module-card.cyan .module-tag { background: rgba(6,182,212,0.2); color: #67e8f9; }
+        .module-card.pink .module-tag { background: rgba(236,72,153,0.2); color: #f9a8d4; }
+        .module-card.amber .module-tag { background: rgba(245,158,11,0.2); color: #fcd34d; }
+        .module-card.green .module-tag { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+
+        /* Predicted Exam card - special */
+        .module-card.special {
+            grid-column: 1/-1;
+            background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(6,182,212,0.1));
+            border: 1px solid rgba(124,58,237,0.3);
+        }
+        .module-card.special:hover {
+            border-color: rgba(124,58,237,0.6);
+            box-shadow: 0 20px 60px rgba(124,58,237,0.3), 0 20px 60px rgba(6,182,212,0.1);
+        }
+        .module-card.special .module-icon { filter: drop-shadow(0 0 15px rgba(236,72,153,0.7)); }
+
+        /* ========== EXAM AREA ========== */
+        #examArea {
+            display: none;
+            min-height: 100vh;
+            position: relative; z-index: 1;
+        }
+
+        .exam-header {
+            background: rgba(10,10,26,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0; z-index: 100;
+            gap: 16px;
+        }
+
+        .exam-header-left { display: flex; align-items: center; gap: 16px; }
+
+        .back-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+        .exam-title-display {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .exam-score-display {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .score-pill {
+            background: rgba(124,58,237,0.2);
+            border: 1px solid rgba(124,58,237,0.3);
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #a78bfa;
+        }
+
+        .timer-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--accent-amber);
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.3);
+            padding: 6px 16px;
+            border-radius: 50px;
+        }
+
+        /* ========== PROGRESS BAR ========== */
+        .progress-track {
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            position: relative;
+        }
+        .progress-fill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #7c3aed, #06b6d4);
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
+
+        /* ========== QUESTION CONTAINER ========== */
+        .question-area {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .question-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .q-counter {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .q-counter span { color: var(--text-primary); font-weight: 700; }
+
+        .category-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 50px;
+            background: rgba(124,58,237,0.2);
+            color: #a78bfa;
+            border: 1px solid rgba(124,58,237,0.3);
+        }
+
+        /* ========== QUESTION CARD ========== */
+        .q-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 36px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .q-number-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .q-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: 28px;
+        }
+
+        /* ========== MCQ OPTIONS ========== */
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .option-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            width: 100%;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(124,58,237,0.1);
+            border-color: rgba(124,58,237,0.4);
+            transform: translateX(4px);
+        }
+
+        .option-letter {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-light);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .option-btn.selected { border-color: rgba(124,58,237,0.6); background: rgba(124,58,237,0.15); }
+        .option-btn.selected .option-letter { background: #7c3aed; border-color: #7c3aed; color: white; }
+
+        .option-btn.correct { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.12); }
+        .option-btn.correct .option-letter { background: #10b981; border-color: #10b981; color: white; }
+
+        .option-btn.wrong { border-color: rgba(239,68,68,0.6); background: rgba(239,68,68,0.12); }
+        .option-btn.wrong .option-letter { background: #ef4444; border-color: #ef4444; color: white; }
+
+        .option-btn.correct-reveal { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.08); }
+        .option-btn.correct-reveal .option-letter { background: rgba(16,185,129,0.3); border-color: #10b981; color: #6ee7b7; }
+
+        .option-btn:disabled { cursor: default; transform: none !important; }
+
+        /* ========== FEEDBACK BOX ========== */
+        .feedback-box {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            animation: slideIn 0.3s ease;
+        }
+        .feedback-box.correct { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+        .feedback-box.wrong { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+        .feedback-box .explanation { color: var(--text-secondary); margin-top: 8px; font-size: 0.9rem; }
+
+        /* ========== SHORT ANSWER INPUT ========== */
+        .short-input {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 2px solid var(--border-light);
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .short-input:focus { border-color: rgba(124,58,237,0.6); background: rgba(124,58,237,0.08); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+        .short-input.correct-input { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.08); }
+        .short-input.wrong-input { border-color: rgba(239,68,68,0.6); background: rgba(239,68,68,0.08); }
+        .short-input::placeholder { color: var(--text-muted); }
+
+        /* ========== TRUE/FALSE BUTTONS ========== */
+        .tf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .tf-btn {
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px solid var(--border-light);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .tf-btn:hover:not(:disabled) { transform: translateY(-3px); }
+        .tf-btn.true-btn:hover:not(:disabled) { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.1); color: #6ee7b7; }
+        .tf-btn.false-btn:hover:not(:disabled) { border-color: rgba(239,68,68,0.6); background: rgba(239,68,68,0.1); color: #fca5a5; }
+        .tf-btn.selected-true { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.1); color: #6ee7b7; }
+        .tf-btn.selected-false { border-color: rgba(239,68,68,0.6); background: rgba(239,68,68,0.1); color: #fca5a5; }
+        .tf-btn.correct { border-color: #10b981; background: rgba(16,185,129,0.2); color: #6ee7b7; }
+        .tf-btn.wrong { border-color: #ef4444; background: rgba(239,68,68,0.2); color: #fca5a5; }
+        .tf-btn:disabled { cursor: default; transform: none !important; }
+
+        /* ========== CASE STUDY ========== */
+        .case-study-box {
+            background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(6,182,212,0.06));
+            border: 1px solid rgba(124,58,237,0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 28px;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .case-study-box h3 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .case-sub-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent-amber);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .case-answer-textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 2px solid var(--border-light);
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.2s;
+            line-height: 1.7;
+        }
+        .case-answer-textarea:focus { border-color: rgba(124,58,237,0.5); background: rgba(124,58,237,0.06); }
+        .case-reveal-btn {
+            margin-top: 12px;
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.3);
+            color: #fcd34d;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .case-reveal-btn:hover { background: rgba(245,158,11,0.25); }
+        .sample-answer-box {
+            margin-top: 12px;
+            padding: 16px 20px;
+            background: rgba(16,185,129,0.06);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            display: none;
+        }
+        .sample-answer-box.visible { display: block; animation: slideIn 0.3s ease; }
+        .sample-answer-box strong { color: #6ee7b7; }
+
+        /* ========== NAV BUTTONS ========== */
+        .nav-btns {
+            display: flex; gap: 12px; justify-content: flex-end;
+            margin-top: 24px; flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.5); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+        .btn-check {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            box-shadow: 0 4px 20px rgba(6,182,212,0.4);
+        }
+        .btn-check:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(6,182,212,0.5); }
+        .btn-submit {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: white;
+            box-shadow: 0 4px 20px rgba(236,72,153,0.4);
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(236,72,153,0.5); }
+
+        /* ========== RESULTS SCREEN ========== */
+        #resultsArea {
+            display: none;
+            min-height: 100vh;
+            position: relative; z-index: 1;
+            padding: 60px 24px;
+        }
+
+        .results-container { max-width: 700px; margin: 0 auto; text-align: center; }
+
+        .result-grade {
+            font-size: clamp(4rem, 15vw, 8rem);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .result-label { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+        .result-sub { color: var(--text-secondary); margin-bottom: 40px; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .stat-value { font-size: 2.2rem; font-weight: 800; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+        .stat-card.correct-stat { border-color: rgba(16,185,129,0.3); }
+        .stat-card.correct-stat .stat-value { color: #10b981; }
+        .stat-card.wrong-stat { border-color: rgba(239,68,68,0.3); }
+        .stat-card.wrong-stat .stat-value { color: #ef4444; }
+        .stat-card.percent-stat { border-color: rgba(124,58,237,0.3); }
+        .stat-card.percent-stat .stat-value { color: #a78bfa; }
+
+        .result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        /* ========== REVIEW SECTION ========== */
+        .review-list { max-width: 860px; margin: 0 auto; padding: 0 24px 60px; }
+        .review-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .review-item.review-correct { border-color: rgba(16,185,129,0.3); }
+        .review-item.review-wrong { border-color: rgba(239,68,68,0.3); }
+        .review-q { font-weight: 600; margin-bottom: 12px; }
+        .review-answers { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.9rem; }
+        .review-your { color: #fca5a5; } .review-your.r-correct { color: #6ee7b7; }
+        .review-correct-a { color: #6ee7b7; }
+
+        /* ========== PREDICTED EXAM SPECIAL STYLING ========== */
+        .predicted-banner {
+            background: linear-gradient(135deg, rgba(236,72,153,0.15), rgba(124,58,237,0.15));
+            border: 1px solid rgba(236,72,153,0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .predicted-banner h3 { color: #f9a8d4; font-size: 1.1rem; margin-bottom: 6px; }
+        .predicted-banner p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .part-separator {
+            display: flex; align-items: center; gap: 16px;
+            margin: 32px 0 24px;
+        }
+        .part-separator::before, .part-separator::after {
+            content: ''; flex: 1; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+        }
+        .part-label {
+            font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--text-muted); white-space: nowrap;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ========== FOOTER ========== */
+        .footer-bar {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media(max-width: 640px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .tf-grid { grid-template-columns: 1fr; }
+            .exam-header { padding: 12px 16px; flex-wrap: wrap; }
+            .q-card { padding: 20px; }
+            .hero-title { font-size: 2.2rem; }
+        }
+
+        /* ========== LOADING OVERLAY ========== */
+        .loading-overlay {
+            position: fixed; inset: 0;
+            background: var(--bg-primary);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+        .loader-ring {
+            width: 60px; height: 60px;
+            border: 4px solid rgba(124,58,237,0.2);
+            border-top-color: #7c3aed;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-text { color: var(--text-secondary); font-size: 1rem; }
+
+        /* Shake animation */
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20%,60% { transform: translateX(-6px); }
+            40%,80% { transform: translateX(6px); }
+        }
+        .shake { animation: shake 0.4s ease; }
+
+        /* Confetti effect */
+        .confetti { position: fixed; pointer-events: none; z-index: 9998; }
+        .confetti-piece {
+            position: absolute;
+            width: 8px; height: 12px;
+            border-radius: 2px;
+            animation: confettiFall 3s ease-in forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loader-ring"></div>
+    <p class="loader-text">Loading FIS Exam Hub...</p>
+</div>
+
+<!-- ===================== LANDING PAGE ===================== -->
+<div id="landingPage">
+    <div class="hero-badge">📚 202.3 Foundation Information Systems • July 2026</div>
+    <h1 class="hero-title">
+        FIS <span class="grad">Exam Practice</span> Hub
+    </h1>
+    <p class="hero-sub">
+        Predict, practice, and perfect your exam skills. Covers all 5 parts of the final paper — MCQs, Short Answers, True/False & Case Studies.
+    </p>
+
+    <div class="modules-grid">
+        <!-- Part A -->
+        <div class="module-card purple" onclick="startModule('partA')">
+            <span class="module-icon">🎯</span>
+            <div class="module-part">Part A • Question 01</div>
+            <div class="module-title">MCQ Practice</div>
+            <div class="module-desc">20 questions × 1 mark. Select the correct letter from A, B, C or D. Covers all 5 topic areas.</div>
+            <div class="module-meta">
+                <span class="module-tag">20 Marks</span>
+                <span>150+ questions in pool</span>
+            </div>
+        </div>
+
+        <!-- Part B -->
+        <div class="module-card cyan" onclick="startModule('partB')">
+            <span class="module-icon">✍️</span>
+            <div class="module-part">Part B • Question 02</div>
+            <div class="module-title">Short / Direct Answers</div>
+            <div class="module-desc">20 questions × 1 mark. Single word or acronym only. Practice typing the exact answer!</div>
+            <div class="module-meta">
+                <span class="module-tag">20 Marks</span>
+                <span>One word or acronym</span>
+            </div>
+        </div>
+
+        <!-- Part C -->
+        <div class="module-card pink" onclick="startModule('partC')">
+            <span class="module-icon">⚖️</span>
+            <div class="module-part">Part C • Question 03</div>
+            <div class="module-title">True / False</div>
+            <div class="module-desc">10 statements × 1 mark. Decide quickly — True or False. No explanations needed.</div>
+            <div class="module-meta">
+                <span class="module-tag">10 Marks</span>
+                <span>10 statements</span>
+            </div>
+        </div>
+
+        <!-- Part D -->
+        <div class="module-card amber" onclick="startModule('partD')">
+            <span class="module-icon">📋</span>
+            <div class="module-part">Part D • Question 04</div>
+            <div class="module-title">Case Study – Alpha Corp</div>
+            <div class="module-desc">25 marks. Read the business scenario and answer all 5 sub-questions (a)–(e) based on the case.</div>
+            <div class="module-meta">
+                <span class="module-tag">25 Marks</span>
+                <span>5 sub-questions</span>
+            </div>
+        </div>
+
+        <!-- Part E -->
+        <div class="module-card green" onclick="startModule('partE')">
+            <span class="module-icon">🏢</span>
+            <div class="module-part">Part E • Question 05</div>
+            <div class="module-title">Case Study – TechStart Ltd</div>
+            <div class="module-desc">25 marks. Supply chain & CRM-focused case. Answer all 5 sub-questions with relevant detail.</div>
+            <div class="module-meta">
+                <span class="module-tag">25 Marks</span>
+                <span>5 sub-questions</span>
+            </div>
+        </div>
+
+        <!-- PREDICTED EXAM -->
+        <div class="module-card special" onclick="startModule('predicted')">
+            <span class="module-icon">🔮</span>
+            <div class="module-part">⭐ Predicted Full Paper</div>
+            <div class="module-title">Predicted Exam Paper – July 2026</div>
+            <div class="module-desc">Based on your lecture materials and exam patterns, this simulates the most likely questions for your actual paper. Covers all Parts A–E in one sitting. 60 marks total, 3 hours recommended.</div>
+            <div class="module-meta">
+                <span class="module-tag" style="background:rgba(236,72,153,0.2);color:#f9a8d4;">60 Marks</span>
+                <span style="color:var(--text-secondary);">Full mock exam · All 5 parts</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bar" style="margin-top:40px;">
+        Best of luck! 💜 FIS 202.3 • Year 02 Semester 01 • July 2026
+    </div>
+</div>
+
+<!-- ===================== EXAM AREA ===================== -->
+<div id="examArea">
+    <div class="exam-header">
+        <div class="exam-header-left">
+            <button class="back-btn" onclick="backToHome()">← Home</button>
+            <div class="exam-title-display" id="examTitleDisplay">MCQ Practice</div>
+        </div>
+        <div class="exam-score-display">
+            <div class="score-pill" id="liveScore">Score: 0/0</div>
+            <div class="timer-display" id="timerDisplay">00:00</div>
+        </div>
+    </div>
+    <div class="progress-track">
+        <div class="progress-fill-bar" id="progressBar" style="width:0%"></div>
+    </div>
+    <div class="question-area" id="questionArea"></div>
+</div>
+
+<!-- ===================== RESULTS AREA ===================== -->
+<div id="resultsArea">
+    <div class="results-container">
+        <div class="result-grade" id="resultGrade">🎉</div>
+        <div class="result-label" id="resultLabel"></div>
+        <div class="result-sub" id="resultSub"></div>
+        <div class="stats-grid">
+            <div class="stat-card correct-stat">
+                <div class="stat-value" id="statCorrect">0</div>
+                <div class="stat-label">Correct</div>
+            </div>
+            <div class="stat-card wrong-stat">
+                <div class="stat-value" id="statWrong">0</div>
+                <div class="stat-label">Wrong</div>
+            </div>
+            <div class="stat-card percent-stat">
+                <div class="stat-value" id="statPercent">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+        <div class="result-actions">
+            <button class="btn btn-primary" onclick="backToHome()">🏠 Back to Home</button>
+            <button class="btn btn-secondary" onclick="restartCurrentModule()">🔄 Try Again</button>
+            <button class="btn btn-check" onclick="showReview()" id="reviewBtn">📋 Review Answers</button>
+        </div>
+    </div>
+    <div class="review-list" id="reviewList"></div>
+</div>
+
+<div class="confetti" id="confettiContainer"></div>
+
+<script>
+// ============================================================
+//  ALL QUESTION DATA
+// ============================================================
+const PART_A_QUESTIONS = [
+    // --- DATA & INFORMATION (File 01) ---
+    { id:'a1', cat:'Data & Information', q:'Which statement best defines data?', opts:['Processed facts with meaning','Raw unprocessed facts and figures','A decision made by management','Knowledge gained from experience'], correct:1, exp:'Data refers to raw, unprocessed facts and figures without context or meaning.' },
+    { id:'a2', cat:'Data & Information', q:'Which of the following best describes information?', opts:['Data with no context','Data that has been formatted, organized, or processed to be useful','Random symbols only','Unrecorded personal experience'], correct:1, exp:'Information is data that has been processed, organized, and given context to make it meaningful.' },
+    { id:'a3', cat:'Information Levels', q:'Strategic information is mainly used by ________.',opts:['Lower-level operational staff','Top-level management for long-term decisions','Customers only','Machine operators only'], correct:1, exp:'Strategic information supports top-level management in making long-term organizational decisions.' },
+    { id:'a4', cat:'Information Levels', q:'Tactical information is generally used by ________.', opts:['Middle management for planning and managing projects','Only shareholders','Only automated systems','External agencies only'], correct:0, exp:'Tactical information helps middle management plan and manage specific projects and resource allocation.' },
+    { id:'a5', cat:'Information Levels', q:'Operational information is mainly related to ________.', opts:['Long-term company vision only','Day-to-day operations','National economic trends','Abstract theories only'], correct:1, exp:'Operational information supports day-to-day activities and routine business operations.' },
+    { id:'a6', cat:'Knowledge', q:'Knowledge is best described as the ability to ________.', opts:['Store random numbers without meaning','Understand information and make decisions or predictions','Remove context from information','Create only raw facts'], correct:1, exp:'Knowledge is the ability to understand information and use it to make informed decisions and predictions.' },
+    { id:'a7', cat:'Knowledge Types', q:'Rules, processes, or decisions that can be recorded and stored are called ________ knowledge.', opts:['Tacit','Explicit','Random','Periodic'], correct:1, exp:'Explicit knowledge can be documented, recorded, and easily communicated to others.' },
+    { id:'a8', cat:'Knowledge Types', q:'Knowledge that is difficult to write down and is often created from experience is called ________ knowledge.', opts:['Explicit','Tacit','Secondary','Aggregated'], correct:1, exp:'Tacit knowledge is experiential, intuitive, and difficult to articulate or formalize in documents.' },
+    { id:'a9', cat:'Knowledge Conversion', q:'In knowledge conversion, Socialization converts ________.', opts:['Explicit to explicit knowledge','Tacit to tacit knowledge','Data to hardware','Information to entropy'], correct:1, exp:'Socialization is the process where tacit knowledge is shared between individuals through experience.' },
+    { id:'a10', cat:'Knowledge Conversion', q:'Externalization converts ________.', opts:['Tacit knowledge into explicit knowledge','Explicit knowledge into tacit knowledge','Output into input','Primary sources into external sources'], correct:0, exp:'Externalization is converting tacit knowledge (experience) into explicit knowledge (documentation).' },
+    { id:'a11', cat:'Systems', q:'A system is a collection of interdependent parts that ________.', opts:['Do not affect one another','Interact with each other to function as a whole','Exist without any purpose','Contain only random objects'], correct:1, exp:'A system consists of interdependent parts that work together toward a common purpose.' },
+    { id:'a12', cat:'Systems', q:'A system must consist of ________.', opts:['Elements, interconnections, and a function or purpose','Only physical objects','Only external information','Only random inputs'], correct:0, exp:'Every system requires elements (parts), interconnections (relationships), and a purpose or function.' },
+    { id:'a13', cat:'Systems', q:'In the general system model, inputs are transformed into outputs by ________.', opts:['Processes','Boundaries only','External agencies','Data errors'], correct:0, exp:'Processes are the mechanisms that transform inputs into outputs in a system.' },
+    { id:'a14', cat:'Systems', q:'Entropy refers to the amount of ________ in a system.', opts:['Order only','Disorder or randomness','Profit','Knowledge conversion'], correct:1, exp:'Entropy is the measure of disorder, randomness, or lack of organization in a system.' },
+    { id:'a15', cat:'Information Sources', q:'A source where a piece of information appears for the first time is called a ________ source.', opts:['Secondary','Primary','External only','Sampled'], correct:1, exp:'A primary source is where information first appears or originates. Secondary sources cite primary sources.' },
+    // --- CRM (File 02) ---
+    { id:'a16', cat:'CRM', q:'CRM stands for:', opts:['Customer Resource Management','Customer Relationship Management','Client Retention Model','Customer Response Mechanism'], correct:1, exp:'CRM stands for Customer Relationship Management - a business strategy to manage customer interactions.' },
+    { id:'a17', cat:'CRM', q:'CRM is mainly categorized into:', opts:['Manual and Automated CRM','Strategic and Tactical CRM','Operational, Analytical, and Collaborative CRM','Internal and External CRM'], correct:2, exp:'CRM has three main categories: Operational, Analytical, and Collaborative.' },
+    { id:'a18', cat:'CRM', q:'Operational CRM mainly focuses on:', opts:['Data mining','Automating sales, marketing, and service processes','Financial accounting','Network security'], correct:1, exp:'Operational CRM automates and streamlines sales, marketing, and customer service processes.' },
+    { id:'a19', cat:'CRM', q:'Analytical CRM primarily uses:', opts:['Hardware systems','Manual records','Data analysis and reporting','Paper-based reports'], correct:2, exp:'Analytical CRM focuses on analyzing customer data and generating insights through reporting.' },
+    { id:'a20', cat:'CRM', q:'Collaborative CRM emphasizes:', opts:['Inventory management','Supplier coordination','Interaction with customers across multiple channels','Internal auditing'], correct:2, exp:'Collaborative CRM enables customer interaction across multiple channels.' },
+    // --- BUSINESS IS & SCM (File 03) ---
+    { id:'a21', cat:'TPS', q:'Transaction Processing Systems (TPS) mainly focus on:', opts:['Strategic planning','Automation of routine tasks','Predictive analytics','Market forecasting'], correct:1, exp:'TPS automates routine operational tasks like sales orders, payroll, and inventory management.' },
+    { id:'a22', cat:'ERP', q:'ERP systems integrate:', opts:['Only accounting','Only HR','Various business processes','Only marketing'], correct:2, exp:'ERP systems integrate various business processes across departments into a unified system.' },
+    { id:'a23', cat:'Supply Chain', q:'A supply chain involves the flow of:', opts:['Products only','Funds only','Information only','Products, information, and funds'], correct:3, exp:'Supply chains involve flows of products, information, and financial transactions.' },
+    { id:'a24', cat:'SCM', q:'Supply Chain Management (SCM) is best defined as:', opts:['Employee recruitment system','Managing flow of goods and services','Marketing strategy','Retail-only system'], correct:1, exp:'SCM is the management of the flow of goods, services, and information from source to end user.' },
+    { id:'a25', cat:'SCM Models', q:'Which is an example of a Build-to-Order (BTO) model?', opts:['Supermarket stocking goods','Dell manufacturing after receiving orders','Pre-produced items in retail stores','Bulk warehouse storage'], correct:1, exp:'BTO model manufactures products after customer orders, like Dell\'s custom computers.' },
+    { id:'a26', cat:'SCM Drivers', q:'Which of the following is a supply chain driver?', opts:['Facilities','Weather','Politics','Advertising'], correct:0, exp:'Facilities (location of production/storage) is a key supply chain driver.' },
+    { id:'a27', cat:'SCM', q:'Procurement refers to:', opts:['Internal communication','B2B purchase of supplies/services','Employee training','Advertising'], correct:1, exp:'Procurement is the process of purchasing supplies and services from external suppliers.' },
+    { id:'a28', cat:'SCM', q:'Outsourcing means:', opts:['Doing everything in-house','Hiring external company for services','Increasing inventory','Retail selling'], correct:1, exp:'Outsourcing is contracting external companies to perform business processes or services.' },
+    { id:'a29', cat:'SCM', q:'The ultimate goal of SCM is to:', opts:['Maximize delays','Keep costs minimum and meet demand effectively','Increase complexity','Reduce coordination'], correct:1, exp:'The main goal of SCM is to minimize costs while effectively meeting customer demand.' },
+    // --- SYSTEMS ADVANCED (File 04) ---
+    { id:'a30', cat:'System Model', q:'Which of the following represents the General System Model?', opts:['Input → Process → Output with Feedback','Data → Storage → Information','Input → Output only','Process → Feedback → Environment'], correct:0, exp:'The General System Model shows: Input → Process → Output → Feedback.' },
+    { id:'a31', cat:'System Feedback', q:'What is the role of feedback in a system?', opts:['To create random disturbances','To compare intended outputs with actual results','To generate new elements','To stop the system from functioning'], correct:1, exp:'Feedback allows systems to monitor performance and adjust toward desired outcomes.' },
+    { id:'a32', cat:'System Examples', q:'Which of the following is an example of a system?', opts:['A pile of sand','A cricket team','A broken clock','A set of stones'], correct:1, exp:'A cricket team is a system with interdependent players working toward a common goal.' },
+    { id:'a33', cat:'System Boundary', q:'Which statement about a system boundary is correct?', opts:['It isolates the system completely','It defines the limits of the system\'s interactions with the environment','It stops input and output','It is only symbolic'], correct:1, exp:'A system boundary defines what is inside the system and how it interacts with the external environment.' },
+    { id:'a34', cat:'Subsystems', q:'What is a subsystem?', opts:['A complete system unrelated to others','A major component made up of interacting components','A random collection of elements','A system that does not affect the whole'], correct:1, exp:'A subsystem is a system within a larger system, with its own components and interactions.' },
+    { id:'a35', cat:'System Hierarchy', q:'Which statement best describes the relationship between systems, subsystems, and components?', opts:['Subsystems exist independently of systems','Components are made up of subsystems','Systems decompose into subsystems, which further decompose into components','Components and subsystems are identical'], correct:2, exp:'There\'s a hierarchy: Systems → Subsystems → Components, each level containing the one below.' },
+    // --- COMPREHENSIVE MIXED (File 05) ---
+    { id:'a36', cat:'Information Systems', q:'Middle-level management typically relies on which type of information system?', opts:['Decision Support System (DSS)','Executive Information System (EIS)','Transaction Processing System (TPS)','Knowledge Management System (KMS)'], correct:0, exp:'DSS provides decision support for middle management project and resource decisions.' },
+    { id:'a37', cat:'System Classification', q:'Which of the following best classifies an ATM?', opts:['Open, deterministic, and real-time system','Closed, static, and batch processing system','Open, stochastic, and manual system','Closed, structured, and predictive system'], correct:0, exp:'ATM is open (interacts with users), deterministic (predictable outputs), and real-time.' },
+    { id:'a38', cat:'Strategic IS', q:'Which type of information system is best suited for long-term strategic planning?', opts:['Transaction Processing System (TPS)','Decision Support System (DSS)','Executive Information System (EIS)','Office Automation System (OAS)'], correct:2, exp:'EIS provides high-level executives with strategic information for long-term planning.' },
+    { id:'a39', cat:'System Behavior', q:'A deterministic system is characterized by:', opts:['Random behavior with unpredictable outputs','Clearly defined rules where the same input always produces the same output','Human intervention at every step','Open-ended interactions with changing environments'], correct:1, exp:'Deterministic systems produce predictable, consistent outputs from given inputs.' },
+    { id:'a40', cat:'Systems Thinking', q:'In systems thinking, which of the following is a key characteristic?', opts:['Viewing problems in isolation','Analyzing individual components without understanding relationships','Understanding how different parts interact and influence the whole','Focusing only on quantitative data'], correct:2, exp:'Systems thinking recognizes interconnections and how parts affect the whole.' },
+    { id:'a41', cat:'IS Components', q:'In an information system, which component is responsible for data input, storage, processing, and retrieval?', opts:['Hardware','Software','People','Procedures'], correct:0, exp:'Hardware (computers, servers) handles data input, storage, processing, and retrieval.' },
+    { id:'a42', cat:'CRM Benefits', q:'One major benefit of CRM is:', opts:['Increased production cost','Reduced customer satisfaction','Improved customer relationships','Limited communication'], correct:2, exp:'CRM improves customer relationships by enabling better communication, personalization, and service quality.' },
+    { id:'a43', cat:'Information Types', q:'A monthly bank statement is an example of ________ information.', opts:['Continuous','Periodic','Tacit','Deterministic'], correct:1, exp:'Periodic information is created at regular intervals (hourly, daily, monthly, annually).' },
+    { id:'a44', cat:'Information Sources', q:'Marketing, production, and financial records generated within an organization are examples of ________ information.', opts:['Internal','External','Probabilistic','Abstract'], correct:0, exp:'Internal information is generated within the organization from internal sources and operations.' },
+    { id:'a45', cat:'Systems', q:'Systems thinking views problems as ________.', opts:['Isolated events only','Parts of an overall system','Unrelated data only','Manual activities only'], correct:1, exp:'Systems thinking recognizes that problems are interconnected and part of larger systems.' },
+    { id:'a46', cat:'Knowledge', q:'Knowledge is richer than information because it includes ________.', opts:['Only symbols','Context, values, experience, rules, and judgement','Only numbers','Only external data'], correct:1, exp:'Knowledge incorporates experience, judgment, values, and rules that go beyond simple information.' },
+    { id:'a47', cat:'SCM Benefits', q:'One benefit of SCM is:', opts:['Higher inventory','Lower productivity','Lower costs','Poor customer service'], correct:2, exp:'SCM reduces costs through optimized processes, inventory, and operations.' },
+    { id:'a48', cat:'BIS', q:'Business Information Systems (BIS) primarily support:', opts:['Only operational staff','Only customers','Operations, management, and decision-making','Only IT department'], correct:2, exp:'BIS supports organizational operations at all levels - from daily operations to strategic decision-making.' },
+    { id:'a49', cat:'CRM', q:'Customer segmentation in CRM is used to:', opts:['Divide customers into groups based on characteristics','Delete inactive customers','Increase system errors','Limit communication'], correct:0, exp:'Customer segmentation divides customers into groups for targeted marketing and personalized service.' },
+    { id:'a50', cat:'Information Types', q:'Information created from data gathered several times a second is called ________ information.', opts:['Periodic','Continuous','Sampled','Aggregated'], correct:1, exp:'Continuous information is created from data gathered constantly or at very frequent intervals.' },
+];
+
+const PART_B_QUESTIONS = [
+    { id:'b1', cat:'Acronyms', q:'What does TPS stand for in the context of information systems?', answer:'TPS', alt:['Transaction Processing System','transaction processing systems'] },
+    { id:'b2', cat:'Acronyms', q:'What does CRM stand for?', answer:'CRM', alt:['Customer Relationship Management','customer relationship management'] },
+    { id:'b3', cat:'Acronyms', q:'What does ERP stand for?', answer:'ERP', alt:['Enterprise Resource Planning','enterprise resource planning'] },
+    { id:'b4', cat:'Acronyms', q:'What does SCM stand for?', answer:'SCM', alt:['Supply Chain Management','supply chain management'] },
+    { id:'b5', cat:'Acronyms', q:'What does DSS stand for?', answer:'DSS', alt:['Decision Support System','decision support system'] },
+    { id:'b6', cat:'Acronyms', q:'What does EIS stand for?', answer:'EIS', alt:['Executive Information System','executive information system'] },
+    { id:'b7', cat:'Acronyms', q:'What does BIS stand for?', answer:'BIS', alt:['Business Information Systems','business information systems'] },
+    { id:'b8', cat:'Acronyms', q:'What does MIS stand for?', answer:'MIS', alt:['Management Information System','management information system'] },
+    { id:'b9', cat:'Concepts', q:'Knowledge that is difficult to write down, created from experience, is called ________ knowledge.', answer:'Tacit', alt:['tacit'] },
+    { id:'b10', cat:'Concepts', q:'Knowledge that can be recorded and documented is called ________ knowledge.', answer:'Explicit', alt:['explicit'] },
+    { id:'b11', cat:'Concepts', q:'What type of information is created at regular intervals (e.g., monthly)?', answer:'Periodic', alt:['periodic'] },
+    { id:'b12', cat:'Concepts', q:'What type of information is gathered continuously many times a second?', answer:'Continuous', alt:['continuous'] },
+    { id:'b13', cat:'Concepts', q:'What word describes the disorder or randomness in a system?', answer:'Entropy', alt:['entropy'] },
+    { id:'b14', cat:'Concepts', q:'A source where information first appears is called a ________ source.', answer:'Primary', alt:['primary'] },
+    { id:'b15', cat:'Concepts', q:'Information derived from primary sources (e.g., accounts book from invoices) is ________ information.', answer:'Secondary', alt:['secondary'] },
+    { id:'b16', cat:'Concepts', q:'The boundary that separates a system from its environment is called the ________.', answer:'Boundary', alt:['system boundary'] },
+    { id:'b17', cat:'Concepts', q:'Hiring an external company to perform a business service is called ________.', answer:'Outsourcing', alt:['outsourcing'] },
+    { id:'b18', cat:'Concepts', q:'The SCM model where production starts only after a customer order is received is called ________.', answer:'BTO', alt:['Build-to-Order','build to order','build-to-order'] },
+    { id:'b19', cat:'Concepts', q:'The SECI model knowledge conversion process that turns tacit into explicit knowledge is called ________.', answer:'Externalization', alt:['externalization'] },
+    { id:'b20', cat:'Concepts', q:'The SECI model process that turns explicit knowledge into tacit knowledge through learning is called ________.', answer:'Internalization', alt:['internalization'] },
+    { id:'b21', cat:'Concepts', q:'Information used by top management for long-term organizational decisions is called ________ information.', answer:'Strategic', alt:['strategic'] },
+    { id:'b22', cat:'Concepts', q:'The process of purchasing goods and services from external suppliers in B2B transactions is called ________.', answer:'Procurement', alt:['procurement'] },
+    { id:'b23', cat:'CRM Types', q:'The CRM type that automates sales, marketing, and service processes is called ________ CRM.', answer:'Operational', alt:['operational'] },
+    { id:'b24', cat:'CRM Types', q:'The CRM type that focuses on analyzing customer data is called ________ CRM.', answer:'Analytical', alt:['analytical'] },
+    { id:'b25', cat:'Concepts', q:'Combining totals from detailed information to create a summary is called ________ information.', answer:'Aggregated', alt:['aggregated','aggregation'] },
+];
+
+const PART_C_QUESTIONS = [
+    { id:'c1', cat:'True/False', q:'Data is raw, unprocessed facts, while information is data given context and meaning.', correct:true, exp:'Correct. Data = raw facts; Information = processed, meaningful data.' },
+    { id:'c2', cat:'True/False', q:'Tacit knowledge is easy to document and share with others in writing.', correct:false, exp:'False. Tacit knowledge is difficult to articulate, write down, or transfer. Explicit knowledge is the type that can be documented.' },
+    { id:'c3', cat:'True/False', q:'Strategic information is mainly used by top-level management for long-term decision making.', correct:true, exp:'Correct. Strategic information supports executive decision-making for long-term goals.' },
+    { id:'c4', cat:'True/False', q:'A supply chain involves the flow of products, information, and funds.', correct:true, exp:'Correct. Supply chains have three flows: products/goods, information, and financial transactions.' },
+    { id:'c5', cat:'True/False', q:'CRM has three main types: Operational, Analytical, and Collaborative.', correct:true, exp:'Correct. The three CRM categories are Operational (automates processes), Analytical (data analysis), and Collaborative (multi-channel interaction).' },
+    { id:'c6', cat:'True/False', q:'A pile of sand is an example of a system because it contains many interconnected parts.', correct:false, exp:'False. A pile of sand is NOT a system because it lacks specific interconnections and a clear function or purpose.' },
+    { id:'c7', cat:'True/False', q:'Externalization in the SECI model converts explicit knowledge into tacit knowledge.', correct:false, exp:'False. Externalization converts TACIT knowledge into EXPLICIT knowledge. The reverse (explicit to tacit) is Internalization.' },
+    { id:'c8', cat:'True/False', q:'ERP systems integrate various business processes across departments into a unified system.', correct:true, exp:'Correct. ERP integrates processes across Finance, HR, Sales, Operations and other departments.' },
+    { id:'c9', cat:'True/False', q:'The ultimate goal of Supply Chain Management is to maximize inventory levels to meet demand.', correct:false, exp:'False. The goal of SCM is to MINIMIZE costs while effectively meeting customer demand. Excessive inventory increases cost.' },
+    { id:'c10', cat:'True/False', q:'In a deterministic system, the same input always produces the same output.', correct:true, exp:'Correct. Deterministic systems follow fixed rules and produce consistent, predictable outputs.' },
+    { id:'c11', cat:'True/False', q:'Periodic information is created by gathering data several times per second.', correct:false, exp:'False. CONTINUOUS information is gathered many times per second. PERIODIC information is created at fixed intervals like daily, weekly, or monthly.' },
+    { id:'c12', cat:'True/False', q:'A primary source of information is where data first originates or appears for the first time.', correct:true, exp:'Correct. Primary sources are original, first-hand sources like direct interviews or original research.' },
+    { id:'c13', cat:'True/False', q:'Feedback in a system is used to compare intended outputs with actual results.', correct:true, exp:'Correct. Feedback is the mechanism that monitors outputs and helps adjust system behavior.' },
+    { id:'c14', cat:'True/False', q:'An ATM is classified as a closed system because it does not interact with external users.', correct:false, exp:'False. An ATM is an OPEN system because it interacts with users (external environment) to complete transactions.' },
+    { id:'c15', cat:'True/False', q:'The Build-to-Order (BTO) model begins production only after a customer places an order.', correct:true, exp:'Correct. BTO (like Dell\'s manufacturing) produces items only after receiving a specific customer order.' },
+];
+
+const PART_D_CASE = {
+    title: 'Alpha Corporation – CRM & Information Systems',
+    scenario: `Alpha Corporation is a mid-sized retail company operating across three cities. They recently invested in a Customer Relationship Management (CRM) system to improve their customer service operations. Before implementing CRM, sales staff maintained customer records in spreadsheets, leading to data inconsistencies and missed follow-up opportunities. 
+
+After the CRM implementation, Alpha's sales team can now access a centralized customer database, view interaction histories, and automate follow-up emails. The Marketing department uses the system's analytics module to segment customers by purchasing behavior. The CEO receives monthly dashboards showing key performance indicators (KPIs).
+
+However, some employees are resistant to using the new system, and a few departments still prefer manual processes. The IT manager notes that the system lacks integration with the company's existing accounting software.`,
+    subs: [
+        {
+            label: 'a)',
+            q: 'Identify the type of CRM system that Alpha Corporation has implemented and explain TWO features of this type. (5 Marks)',
+            sampleAnswer: `Alpha Corporation implemented an Operational CRM system.
+
+Two features:
+1. Centralized Customer Database – All customer information and interaction histories are stored in one accessible location, eliminating data inconsistency and duplication that existed when spreadsheets were used.
+2. Automated Follow-ups – The system automates follow-up emails and communication, ensuring no customer opportunities are missed and improving overall sales efficiency.`
+        },
+        {
+            label: 'b)',
+            q: 'The Marketing department uses the analytics module to segment customers. Identify the type of CRM being used for this purpose and explain what customer segmentation means. (5 Marks)',
+            sampleAnswer: `The Marketing department is using Analytical CRM.
+
+Customer segmentation is the process of dividing a customer base into distinct groups (segments) based on shared characteristics such as purchasing behavior, demographics, or spending patterns. In Alpha's case, the analytics module groups customers by their purchasing behavior.
+
+This allows the Marketing team to target specific customer groups with tailored marketing campaigns, improving campaign effectiveness and customer satisfaction.`
+        },
+        {
+            label: 'c)',
+            q: 'The CEO receives monthly dashboards with KPIs. Identify the level of management decision this supports and justify your answer. (5 Marks)',
+            sampleAnswer: `The monthly KPI dashboards support Strategic-level (top-level management) decision-making.
+
+Justification: The CEO is a top-level executive who requires summarized, aggregated information (like KPIs) to assess organizational performance and make long-term strategic decisions. Monthly dashboards provide aggregated (summarized), periodic information that gives a high-level overview — which is the type of information required at the strategic level. Operational-level staff would need detailed, real-time data instead.`
+        },
+        {
+            label: 'd)',
+            q: 'Identify TWO problems Alpha Corporation is currently facing with their CRM implementation and suggest ONE solution for each problem. (5 Marks)',
+            sampleAnswer: `Problem 1: Employee Resistance
+Some employees are resistant to using the new CRM system and prefer manual processes.
+Solution: Conduct structured user training and change management programs to demonstrate the system's benefits and build employee confidence. Management should also mandate CRM use as part of standard operating procedures.
+
+Problem 2: Lack of Integration with Accounting Software
+The CRM system does not integrate with the existing accounting software.
+Solution: Implement API integration or use middleware to connect the CRM system with the accounting software, enabling seamless data exchange across departments.`
+        },
+        {
+            label: 'e)',
+            q: 'Explain how the CRM implementation at Alpha Corporation demonstrates the concept of a system using the general system model (Input → Process → Output → Feedback). (5 Marks)',
+            sampleAnswer: `The CRM system at Alpha Corporation can be explained using the General System Model:
+
+Input: Customer data such as purchase history, contact details, and interaction records are entered into the CRM system.
+
+Process: The CRM processes this data — organizing, analyzing, and categorizing it through its Operational and Analytical modules (e.g., segmenting customers by behavior, automating emails).
+
+Output: Outputs include automated follow-up emails, marketing campaign plans, and executive KPI dashboards for the CEO.
+
+Feedback: The system monitors results (e.g., campaign response rates, customer satisfaction) and feeds this back to improve future marketing strategies and service approaches. For example, if a campaign has low response, the analytics module provides feedback to adjust the targeting.`
+        },
+    ]
+};
+
+const PART_E_CASE = {
+    title: 'TechStart Ltd – Supply Chain & Information Systems',
+    scenario: `TechStart Ltd is a technology startup that designs and sells customized laptop computers. Customers can configure their laptops online by choosing the processor, RAM, storage, and display options. Once an order is confirmed and payment received, TechStart begins manufacturing the customized laptop and delivers it within 14 working days.
+
+TechStart sources its components (processors, screens, RAM modules) from suppliers in three countries. The supply chain team tracks inventory levels in real-time using an integrated information system. When stock falls below a threshold, automatic purchase orders are generated to suppliers. The Operations Manager receives daily reports on production progress, delivery status, and supplier performance.
+
+A recent supply chain disruption caused by a delayed processor shipment resulted in a backlog of 200 orders. The CEO is now considering whether to source processors from an additional local supplier to reduce dependency on a single overseas source.`,
+    subs: [
+        {
+            label: 'a)',
+            q: 'Identify the supply chain model TechStart Ltd is using and explain TWO characteristics of this model. (5 Marks)',
+            sampleAnswer: `TechStart Ltd is using the Build-to-Order (BTO) supply chain model.
+
+Two characteristics:
+1. Production begins after order received: TechStart only starts manufacturing a laptop after a customer places and confirms an order. This means no pre-built inventory is maintained, reducing storage costs.
+2. Customization-driven: Each laptop is built to the customer's specific configuration (processor, RAM, storage, display), making each unit unique to the individual order rather than being a standard product.`
+        },
+        {
+            label: 'b)',
+            q: 'Explain how TechStart\'s information system supports supply chain management. Refer to the case study in your answer. (5 Marks)',
+            sampleAnswer: `TechStart's integrated information system supports SCM in several ways:
+
+1. Real-time inventory tracking: The system monitors stock levels of components (processors, screens, RAM) in real-time, giving the supply chain team accurate, current data.
+
+2. Automated purchase orders: When inventory falls below a threshold, the system automatically generates purchase orders to suppliers — reducing human error and ensuring timely replenishment.
+
+3. Management reporting: The Operations Manager receives daily reports on production progress, delivery status, and supplier performance, supporting operational-level decision making.
+
+This demonstrates how information systems create efficiency in SCM by automating routine tasks (TPS function) and providing management with actionable information.`
+        },
+        {
+            label: 'c)',
+            q: 'The delayed processor shipment caused a backlog. Identify the supply chain driver most relevant to this disruption and explain its impact on TechStart. (5 Marks)',
+            sampleAnswer: `The most relevant supply chain driver is the Sourcing/Supplier driver (or Procurement driver).
+
+The disruption occurred because TechStart was dependent on a single overseas supplier for processors. When that shipment was delayed, the entire production pipeline was affected, causing 200 order backlogs.
+
+Impact on TechStart:
+- Production halted because processors are a critical component — without them, no laptop can be assembled.
+- Customer satisfaction was damaged as 200 orders could not be fulfilled within the promised 14-day delivery window.
+- The company faces reputation risk and potential cancellation of orders.
+
+This shows how over-reliance on a single supplier in the sourcing driver creates supply chain vulnerability.`
+        },
+        {
+            label: 'd)',
+            q: 'The CEO is considering adding a local supplier. Using supply chain management concepts, justify whether this is a good decision and identify ONE risk. (5 Marks)',
+            sampleAnswer: `Yes, sourcing from an additional local supplier is a good SCM decision.
+
+Justification:
+1. Risk Diversification: Having a local backup supplier reduces dependency on a single overseas source. If one supplier faces disruptions (as recently occurred), TechStart can continue production using the alternative supplier.
+2. Reduced Lead Times: A local supplier can deliver faster, especially in emergencies, reducing the risk of production delays.
+3. Supply Chain Resilience: Multiple sourcing improves overall supply chain resilience — a key SCM principle.
+
+One Risk: Higher cost from local supplier. Local suppliers may charge more than overseas suppliers due to higher labor or operational costs. TechStart must balance the cost increase against the benefit of reduced supply risk.`
+        },
+        {
+            label: 'e)',
+            q: 'Explain how the operations manager\'s daily reports represent the concept of information levels in an organization. (5 Marks)',
+            sampleAnswer: `The daily reports received by the Operations Manager represent Operational-level information.
+
+Operational information is:
+- Detailed: The reports include specific data on production progress, individual delivery statuses, and individual supplier performance.
+- Frequent/Periodic: They are produced daily, which is a short-cycle, routine reporting pattern.
+- Used for day-to-day management: The Operations Manager uses this information to manage daily production schedules, identify bottlenecks, and respond to issues immediately.
+
+This is contrasted with Strategic information (used by the CEO for long-term decisions) which would be more aggregated — like a monthly summary of overall supply chain performance and strategic supplier decisions.
+
+The three levels of information in an organization are:
+1. Operational – detailed, frequent (daily reports → Operations Manager)
+2. Tactical – semi-detailed, periodic (weekly/monthly → Middle Management)
+3. Strategic – aggregated, long-term (monthly/annual → CEO/Directors)`
+        },
+    ]
+};
+
+// ============================================================
+//  STATE
+// ============================================================
+let currentModule = '';
+let currentQuestions = [];
+let currentIndex = 0;
+let userAnswers = {};
+let score = 0;
+let timerInterval = null;
+let timerSeconds = 0;
+let moduleStarted = false;
+
+// ============================================================
+//  UTILITY
+// ============================================================
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length-1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function pick(arr, n) {
+    return shuffle(arr).slice(0, Math.min(n, arr.length));
+}
+
+// ============================================================
+//  MODULE START
+// ============================================================
+function startModule(mod) {
+    currentModule = mod;
+    userAnswers = {};
+    score = 0;
+    currentIndex = 0;
+    timerSeconds = 0;
+
+    if (mod === 'partA') {
+        currentQuestions = shuffle(PART_A_QUESTIONS).slice(0, 20);
+    } else if (mod === 'partB') {
+        currentQuestions = shuffle(PART_B_QUESTIONS).slice(0, 20);
+    } else if (mod === 'partC') {
+        currentQuestions = shuffle(PART_C_QUESTIONS).slice(0, 10);
+    } else if (mod === 'partD') {
+        currentQuestions = null; // handled separately
+    } else if (mod === 'partE') {
+        currentQuestions = null;
+    } else if (mod === 'predicted') {
+        currentQuestions = null; // full exam
+    }
+
+    document.getElementById('landingPage').style.display = 'none';
+    document.getElementById('resultsArea').style.display = 'none';
+    document.getElementById('examArea').style.display = 'block';
+
+    const titles = {
+        partA: '⬡ Part A – MCQ Practice',
+        partB: '✍ Part B – Short Answers',
+        partC: '⚖ Part C – True/False',
+        partD: '📋 Part D – Case Study: Alpha Corp',
+        partE: '🏢 Part E – Case Study: TechStart',
+        predicted: '🔮 Predicted Full Exam Paper'
+    };
+    document.getElementById('examTitleDisplay').textContent = titles[mod] || mod;
+
+    startTimer();
+    if (mod === 'partD') renderCaseStudy(PART_D_CASE, 'D');
+    else if (mod === 'partE') renderCaseStudy(PART_E_CASE, 'E');
+    else if (mod === 'predicted') renderPredictedExam();
+    else renderQuestion();
+}
+
+// ============================================================
+//  TIMER
+// ============================================================
+function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerSeconds = 0;
+    timerInterval = setInterval(() => {
+        timerSeconds++;
+        const m = String(Math.floor(timerSeconds/60)).padStart(2,'0');
+        const s = String(timerSeconds%60).padStart(2,'0');
+        document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+    }, 1000);
+}
+
+function stopTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+// ============================================================
+//  MCQ RENDER
+// ============================================================
+function renderQuestion() {
+    if (!currentQuestions || currentIndex >= currentQuestions.length) {
+        showResults();
+        return;
+    }
+
+    const q = currentQuestions[currentIndex];
+    const total = currentQuestions.length;
+    updateProgress(currentIndex, total);
+    updateLiveScore();
+
+    let inner = '';
+    if (currentModule === 'partA') {
+        inner = renderMCQ(q);
+    } else if (currentModule === 'partB') {
+        inner = renderShortAnswer(q);
+    } else if (currentModule === 'partC') {
+        inner = renderTrueFalse(q);
+    }
+
+    document.getElementById('questionArea').innerHTML = `
+        <div class="question-nav">
+            <div class="q-counter">Question <span>${currentIndex+1}</span> / ${total}</div>
+            <div class="category-badge">${q.cat}</div>
+        </div>
+        <div class="q-card">
+            <div class="q-number-tag">Question ${currentIndex+1}</div>
+            <div class="q-text">${q.q}</div>
+            ${inner}
+        </div>
+        <div class="nav-btns" id="navBtns">
+            ${currentIndex > 0 ? '<button class="btn btn-secondary" onclick="goBack()">← Previous</button>' : ''}
+            <button class="btn btn-check" id="checkBtn" onclick="checkAnswer()">Check Answer</button>
+        </div>
+    `;
+
+    // Restore state if revisiting
+    const prev = userAnswers[q.id];
+    if (prev !== undefined) {
+        if (currentModule === 'partA') restoreMCQ(q, prev);
+        else if (currentModule === 'partB') restoreShort(q, prev);
+        else if (currentModule === 'partC') restoreTF(q, prev);
+    }
+}
+
+function renderMCQ(q) {
+    return `<div class="options-list" id="optionsList">
+        ${q.opts.map((o, i) => {
+            const letters = ['A','B','C','D'];
+            return `<button class="option-btn" id="opt${i}" onclick="selectMCQ(${i})" data-idx="${i}">
+                <div class="option-letter">${letters[i]}</div>
+                <div>${o}</div>
+            </button>`;
+        }).join('')}
+    </div><div id="feedbackArea"></div>`;
+}
+
+function selectMCQ(idx) {
+    const answered = userAnswers[currentQuestions[currentIndex].id];
+    if (answered !== undefined) return;
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelector(`#opt${idx}`).classList.add('selected');
+    document.getElementById('checkBtn').dataset.selected = idx;
+}
+
+function restoreMCQ(q, answer) {
+    const letters = ['A','B','C','D'];
+    const correctIdx = q.correct;
+    const selectedIdx = answer.selected;
+    document.querySelectorAll('.option-btn').forEach((b, i) => {
+        b.disabled = true;
+        if (i === correctIdx) b.classList.add(selectedIdx === correctIdx ? 'correct' : 'correct-reveal');
+        if (i === selectedIdx && selectedIdx !== correctIdx) b.classList.add('wrong');
+    });
+    const isCorrect = selectedIdx === correctIdx;
+    document.getElementById('feedbackArea').innerHTML = feedbackHTML(isCorrect, letters[correctIdx], q.exp);
+    document.getElementById('checkBtn').disabled = true;
+    document.getElementById('checkBtn').textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
+    addNextBtn();
+}
+
+function restoreShort(q, answer) {
+    const input = document.getElementById('shortInput');
+    if (input) {
+        input.value = answer.typed;
+        input.disabled = true;
+        input.classList.add(answer.correct ? 'correct-input' : 'wrong-input');
+    }
+    document.getElementById('feedbackArea').innerHTML = feedbackHTML(answer.correct, q.answer, q.exp || '');
+    document.getElementById('checkBtn').disabled = true;
+    document.getElementById('checkBtn').textContent = answer.correct ? '✓ Correct!' : '✗ Incorrect';
+    addNextBtn();
+}
+
+function restoreTF(q, answer) {
+    const correctStr = q.correct ? 'true' : 'false';
+    const trueBtn = document.getElementById('tfTrue');
+    const falseBtn = document.getElementById('tfFalse');
+    trueBtn.disabled = true; falseBtn.disabled = true;
+    if (answer.selected === 'true') trueBtn.classList.add(q.correct ? 'correct' : 'wrong');
+    else falseBtn.classList.add(!q.correct ? 'correct' : 'wrong');
+    if (answer.selected !== correctStr) {
+        if (q.correct) trueBtn.classList.add('correct');
+        else falseBtn.classList.add('correct');
+    }
+    document.getElementById('feedbackArea').innerHTML = feedbackHTML(answer.correct, q.correct ? 'True' : 'False', q.exp);
+    document.getElementById('checkBtn').disabled = true;
+    document.getElementById('checkBtn').textContent = answer.correct ? '✓ Correct!' : '✗ Incorrect';
+    addNextBtn();
+}
+
+function renderShortAnswer(q) {
+    return `<input type="text" class="short-input" id="shortInput" placeholder="Type your one-word / acronym answer..." autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter') checkAnswer()">
+    <div id="feedbackArea"></div>`;
+}
+
+function renderTrueFalse(q) {
+    return `<div class="tf-grid">
+        <button class="tf-btn true-btn" id="tfTrue" onclick="selectTF('true')">✅ TRUE</button>
+        <button class="tf-btn false-btn" id="tfFalse" onclick="selectTF('false')">❌ FALSE</button>
+    </div>
+    <div id="feedbackArea"></div>`;
+}
+
+function selectTF(val) {
+    if (userAnswers[currentQuestions[currentIndex].id]) return;
+    document.getElementById('tfTrue').classList.remove('selected-true','selected-false');
+    document.getElementById('tfFalse').classList.remove('selected-true','selected-false');
+    if (val === 'true') document.getElementById('tfTrue').classList.add('selected-true');
+    else document.getElementById('tfFalse').classList.add('selected-false');
+    document.getElementById('checkBtn').dataset.selected = val;
+}
+
+// ============================================================
+//  CHECK ANSWERS
+// ============================================================
+function checkAnswer() {
+    const q = currentQuestions[currentIndex];
+    const checkBtn = document.getElementById('checkBtn');
+
+    if (currentModule === 'partA') {
+        const sel = parseInt(checkBtn.dataset.selected);
+        if (isNaN(sel)) { checkBtn.classList.add('shake'); setTimeout(()=>checkBtn.classList.remove('shake'),400); return; }
+        const isCorrect = sel === q.correct;
+        const letters = ['A','B','C','D'];
+        document.querySelectorAll('.option-btn').forEach((b, i) => {
+            b.disabled = true;
+            if (i === q.correct) b.classList.add(sel === q.correct ? 'correct' : 'correct-reveal');
+            if (i === sel && sel !== q.correct) b.classList.add('wrong');
+        });
+        document.getElementById('feedbackArea').innerHTML = feedbackHTML(isCorrect, letters[q.correct], q.exp);
+        userAnswers[q.id] = { selected: sel, correct: isCorrect };
+        if (isCorrect) score++;
+        checkBtn.disabled = true;
+        checkBtn.textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
+        addNextBtn();
+
+    } else if (currentModule === 'partB') {
+        const input = document.getElementById('shortInput');
+        const typed = input.value.trim();
+        if (!typed) return;
+        const allAccepted = [q.answer.toLowerCase(), ...(q.alt||[]).map(a=>a.toLowerCase())];
+        const isCorrect = allAccepted.includes(typed.toLowerCase());
+        input.disabled = true;
+        input.classList.add(isCorrect ? 'correct-input' : 'wrong-input');
+        document.getElementById('feedbackArea').innerHTML = feedbackHTML(isCorrect, q.answer, q.exp || '');
+        userAnswers[q.id] = { typed, correct: isCorrect };
+        if (isCorrect) score++;
+        checkBtn.disabled = true;
+        checkBtn.textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
+        addNextBtn();
+
+    } else if (currentModule === 'partC') {
+        const sel = checkBtn.dataset.selected;
+        if (!sel) { checkBtn.classList.add('shake'); setTimeout(()=>checkBtn.classList.remove('shake'),400); return; }
+        const correctStr = q.correct ? 'true' : 'false';
+        const isCorrect = sel === correctStr;
+        const trueBtn = document.getElementById('tfTrue');
+        const falseBtn = document.getElementById('tfFalse');
+        trueBtn.disabled = true; falseBtn.disabled = true;
+        trueBtn.classList.remove('selected-true'); falseBtn.classList.remove('selected-false');
+        if (sel === 'true') trueBtn.classList.add(isCorrect ? 'correct' : 'wrong');
+        else falseBtn.classList.add(isCorrect ? 'correct' : 'wrong');
+        if (!isCorrect) { if (q.correct) trueBtn.classList.add('correct'); else falseBtn.classList.add('correct'); }
+        document.getElementById('feedbackArea').innerHTML = feedbackHTML(isCorrect, q.correct ? 'True' : 'False', q.exp);
+        userAnswers[q.id] = { selected: sel, correct: isCorrect };
+        if (isCorrect) score++;
+        checkBtn.disabled = true;
+        checkBtn.textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
+        addNextBtn();
+    }
+    updateLiveScore();
+}
+
+function addNextBtn() {
+    const navBtns = document.getElementById('navBtns');
+    if (!navBtns) return;
+    const isLast = currentIndex >= currentQuestions.length - 1;
+    const nextBtn = document.createElement('button');
+    nextBtn.className = isLast ? 'btn btn-submit' : 'btn btn-primary';
+    nextBtn.textContent = isLast ? '🏁 Finish' : 'Next →';
+    nextBtn.onclick = isLast ? showResults : nextQuestion;
+    navBtns.appendChild(nextBtn);
+}
+
+function feedbackHTML(isCorrect, correctAns, exp) {
+    return `<div class="feedback-box ${isCorrect ? 'correct' : 'wrong'}">
+        ${isCorrect ? '✅ <strong>Correct!</strong>' : `❌ <strong>Incorrect.</strong> The correct answer is: <strong>${correctAns}</strong>`}
+        ${exp ? `<div class="explanation">💡 ${exp}</div>` : ''}
+    </div>`;
+}
+
+function nextQuestion() { currentIndex++; renderQuestion(); }
+function goBack() { if (currentIndex > 0) { currentIndex--; renderQuestion(); } }
+
+function updateProgress(idx, total) {
+    document.getElementById('progressBar').style.width = `${(idx / total) * 100}%`;
+}
+
+function updateLiveScore() {
+    if (!currentQuestions) return;
+    const total = currentQuestions.length;
+    const answered = Object.keys(userAnswers).length;
+    document.getElementById('liveScore').textContent = `Score: ${score}/${answered || 0}`;
+}
+
+// ============================================================
+//  RESULTS
+// ============================================================
+function showResults() {
+    stopTimer();
+    if (!currentQuestions) { backToHome(); return; }
+    const total = currentQuestions.length;
+    const pct = total > 0 ? Math.round((score/total)*100) : 0;
+
+    document.getElementById('examArea').style.display = 'none';
+    document.getElementById('resultsArea').style.display = 'block';
+
+    let grade, label, sub;
+    if (pct >= 90) { grade = '🏆'; label = 'Outstanding!'; sub = 'You\'re absolutely ready for the exam! Excellent work!'; launchConfetti(); }
+    else if (pct >= 75) { grade = '🌟'; label = 'Great Job!'; sub = 'Strong performance! A little more review and you\'ll ace it.'; }
+    else if (pct >= 60) { grade = '👍'; label = 'Good Effort!'; sub = 'You\'re on the right track. Focus on weak areas and try again.'; }
+    else if (pct >= 40) { grade = '📖'; label = 'Keep Studying!'; sub = 'Review the topics and practice more. You\'ve got this!'; }
+    else { grade = '💪'; label = 'Don\'t Give Up!'; sub = 'Go through the study materials and try again. Practice makes perfect!'; }
+
+    document.getElementById('resultGrade').textContent = grade;
+    document.getElementById('resultLabel').textContent = label;
+    document.getElementById('resultSub').textContent = sub;
+    document.getElementById('statCorrect').textContent = score;
+    document.getElementById('statWrong').textContent = total - score;
+    document.getElementById('statPercent').textContent = `${pct}%`;
+    document.getElementById('statPercent').style.color = pct>=75?'#10b981':pct>=50?'#f59e0b':'#ef4444';
+
+    buildReview();
+}
+
+function buildReview() {
+    const list = document.getElementById('reviewList');
+    list.innerHTML = '<div style="max-width:860px;margin:40px auto 12px;padding:0 24px;font-weight:700;font-size:1.1rem;color:var(--text-secondary);">📋 Review Answers</div>';
+    currentQuestions.forEach((q, idx) => {
+        const ans = userAnswers[q.id];
+        if (!ans) return;
+        const isCorrect = ans.correct;
+        let yourAns = '', correctAns = '';
+        if (currentModule === 'partA') {
+            const letters = ['A','B','C','D'];
+            yourAns = `${letters[ans.selected]}) ${q.opts[ans.selected]}`;
+            correctAns = `${letters[q.correct]}) ${q.opts[q.correct]}`;
+        } else if (currentModule === 'partB') {
+            yourAns = ans.typed;
+            correctAns = q.answer;
+        } else if (currentModule === 'partC') {
+            yourAns = ans.selected === 'true' ? 'True' : 'False';
+            correctAns = q.correct ? 'True' : 'False';
+        }
+        list.innerHTML += `<div class="review-item ${isCorrect?'review-correct':'review-wrong'}">
+            <div class="review-q">${idx+1}. ${q.q}</div>
+            <div class="review-answers">
+                <span class="review-your ${isCorrect?'r-correct':''}">Your answer: <strong>${yourAns}</strong></span>
+                ${!isCorrect ? `<span class="review-correct-a">Correct: <strong>${correctAns}</strong></span>` : ''}
+            </div>
+            ${q.exp ? `<div style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;">💡 ${q.exp}</div>` : ''}
+        </div>`;
+    });
+}
+
+function showReview() {
+    document.getElementById('reviewList').scrollIntoView({ behavior: 'smooth' });
+}
+
+function restartCurrentModule() {
+    startModule(currentModule);
+}
+
+// ============================================================
+//  CASE STUDY RENDER
+// ============================================================
+function renderCaseStudy(caseData, part) {
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('liveScore').textContent = '25 Marks';
+
+    let html = `<div class="predicted-banner">
+        <h3>📋 Case Study – Part ${part} (25 Marks)</h3>
+        <p>Read the scenario carefully. Answer all 5 sub-questions (a)–(e). Answers must be relevant to the case.</p>
+    </div>
+    <div class="q-card">
+        <div class="q-number-tag">CASE STUDY SCENARIO</div>
+        <div class="case-study-box">
+            <h3>🏢 ${caseData.title}</h3>
+            ${caseData.scenario.split('\n\n').map(p => `<p style="margin-bottom:12px;">${p}</p>`).join('')}
+        </div>
+
+        ${caseData.subs.map((sub, i) => `
+        <div style="margin-bottom:32px;">
+            <div class="case-sub-label">Sub-Question ${sub.label} (5 Marks)</div>
+            <div class="q-text" style="font-size:1.05rem;">${sub.label} ${sub.q}</div>
+            <textarea class="case-answer-textarea" id="caseAns${i}" placeholder="Write your answer here..."></textarea>
+            <button class="case-reveal-btn" onclick="revealSampleAnswer(${i})">💡 Show Sample Answer</button>
+            <div class="sample-answer-box" id="sampleAns${i}">
+                <strong>📝 Sample Answer:</strong><br><br>
+                ${sub.sampleAnswer.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}
+            </div>
+        </div>
+        `).join('<hr style="border-color:var(--border-light);margin:24px 0;">')}
+
+        <div class="nav-btns">
+            <button class="btn btn-secondary" onclick="backToHome()">← Back to Home</button>
+            <button class="btn btn-primary" onclick="backToHome()">✅ I'm Done!</button>
+        </div>
+    </div>`;
+
+    document.getElementById('questionArea').innerHTML = html;
+}
+
+function revealSampleAnswer(i) {
+    const box = document.getElementById(`sampleAns${i}`);
+    box.classList.toggle('visible');
+}
+
+// ============================================================
+//  PREDICTED FULL EXAM
+// ============================================================
+function renderPredictedExam() {
+    document.getElementById('progressBar').style.width = '50%';
+    document.getElementById('liveScore').textContent = '60 Marks Total';
+
+    // Select predicted questions
+    const predictedMCQ = [
+        { q:'Which of the following best describes the relationship between data and information?', opts:['Data is processed; information is raw','Information is derived from processed and contextualized data','They are identical in meaning','Information exists only in digital form'], correct:1 },
+        { q:'What term describes knowledge that is personal, experiential, and hard to document?', opts:['Explicit','Deterministic','Tacit','Secondary'], correct:2 },
+        { q:'Which management level uses Strategic information?', opts:['Operational staff','Middle management','Top-level executives','Data entry clerks'], correct:2 },
+        { q:'CRM stands for:', opts:['Customer Resource Management','Customer Relationship Management','Client Retention Model','Centralized Record Management'], correct:1 },
+        { q:'Which is an example of Operational CRM?', opts:['Analyzing sales trends','Automating email follow-ups to customers','Strategic planning dashboards','Market segmentation analytics'], correct:1 },
+        { q:'What does ERP integrate?', opts:['Only financial processes','Only HR and payroll','Various business processes across departments','Only customer data'], correct:2 },
+        { q:'The Build-to-Order (BTO) supply chain model starts production:', opts:['Before any customer demand','After receiving a specific customer order','During market forecasting','At the beginning of each quarter'], correct:1 },
+        { q:'Supply chains involve the flow of:', opts:['Products only','Data only','Products, information, and funds','Employees and managers'], correct:2 },
+        { q:'What is the role of feedback in a system?', opts:['To stop the system','To compare intended outputs with actual results','To generate random errors','To isolate system components'], correct:1 },
+        { q:'Which of the following is NOT a system?', opts:['A cricket team','A university','A pile of sand','A human body'], correct:2 },
+        { id:'p11', q:'Which information system is used by middle management?', opts:['EIS','TPS','DSS','OAS'], correct:2 },
+        { q:'A deterministic system produces:', opts:['Random unpredictable outputs','Consistent outputs from the same inputs','Outputs that vary with user emotion','No outputs'], correct:1 },
+        { q:'What does "Externalization" in the SECI model mean?', opts:['Explicit to explicit','Tacit to tacit','Tacit to explicit','Explicit to tacit'], correct:2 },
+        { q:'Which is an example of internal information in a business?', opts:['Government economic report','Competitor product catalog','Company\'s own sales records','Industry survey by consultants'], correct:2 },
+        { q:'Outsourcing in SCM means:', opts:['Doing everything internally','Hiring an external company for business services','Increasing warehouse storage','Reducing customer service'], correct:1 },
+        { q:'An ATM is best classified as which type of system?', opts:['Closed, manual system','Open, deterministic, real-time system','Batch processing, stochastic system','Closed, periodic, manual system'], correct:1 },
+        { q:'Periodic information is created:', opts:['Continuously every second','At fixed regular intervals like daily or monthly','Only when errors occur','Randomly without schedule'], correct:1 },
+        { q:'Which type of information does the CEO use for long-term strategic decisions?', opts:['Detailed operational data','Aggregated strategic information','Raw transaction data','Real-time sales figures'], correct:1 },
+        { q:'Systems thinking views problems as:', opts:['Isolated events','Unrelated occurrences','Parts of an overall interconnected system','Individual data points'], correct:2 },
+        { q:'Which conversion converts explicit knowledge into tacit knowledge through practice?', opts:['Socialization','Externalization','Combination','Internalization'], correct:3 },
+    ];
+
+    const predictedTF = [
+        { s:'TPS (Transaction Processing Systems) are used for routine, day-to-day operational tasks.', correct:true },
+        { s:'Collaborative CRM focuses only on data mining and customer analytics.', correct:false },
+        { s:'A system boundary defines what is inside the system and how it interacts with the environment.', correct:true },
+        { s:'Tacit knowledge can be easily recorded and stored in a database.', correct:false },
+        { s:'Procurement in SCM refers to B2B purchasing of goods and services from suppliers.', correct:true },
+        { s:'Strategic information is aggregated and used for long-term planning by top management.', correct:true },
+        { s:'Entropy in a system means the system has high order and organization.', correct:false },
+        { s:'EIS (Executive Information System) supports long-term strategic planning at the executive level.', correct:true },
+        { s:'The ultimate goal of SCM is to maximize inventory at all stages.', correct:false },
+        { s:'In the General System Model, processes transform inputs into outputs.', correct:true },
+    ];
+
+    const predictedShort = [
+        { q:'What does CRM stand for?', answer:'CRM', full:'Customer Relationship Management' },
+        { q:'What does TPS stand for?', answer:'TPS', full:'Transaction Processing System' },
+        { q:'What does ERP stand for?', answer:'ERP', full:'Enterprise Resource Planning' },
+        { q:'What does SCM stand for?', answer:'SCM', full:'Supply Chain Management' },
+        { q:'What term describes disorder or randomness in a system?', answer:'Entropy' },
+        { q:'What is knowledge created from experience that is hard to document called?', answer:'Tacit' },
+        { q:'What is knowledge that can be recorded and shared easily called?', answer:'Explicit' },
+        { q:'A monthly bank statement is an example of what type of information?', answer:'Periodic' },
+        { q:'What is information created continuously many times per second called?', answer:'Continuous' },
+        { q:'Internal SECI conversion of tacit-to-tacit knowledge is called?', answer:'Socialization' },
+        { q:'What does DSS stand for?', answer:'DSS', full:'Decision Support System' },
+        { q:'What does EIS stand for?', answer:'EIS', full:'Executive Information System' },
+        { q:'Information collected from within the organization is called what?', answer:'Internal' },
+        { q:'The SCM strategy of manufacturing only after receiving a customer order is called?', answer:'BTO', full:'Build-to-Order' },
+        { q:'Hiring an external company to perform a service is called?', answer:'Outsourcing' },
+        { q:'What does BIS stand for?', answer:'BIS', full:'Business Information Systems' },
+        { q:'The process of purchasing supplies from external suppliers is called?', answer:'Procurement' },
+        { q:'What does MIS stand for?', answer:'MIS', full:'Management Information System' },
+        { q:'Information first appearing at its original source is called a what source?', answer:'Primary' },
+        { q:'Information derived and summarized from multiple data sources is called what?', answer:'Aggregated' },
+    ];
+
+    let html = `<div class="predicted-banner" style="margin-bottom:32px;">
+        <h3>🔮 Predicted Exam Paper – FIS 202.3 • July 2026</h3>
+        <p>This simulates the most likely questions based on your study materials. Complete all parts for maximum exam readiness. (60 Marks · Recommended: 3 Hours)</p>
+    </div>`;
+
+    // PART A
+    html += `<div class="part-separator"><span class="part-label">Part A – MCQ (20 Questions × 1 Mark = 20 Marks)</span></div>`;
+    html += `<div class="q-card" id="partA-pred">`;
+    html += `<div class="q-number-tag">QUESTION 01 — Multiple Choice Questions</div>
+    <p style="color:var(--text-secondary);margin-bottom:20px;font-size:0.95rem;">Write the MCQ number and the correct answer letter (A, B, C or D).</p>`;
+    predictedMCQ.forEach((q, i) => {
+        const letters = ['A','B','C','D'];
+        html += `<div style="margin-bottom:20px;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid var(--border-light);">
+            <div style="font-weight:600;margin-bottom:12px;color:var(--text-primary);">${i+1}. ${q.q}</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                ${q.opts.map((o,j)=>`<label style="display:flex;align-items:center;gap:10px;cursor:pointer;color:var(--text-secondary);">
+                    <input type="radio" name="pred_a${i}" value="${j}" onchange="setPredAnswerA(${i},${j})" style="accent-color:#7c3aed;">
+                    <span><strong>${letters[j]})</strong> ${o}</span>
+                </label>`).join('')}
+            </div>
+            <div id="pred_a_fb${i}" style="margin-top:8px;"></div>
+        </div>`;
+    });
+    html += `<button class="btn btn-check" onclick="checkAllPredA(${JSON.stringify(predictedMCQ.map(q=>q.correct))})" style="margin-top:8px;">✅ Check Part A Answers</button>
+    <div id="pred_a_score" style="margin-top:12px;"></div></div>`;
+
+    // PART B
+    html += `<div class="part-separator"><span class="part-label">Part B – Short Answers (20 Questions × 1 Mark = 20 Marks)</span></div>`;
+    html += `<div class="q-card" id="partB-pred">`;
+    html += `<div class="q-number-tag">QUESTION 02 — Short / Direct Answers</div>
+    <p style="color:var(--text-secondary);margin-bottom:20px;font-size:0.95rem;">Write the question number and the correct answer WORD/ACRONYM only. One word or acronym. No lengthy descriptions.</p>`;
+    predictedShort.forEach((q, i) => {
+        html += `<div style="margin-bottom:16px;">
+            <div style="font-weight:600;margin-bottom:8px;color:var(--text-primary);">${i+1}. ${q.q}</div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <input type="text" id="pred_b${i}" placeholder="Your answer..." style="flex:1;min-width:180px;background:rgba(255,255,255,0.04);border:1px solid var(--border-light);border-radius:10px;padding:10px 14px;font-family:Outfit,sans-serif;font-size:0.95rem;color:var(--text-primary);outline:none;" onkeydown="if(event.key==='Enter') document.getElementById('pred_b${i+1}')?.focus()">
+                <div id="pred_b_fb${i}" style="font-size:0.85rem;"></div>
+            </div>
+        </div>`;
+    });
+    html += `<button class="btn btn-check" onclick="checkAllPredB(${JSON.stringify(predictedShort.map(q=>({a:q.answer,f:q.full||''})))})" style="margin-top:8px;">✅ Check Part B Answers</button>
+    <div id="pred_b_score" style="margin-top:12px;"></div></div>`;
+
+    // PART C
+    html += `<div class="part-separator"><span class="part-label">Part C – True/False (10 Questions × 1 Mark = 10 Marks)</span></div>`;
+    html += `<div class="q-card" id="partC-pred">`;
+    html += `<div class="q-number-tag">QUESTION 03 — True / False Statements</div>
+    <p style="color:var(--text-secondary);margin-bottom:20px;font-size:0.95rem;">State whether each statement is True or False. No explanations needed.</p>`;
+    predictedTF.forEach((tf, i) => {
+        html += `<div style="margin-bottom:20px;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid var(--border-light);">
+            <div style="font-weight:600;margin-bottom:12px;color:var(--text-primary);">${i+1}. ${tf.s}</div>
+            <div style="display:flex;gap:12px;">
+                <label style="cursor:pointer;display:flex;align-items:center;gap:8px;color:#6ee7b7;">
+                    <input type="radio" name="pred_c${i}" value="true" style="accent-color:#10b981;"> ✅ True
+                </label>
+                <label style="cursor:pointer;display:flex;align-items:center;gap:8px;color:#fca5a5;">
+                    <input type="radio" name="pred_c${i}" value="false" style="accent-color:#ef4444;"> ❌ False
+                </label>
+            </div>
+            <div id="pred_c_fb${i}" style="margin-top:8px;font-size:0.85rem;"></div>
+        </div>`;
+    });
+    html += `<button class="btn btn-check" onclick="checkAllPredC(${JSON.stringify(predictedTF.map(q=>q.correct))})" style="margin-top:8px;">✅ Check Part C Answers</button>
+    <div id="pred_c_score" style="margin-top:12px;"></div></div>`;
+
+    // PART D & E
+    html += `<div class="part-separator"><span class="part-label">Part D – Case Study (25 Marks)</span></div>`;
+    html += buildCaseSectionHTML(PART_D_CASE, 'D');
+
+    html += `<div class="part-separator"><span class="part-label">Part E – Case Study (25 Marks)</span></div>`;
+    html += buildCaseSectionHTML(PART_E_CASE, 'E');
+
+    html += `<div style="text-align:center;padding:40px 0;">
+        <button class="btn btn-submit" onclick="backToHome()" style="font-size:1.1rem;padding:16px 40px;">🏠 Back to Home</button>
+    </div>`;
+
+    document.getElementById('questionArea').innerHTML = html;
+
+    // Store predicted answers
+    window.predAnswersA = {};
+}
+
+function setPredAnswerA(qi, val) {
+    if (!window.predAnswersA) window.predAnswersA = {};
+    window.predAnswersA[qi] = val;
+}
+
+function checkAllPredA(correctArr) {
+    const letters = ['A','B','C','D'];
+    let correct = 0;
+    correctArr.forEach((c, i) => {
+        const sel = window.predAnswersA?.[i];
+        const fb = document.getElementById(`pred_a_fb${i}`);
+        if (sel === undefined) { if(fb) fb.innerHTML = '<span style="color:#fcd34d;font-size:0.85rem;">⚠ Not answered</span>'; return; }
+        const isCorrect = sel === c;
+        if (isCorrect) correct++;
+        if (fb) fb.innerHTML = isCorrect
+            ? `<span style="color:#6ee7b7;font-size:0.85rem;">✓ Correct (${letters[c]})</span>`
+            : `<span style="color:#fca5a5;font-size:0.85rem;">✗ Wrong. Correct: <strong>${letters[c]}</strong></span>`;
+    });
+    const scoreEl = document.getElementById('pred_a_score');
+    if (scoreEl) scoreEl.innerHTML = `<div class="score-pill" style="display:inline-block;">Part A Score: ${correct}/${correctArr.length}</div>`;
+}
+
+function checkAllPredB(answerArr) {
+    let correct = 0;
+    answerArr.forEach((qa, i) => {
+        const input = document.getElementById(`pred_b${i}`);
+        const fb = document.getElementById(`pred_b_fb${i}`);
+        if (!input) return;
+        const typed = input.value.trim().toLowerCase();
+        const accepted = [qa.a.toLowerCase(), ...(qa.f ? [qa.f.toLowerCase()] : [])];
+        const isCorrect = accepted.includes(typed);
+        if (isCorrect) correct++;
+        if (input) input.style.borderColor = isCorrect ? '#10b981' : '#ef4444';
+        if (fb) fb.innerHTML = isCorrect
+            ? `<span style="color:#6ee7b7;">✓</span>`
+            : `<span style="color:#fca5a5;">✗ Answer: <strong>${qa.a}${qa.f ? ` (${qa.f})` : ''}</strong></span>`;
+    });
+    const scoreEl = document.getElementById('pred_b_score');
+    if (scoreEl) scoreEl.innerHTML = `<div class="score-pill" style="display:inline-block;">Part B Score: ${correct}/${answerArr.length}</div>`;
+}
+
+function checkAllPredC(correctArr) {
+    let correct = 0;
+    correctArr.forEach((c, i) => {
+        const sel = document.querySelector(`input[name="pred_c${i}"]:checked`);
+        const fb = document.getElementById(`pred_c_fb${i}`);
+        if (!sel) { if(fb) fb.innerHTML = '<span style="color:#fcd34d;font-size:0.85rem;">⚠ Not answered</span>'; return; }
+        const isCorrect = (sel.value === 'true') === c;
+        if (isCorrect) correct++;
+        if (fb) fb.innerHTML = isCorrect
+            ? `<span style="color:#6ee7b7;">✓ Correct!</span>`
+            : `<span style="color:#fca5a5;">✗ Correct answer: <strong>${c ? 'True' : 'False'}</strong></span>`;
+    });
+    const scoreEl = document.getElementById('pred_c_score');
+    if (scoreEl) scoreEl.innerHTML = `<div class="score-pill" style="display:inline-block;">Part C Score: ${correct}/${correctArr.length}</div>`;
+}
+
+function buildCaseSectionHTML(caseData, part) {
+    return `<div class="q-card">
+        <div class="q-number-tag">QUESTION 0${part === 'D' ? '4' : '5'} — Case Study</div>
+        <div class="case-study-box">
+            <h3>🏢 ${caseData.title}</h3>
+            ${caseData.scenario.split('\n\n').map(p => `<p style="margin-bottom:12px;">${p}</p>`).join('')}
+        </div>
+        ${caseData.subs.map((sub, i) => `
+        <div style="margin-bottom:24px;">
+            <div class="case-sub-label">Sub-Question ${sub.label} (5 Marks)</div>
+            <div class="q-text" style="font-size:1.02rem;">${sub.label} ${sub.q}</div>
+            <textarea class="case-answer-textarea" placeholder="Write your answer here..."></textarea>
+            <button class="case-reveal-btn" onclick="this.nextElementSibling.classList.toggle('visible')">💡 Show Sample Answer</button>
+            <div class="sample-answer-box">
+                <strong>📝 Sample Answer:</strong><br><br>
+                ${sub.sampleAnswer.replace(/\n/g,'<br>')}
+            </div>
+        </div>
+        <hr style="border-color:var(--border-light);margin:20px 0;">`).join('')}
+    </div>`;
+}
+
+// ============================================================
+//  CONFETTI
+// ============================================================
+function launchConfetti() {
+    const container = document.getElementById('confettiContainer');
+    const colors = ['#7c3aed','#06b6d4','#ec4899','#f59e0b','#10b981'];
+    container.innerHTML = '';
+    for (let i = 0; i < 80; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.cssText = `
+            left:${Math.random()*100}vw;
+            top:${Math.random()*-100}px;
+            background:${colors[Math.floor(Math.random()*colors.length)]};
+            animation-delay:${Math.random()*2}s;
+            animation-duration:${2+Math.random()*2}s;
+            transform:rotate(${Math.random()*360}deg);
+        `;
+        container.appendChild(piece);
+    }
+    setTimeout(() => { container.innerHTML = ''; }, 5000);
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function backToHome() {
+    stopTimer();
+    document.getElementById('examArea').style.display = 'none';
+    document.getElementById('resultsArea').style.display = 'none';
+    document.getElementById('landingPage').style.display = 'flex';
+    document.getElementById('reviewList').innerHTML = '';
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const overlay = document.getElementById('loadingOverlay');
+        overlay.classList.add('hidden');
+        setTimeout(() => { overlay.style.display = 'none'; }, 500);
+    }, 800);
+});
+</script>
+</body>
+</html>
