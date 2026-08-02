@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAD Chapter 01 — Exam Study Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --glow: rgba(59,130,246,0.15);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── PARTICLES CANVAS ── */
+  #particles { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:0.4; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items:center; justify-content:space-between;
+    height: 60px;
+  }
+  .nav-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; font-weight:600;
+    color: var(--accent);
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-brand span { color: var(--text-dim); }
+  .nav-tabs { display:flex; gap:4px; }
+  .nav-tab {
+    padding: 6px 14px; border-radius:6px;
+    background: transparent; border: none;
+    color: var(--text-muted); font-family: inherit;
+    font-size: 0.8rem; cursor:pointer;
+    transition: all 0.2s;
+  }
+  .nav-tab:hover, .nav-tab.active {
+    background: var(--glow); color: var(--accent);
+  }
+  .exam-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff; font-size:0.7rem; font-weight:700;
+    padding: 3px 10px; border-radius:20px;
+    animation: pulse-badge 2s infinite;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  @keyframes pulse-badge {
+    0%,100%{ box-shadow:0 0 0 0 rgba(239,68,68,0.4); }
+    50%{ box-shadow:0 0 0 8px rgba(239,68,68,0); }
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .container { max-width:1100px; margin:0 auto; padding:0 1.5rem; position:relative; z-index:1; }
+  main { padding-top: 80px; padding-bottom: 4rem; }
+
+  /* ── HERO ── */
+  .hero {
+    text-align:center;
+    padding: 3rem 0 2.5rem;
+  }
+  .hero-eyebrow {
+    display:inline-block;
+    background: rgba(139,92,246,0.1);
+    border: 1px solid rgba(139,92,246,0.3);
+    color: var(--accent2);
+    font-size:0.75rem; font-weight:600;
+    padding: 4px 14px; border-radius:20px;
+    letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem,4vw,3rem);
+    font-weight:700; line-height:1.15;
+    margin-bottom:0.8rem;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .hero p { color: var(--text-dim); max-width:580px; margin:0 auto 2rem; font-size:0.95rem; }
+  .stats-row {
+    display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+    margin-bottom:2rem;
+  }
+  .stat-pill {
+    background: var(--surface2); border:1px solid var(--border);
+    border-radius:30px; padding:8px 18px;
+    display:flex; align-items:center; gap:8px;
+    font-size:0.82rem;
+  }
+  .stat-pill .num { font-weight:700; color:var(--accent); font-family:'JetBrains Mono',monospace; }
+  .stat-pill .lbl { color:var(--text-muted); }
+
+  /* ── SECTION TABS ── */
+  .tab-group {
+    display:flex; gap:6px; flex-wrap:wrap;
+    margin-bottom:2rem;
+  }
+  .tab-btn {
+    padding: 8px 20px; border-radius:8px;
+    border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-dim);
+    font-family: inherit; font-size:0.85rem; font-weight:500;
+    cursor:pointer; transition: all 0.25s;
+  }
+  .tab-btn:hover { border-color: var(--accent); color:var(--accent); }
+  .tab-btn.active {
+    background: var(--accent); border-color:var(--accent);
+    color:#fff; box-shadow: 0 0 20px rgba(59,130,246,0.3);
+  }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius:14px; padding:1.5rem;
+    margin-bottom:1rem;
+    transition: border-color 0.2s, transform 0.2s;
+    animation: fadeUp 0.4s ease both;
+  }
+  .card:hover { border-color: rgba(59,130,246,0.3); transform:translateY(-2px); }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .card-tag {
+    display:inline-block;
+    font-size:0.7rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.08em; padding:2px 10px; border-radius:4px;
+    margin-bottom:0.8rem; font-family:'JetBrains Mono',monospace;
+  }
+  .tag-def { background:rgba(16,185,129,0.12); color:var(--accent3); }
+  .tag-concept { background:rgba(59,130,246,0.12); color:var(--accent); }
+  .tag-key { background:rgba(245,158,11,0.12); color:var(--accent4); }
+  .card h3 { font-size:1rem; font-weight:600; margin-bottom:0.5rem; color:var(--text); }
+  .card p, .card ul, .card ol { font-size:0.88rem; color:var(--text-dim); }
+  .card ul, .card ol { padding-left:1.2rem; }
+  .card li { margin-bottom:0.3rem; }
+  .highlight-box {
+    background: rgba(59,130,246,0.07);
+    border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0;
+    padding:0.8rem 1rem;
+    margin-top:0.8rem;
+    font-size:0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* ── MCQ SECTION ── */
+  .mcq-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius:14px; padding:1.5rem;
+    margin-bottom:1.2rem;
+    animation: fadeUp 0.4s ease both;
+  }
+  .mcq-num {
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.7rem; font-weight:700;
+    color:var(--accent); margin-bottom:0.6rem;
+    text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .mcq-q { font-weight:600; font-size:0.95rem; margin-bottom:1rem; line-height:1.5; }
+  .mcq-options { display:flex; flex-direction:column; gap:8px; }
+  .mcq-opt {
+    display:flex; align-items:flex-start; gap:10px;
+    padding:10px 14px; border-radius:8px;
+    border:1px solid var(--border);
+    cursor:pointer; transition:all 0.2s;
+    font-size:0.87rem;
+  }
+  .mcq-opt:hover { border-color:rgba(59,130,246,0.4); background:rgba(59,130,246,0.05); }
+  .mcq-opt.selected { border-color:var(--accent); background:rgba(59,130,246,0.08); }
+  .mcq-opt.correct { border-color:var(--accent3)!important; background:rgba(16,185,129,0.1)!important; }
+  .mcq-opt.wrong { border-color:var(--danger)!important; background:rgba(239,68,68,0.08)!important; }
+  .opt-letter {
+    width:22px; height:22px; flex-shrink:0;
+    border-radius:50%; border:1.5px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.72rem; font-weight:700;
+    font-family:'JetBrains Mono',monospace;
+    transition: all 0.2s;
+  }
+  .mcq-opt.correct .opt-letter { background:var(--accent3); border-color:var(--accent3); color:#fff; }
+  .mcq-opt.wrong .opt-letter { background:var(--danger); border-color:var(--danger); color:#fff; }
+  .mcq-feedback {
+    margin-top:1rem; padding:0.8rem 1rem;
+    border-radius:8px; font-size:0.83rem;
+    display:none;
+  }
+  .mcq-feedback.show { display:block; animation:fadeUp 0.2s ease; }
+  .mcq-feedback.correct-fb { background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); color:#6ee7b7; }
+  .mcq-feedback.wrong-fb { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); color:#fca5a5; }
+  .check-btn {
+    margin-top:1rem;
+    background: var(--accent); color:#fff;
+    border:none; border-radius:8px;
+    padding:8px 18px; font-family:inherit;
+    font-size:0.82rem; font-weight:600;
+    cursor:pointer; transition:all 0.2s;
+  }
+  .check-btn:hover { background:#2563eb; transform:translateY(-1px); }
+  .check-btn:disabled { background:var(--surface2); color:var(--text-muted); cursor:default; transform:none; }
+
+  /* ── ESSAY SECTION ── */
+  .essay-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius:14px; padding:1.5rem;
+    margin-bottom:1.2rem;
+    animation: fadeUp 0.4s ease both;
+  }
+  .essay-label {
+    font-size:0.7rem; font-family:'JetBrains Mono',monospace;
+    text-transform:uppercase; letter-spacing:0.06em;
+    font-weight:700; margin-bottom:0.6rem;
+  }
+  .essay-marks { color:var(--accent4); }
+  .essay-diff-easy { color:var(--accent3); }
+  .essay-diff-med { color:var(--accent4); }
+  .essay-diff-hard { color:var(--danger); }
+  .essay-q { font-weight:600; font-size:0.97rem; margin-bottom:1rem; }
+  .answer-toggle {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:7px 16px; border-radius:8px;
+    border:1px solid var(--border);
+    background:transparent; color:var(--text-muted);
+    font-family:inherit; font-size:0.8rem; cursor:pointer;
+    transition:all 0.2s;
+  }
+  .answer-toggle:hover { border-color:var(--accent2); color:var(--accent2); }
+  .answer-toggle svg { transition:transform 0.2s; }
+  .answer-toggle.open svg { transform:rotate(180deg); }
+  .answer-body {
+    display:none; margin-top:1rem;
+    padding:1.2rem; border-radius:10px;
+    background:var(--surface2);
+    border:1px solid var(--border);
+    font-size:0.86rem; color:var(--text-dim);
+    animation: fadeUp 0.25s ease;
+  }
+  .answer-body.show { display:block; }
+  .answer-body h4 { color:var(--text); font-size:0.88rem; margin-bottom:0.5rem; font-weight:600; }
+  .answer-body p, .answer-body ul, .answer-body ol { margin-bottom:0.7rem; }
+  .answer-body ul, .answer-body ol { padding-left:1.2rem; }
+  .answer-body li { margin-bottom:0.3rem; }
+  .answer-body .key-point {
+    display:inline-block;
+    background:rgba(59,130,246,0.1); color:var(--accent);
+    font-size:0.75rem; font-weight:600; font-family:'JetBrains Mono',monospace;
+    padding:2px 8px; border-radius:4px; margin-right:4px;
+  }
+  .marks-hint {
+    font-size:0.78rem; color:var(--text-muted);
+    margin-top:0.8rem; padding-top:0.8rem;
+    border-top:1px solid var(--border);
+  }
+
+  /* ── TOPIC OVERVIEW ── */
+  .topic-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    gap:1rem; margin-bottom:2rem;
+  }
+  .section-header {
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:1.2rem; margin-top:2rem;
+  }
+  .section-header h2 { font-size:1.1rem; font-weight:700; }
+  .section-header .pill {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:20px; padding:2px 10px;
+    font-size:0.72rem; color:var(--text-muted);
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  /* ── SCORE TRACKER ── */
+  .score-bar {
+    position:fixed; bottom:20px; right:20px;
+    background: var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px; padding:12px 18px;
+    z-index:200; min-width:160px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.4);
+    animation: slideIn 0.4s ease;
+  }
+  @keyframes slideIn {
+    from { transform:translateX(100px); opacity:0; }
+    to { transform:translateX(0); opacity:1; }
+  }
+  .score-bar .score-label { font-size:0.7rem; color:var(--text-muted); font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
+  .score-bar .score-val { font-size:1.4rem; font-weight:700; color:var(--accent); font-family:'JetBrains Mono',monospace; }
+  .score-bar .score-sub { font-size:0.72rem; color:var(--text-muted); }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { background:var(--surface2); border-radius:20px; height:4px; margin-top:6px; }
+  .progress-fill { height:100%; border-radius:20px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 0.5s ease; }
+
+  /* RESPONSIVE */
+  @media(max-width:640px){
+    .nav-tabs { display:none; }
+    .hero h1 { font-size:1.6rem; }
+    .topic-grid { grid-template-columns:1fr; }
+    .stats-row { gap:8px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <span style="color:var(--accent)">◈</span>
+    <span>SE201.3</span> <span style="color:var(--text-muted)">/</span> <span>Chapter 01</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab" onclick="showTab('overview')">Overview</button>
+    <button class="nav-tab" onclick="showTab('mcq')">MCQ</button>
+    <button class="nav-tab" onclick="showTab('essay')">Essay</button>
+  </div>
+  <span class="exam-badge">EXAM SOON 🔥</span>
+</nav>
+
+<main>
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Systems Analysis &amp; Design — Chapter 01</div>
+  <h1>Introduction to<br><span class="gradient">System Analysis &amp; Design</span></h1>
+  <p>Complete exam prep — topic overview, MCQs with instant feedback, and model essay answers. Built for your 2nd semester exam.</p>
+  <div class="stats-row">
+    <div class="stat-pill"><span class="num">50+</span><span class="lbl">MCQs</span></div>
+    <div class="stat-pill"><span class="num">20+</span><span class="lbl">Essay Qs</span></div>
+    <div class="stat-pill"><span class="num">7</span><span class="lbl">Topics</span></div>
+    <div class="stat-pill"><span class="num">✓</span><span class="lbl">With Answers</span></div>
+  </div>
+</div>
+
+<!-- TAB GROUP -->
+<div class="tab-group">
+  <button class="tab-btn active" onclick="switchSection('overview', this)">📚 Topic Overview</button>
+  <button class="tab-btn" onclick="switchSection('mcq', this)">🎯 MCQ Practice</button>
+  <button class="tab-btn" onclick="switchSection('essay', this)">✍️ Essay Questions</button>
+</div>
+
+<!-- ═══════════════ OVERVIEW ═══════════════ -->
+<div id="sec-overview" class="tab-content active">
+
+  <div class="section-header">
+    <h2>What is a System?</h2>
+    <span class="pill">Topic 1</span>
+  </div>
+  <div class="topic-grid">
+    <div class="card">
+      <span class="card-tag tag-def">Definition</span>
+      <h3>System</h3>
+      <p>A <strong style="color:var(--text)">collection of interrelated components</strong> working together toward a common purpose by accepting inputs, processing them, and producing outputs.</p>
+      <div class="highlight-box">💡 Key formula: Input → Process → Output</div>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-key">8 Characteristics</span>
+      <h3>Characteristics of a System</h3>
+      <ul>
+        <li><strong style="color:var(--text)">Components</strong> – Subsystems/elements</li>
+        <li><strong style="color:var(--text)">Boundary</strong> – Scope/limits of the system</li>
+        <li><strong style="color:var(--text)">Environment</strong> – Everything outside boundary</li>
+        <li><strong style="color:var(--text)">Interface</strong> – Points of interaction</li>
+        <li><strong style="color:var(--text)">Input</strong> – Data/materials entering</li>
+        <li><strong style="color:var(--text)">Output</strong> – Final product/information</li>
+        <li><strong style="color:var(--text)">Feedback</strong> – Mechanism for adjustment</li>
+        <li><strong style="color:var(--text)">Control</strong> – Ensures intended function</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>Types of Systems</h2>
+    <span class="pill">Topic 2</span>
+  </div>
+  <div class="topic-grid">
+    <div class="card">
+      <span class="card-tag tag-concept">Open vs Closed</span>
+      <h3>Open System</h3>
+      <p>Interacts with and is influenced by its environment. Example: a business organization receiving market feedback.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Open vs Closed</span>
+      <h3>Closed System</h3>
+      <p>Does not interact with its environment; self-contained. Example: a chemical reaction in a sealed container.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Classification</span>
+      <h3>Physical vs Abstract</h3>
+      <p><strong style="color:var(--text)">Physical:</strong> Tangible entities (computers, machines).<br><strong style="color:var(--text)">Abstract:</strong> Conceptual/logical (software, algorithms).</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Classification</span>
+      <h3>Natural vs Man-made</h3>
+      <p><strong style="color:var(--text)">Natural:</strong> Ecosystems, solar system.<br><strong style="color:var(--text)">Man-made:</strong> Banking system, payroll system.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Classification</span>
+      <h3>Deterministic vs Probabilistic</h3>
+      <p><strong style="color:var(--text)">Deterministic:</strong> Output is predictable (calculator).<br><strong style="color:var(--text)">Probabilistic:</strong> Uncertain outcomes (weather forecasting).</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Classification</span>
+      <h3>Formal vs Informal</h3>
+      <p><strong style="color:var(--text)">Formal:</strong> Documented and structured procedures.<br><strong style="color:var(--text)">Informal:</strong> Undocumented, ad-hoc communication channels.</p>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>System Analysis &amp; Design (SAD)</h2>
+    <span class="pill">Topic 3</span>
+  </div>
+  <div class="topic-grid">
+    <div class="card">
+      <span class="card-tag tag-def">Definition</span>
+      <h3>What is SAD?</h3>
+      <p>A <strong style="color:var(--text)">structured process</strong> that involves understanding how an existing system functions and designing a new or improved system to meet organizational goals.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-key">Objectives</span>
+      <h3>SAD Objectives</h3>
+      <ul>
+        <li>Improve business efficiency and effectiveness</li>
+        <li>Identify and solve problems systematically</li>
+        <li>Ensure IS meets user requirements</li>
+        <li>Design systems that are flexible, reliable, cost-effective</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-key">Importance</span>
+      <h3>Why SAD Matters</h3>
+      <ul>
+        <li>Reduces project failure risk</li>
+        <li>Improves communication between users and developers</li>
+        <li>Provides documentation and structure</li>
+        <li>Aligns IT solutions with business goals</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Components</span>
+      <h3>Components of SAD</h3>
+      <ul>
+        <li><strong style="color:var(--text)">System Analysis</strong> – Study and understand current system</li>
+        <li><strong style="color:var(--text)">System Design</strong> – Blueprint for the new system</li>
+        <li><strong style="color:var(--text)">Feasibility Study</strong> – Evaluate if system is viable</li>
+        <li><strong style="color:var(--text)">Requirements Gathering</strong> – Collect user needs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>SDLC — System Development Life Cycle</h2>
+    <span class="pill">Topic 4</span>
+  </div>
+  <div class="topic-grid">
+    <div class="card">
+      <span class="card-tag tag-def">Definition</span>
+      <h3>What is SDLC?</h3>
+      <p>A <strong style="color:var(--text)">framework</strong> that defines the stages involved in developing an information system. Provides a structured approach to planning, creating, testing, and deploying systems.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-key">Phases</span>
+      <h3>SDLC Phases</h3>
+      <ol>
+        <li>Planning / Initiation</li>
+        <li>System Investigation / Feasibility</li>
+        <li>Requirements Analysis</li>
+        <li>System Design</li>
+        <li>Development (Coding)</li>
+        <li>Testing &amp; Quality Assurance</li>
+        <li>Implementation / Deployment</li>
+        <li>Maintenance &amp; Review</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>SDLC Models</h2>
+    <span class="pill">Topic 5</span>
+  </div>
+  <div class="topic-grid">
+    <div class="card">
+      <span class="card-tag tag-concept">Model</span>
+      <h3>Waterfall Model</h3>
+      <p>Sequential, phase-by-phase approach. Each phase must be completed before the next begins. Heavy documentation. Good for well-defined requirements.</p>
+      <div class="highlight-box">⚡ Advantage: Simple, structured. Disadvantage: Inflexible to changes.</div>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Model</span>
+      <h3>Prototyping Model</h3>
+      <p>Iterative development with continuous user feedback. A working prototype is built early and refined through iterations.</p>
+      <div class="highlight-box">⚡ Good when requirements are unclear.</div>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Model</span>
+      <h3>Spiral Model</h3>
+      <p>Combines design and prototyping with <strong style="color:var(--text)">risk management</strong>. Each spiral cycle includes planning, risk analysis, engineering, and evaluation.</p>
+      <div class="highlight-box">⚡ Best for high-risk, large projects.</div>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Model</span>
+      <h3>Agile Model</h3>
+      <p>Flexible and adaptive; emphasizes collaboration and <strong style="color:var(--text)">continuous delivery</strong>. Works in short sprints. Examples: Scrum, XP (Extreme Programming).</p>
+      <div class="highlight-box">⚡ "Working software over comprehensive documentation."</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>Role of the System Analyst</h2>
+    <span class="pill">Topic 6</span>
+  </div>
+  <div class="topic-grid">
+    <div class="card">
+      <span class="card-tag tag-def">Role</span>
+      <h3>System Analyst</h3>
+      <p>A professional who acts as a <strong style="color:var(--text)">bridge between business needs and technical solutions</strong>.</p>
+      <ul style="margin-top:0.7rem;">
+        <li>Understanding user requirements and system needs</li>
+        <li>Modeling business processes and data flows</li>
+        <li>Designing and evaluating system alternatives</li>
+        <li>Communicating with management and technical teams</li>
+        <li>Supporting testing, documentation, and implementation</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-key">Skills Required</span>
+      <h3>Analyst Skills</h3>
+      <ul>
+        <li>Technical knowledge (systems, databases)</li>
+        <li>Communication &amp; interpersonal skills</li>
+        <li>Problem-solving and analytical thinking</li>
+        <li>Business domain knowledge</li>
+        <li>Knowledge of UML and modeling tools</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>Development Approaches &amp; Trends</h2>
+    <span class="pill">Topic 7</span>
+  </div>
+  <div class="topic-grid">
+    <div class="card">
+      <span class="card-tag tag-concept">Approach</span>
+      <h3>Traditional / Structured</h3>
+      <p>Based on SDLC with defined stages. Heavy documentation, sequential. Examples: Waterfall, SADT (Structured Analysis and Design Technique).</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Approach</span>
+      <h3>Object-Oriented (OO)</h3>
+      <p>Models systems using <strong style="color:var(--text)">objects</strong> combining data and behavior. Uses <strong style="color:var(--text)">UML</strong> (use case, class, sequence diagrams).</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-concept">Approach</span>
+      <h3>Agile Approach</h3>
+      <p>Emphasizes flexibility, collaboration, rapid iteration. Examples: <strong style="color:var(--text)">Scrum</strong>, <strong style="color:var(--text)">Extreme Programming (XP)</strong>. Prioritizes working software over documentation.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-key">Current Trends</span>
+      <h3>Modern Trends in SAD</h3>
+      <ul>
+        <li>Cloud-based system development</li>
+        <li>DevOps &amp; CI/CD integration</li>
+        <li>AI-assisted development tools</li>
+        <li>Microservices architecture</li>
+        <li>Low-code/No-code platforms</li>
+        <li>Cybersecurity-first design</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ MCQ ═══════════════ -->
+<div id="sec-mcq" class="tab-content">
+  <div class="section-header">
+    <h2>Multiple Choice Questions</h2>
+    <span class="pill" id="mcq-count-pill">50 Questions</span>
+  </div>
+  <p style="color:var(--text-dim);font-size:0.88rem;margin-bottom:1.5rem;">Select an answer then click <strong style="color:var(--text)">Check Answer</strong> to get instant feedback with explanation.</p>
+  <div id="mcq-container"></div>
+</div>
+
+<!-- ═══════════════ ESSAY ═══════════════ -->
+<div id="sec-essay" class="tab-content">
+  <div class="section-header">
+    <h2>Essay &amp; Short Answer Questions</h2>
+    <span class="pill">20+ Questions</span>
+  </div>
+  <p style="color:var(--text-dim);font-size:0.88rem;margin-bottom:1.5rem;">Click <strong style="color:var(--text)">Show Model Answer</strong> to reveal a complete, exam-ready answer.</p>
+  <div id="essay-container"></div>
+</div>
+
+</div><!-- /container -->
+</main>
+
+<!-- SCORE TRACKER -->
+<div class="score-bar" id="score-bar">
+  <div class="score-label">MCQ Score</div>
+  <div class="score-val"><span id="score-correct">0</span>/<span id="score-total">0</span></div>
+  <div class="score-sub">questions answered</div>
+  <div class="progress-wrap" style="margin-top:8px;">
+    <div class="progress-fill" id="score-progress" style="width:0%"></div>
+  </div>
+</div>
+
+<script>
+// ── PARTICLES ──
+(function(){
+  const c=document.getElementById('particles');
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){ W=c.width=innerWidth; H=c.height=innerHeight; }
+  resize(); window.addEventListener('resize',resize);
+  for(let i=0;i<80;i++) pts.push({
+    x:Math.random()*2000, y:Math.random()*1200,
+    vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+    r:Math.random()*1.5+.3,
+    o:Math.random()*.5+.1
+  });
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(59,130,246,${p.o})`;
+      ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<120){
+        ctx.beginPath();
+        ctx.strokeStyle=`rgba(59,130,246,${0.08*(1-d/120)})`;
+        ctx.lineWidth=.5;
+        ctx.moveTo(pts[i].x,pts[i].y);
+        ctx.lineTo(pts[j].x,pts[j].y);
+        ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── SECTION SWITCHING ──
+function switchSection(id, btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── MCQ DATA ──
+const mcqs = [
+  // Topic 1: What is a System
+  {q:"What is a system?", opts:["A single component performing one task","A collection of interrelated components working toward a common purpose","A computer program that processes data","A database storing information"], ans:1, exp:"A system is defined as a collection of interrelated components working together toward a common purpose by accepting inputs, processing them, and producing outputs."},
+  {q:"Which of the following best describes the 'boundary' of a system?", opts:["The output produced by the system","The feedback mechanism","The scope or limits of the system","The environment surrounding the system"], ans:2, exp:"The boundary defines the scope or limits of the system, separating what is inside the system from its environment."},
+  {q:"What does 'feedback' in a system refer to?", opts:["Data that enters the system","The final output of the system","A mechanism for controlling or adjusting system operations","The interface between subsystems"], ans:2, exp:"Feedback is the mechanism used to control or adjust system operations based on output results."},
+  {q:"The 'environment' of a system is:", opts:["Everything inside the system boundary","Everything outside the system boundary that affects it","The input to the system","The control mechanism"], ans:1, exp:"The environment refers to everything outside the system boundary that can influence or be influenced by the system."},
+  {q:"An 'interface' in a system context means:", opts:["The output results","Points of interaction between the system and environment or subsystems","The storage mechanism","The processing unit"], ans:1, exp:"An interface is the point of interaction between the system and its environment or between different subsystems."},
+  {q:"Which system characteristic ensures the system functions as intended?", opts:["Input","Feedback","Control","Interface"], ans:2, exp:"Control is the characteristic that ensures the system functions as intended and stays on track toward its goals."},
+  {q:"In the basic system model, 'input' refers to:", opts:["Final product or information generated","Data or materials that enter the system for processing","Mechanism for adjusting operations","Points of interaction"], ans:1, exp:"Input refers to the data or materials that enter the system for processing."},
+  {q:"'Components' in a system are best described as:", opts:["Subsystems or elements making up the entire system","The environment outside the system","Feedback mechanisms","The output results"], ans:0, exp:"Components are the subsystems or elements that together make up the entire system."},
+
+  // Topic 2: Types of Systems
+  {q:"Which type of system interacts with and is influenced by its environment?", opts:["Closed system","Open system","Deterministic system","Abstract system"], ans:1, exp:"An open system interacts with and is influenced by its environment, exchanging information, energy, or materials."},
+  {q:"A banking information system is best classified as:", opts:["Natural system","Closed system","Man-made open system","Abstract closed system"], ans:2, exp:"A banking system is man-made (built by humans) and open (interacts with customers, regulators, and market environment)."},
+  {q:"Which model of system has a predictable, defined output for every input?", opts:["Probabilistic","Informal","Deterministic","Open"], ans:2, exp:"A deterministic system produces a predictable, well-defined output for every given input (e.g., a calculator)."},
+  {q:"A weather forecasting system is an example of a:", opts:["Deterministic system","Closed system","Probabilistic system","Formal system"], ans:2, exp:"Weather forecasting is probabilistic because outcomes are uncertain and based on probabilities rather than certainties."},
+  {q:"Undocumented, ad-hoc communication channels in an organization represent:", opts:["Formal systems","Open systems","Informal systems","Abstract systems"], ans:2, exp:"Informal systems are undocumented, rely on personal relationships, and are not officially defined."},
+  {q:"Software and algorithms are examples of which system type?", opts:["Physical systems","Natural systems","Abstract systems","Closed systems"], ans:2, exp:"Software and algorithms are abstract (conceptual/logical) systems — they exist as ideas and logic, not physical objects."},
+
+  // Topic 3: SAD
+  {q:"System Analysis and Design (SAD) is:", opts:["A programming language","A structured process for understanding and designing information systems","A database management tool","A hardware installation procedure"], ans:1, exp:"SAD is a structured process that involves understanding how an existing system functions and designing a new or improved system to meet organizational goals."},
+  {q:"Which is NOT an objective of SAD?", opts:["Improve business efficiency","Identify and solve problems systematically","Write low-level machine code","Ensure IS meets user requirements"], ans:2, exp:"Writing low-level machine code is a programming task, not an objective of SAD. SAD focuses on understanding, analyzing, and designing systems."},
+  {q:"SAD helps reduce:", opts:["Cost of hardware","Project failure risk","Number of users","Database size"], ans:1, exp:"One of the key benefits of SAD is that it reduces project failure risk by providing a systematic approach to development."},
+  {q:"Which SAD benefit involves making IT solutions support business goals?", opts:["Reduces project failure","Aligns IT with business goals","Provides code libraries","Manages databases"], ans:1, exp:"SAD helps align IT solutions with business goals, ensuring that technology investments support organizational objectives."},
+  {q:"Feasibility study in SAD is used to:", opts:["Write code for the new system","Evaluate if the system development is viable","Test user interfaces","Deploy the completed system"], ans:1, exp:"A feasibility study evaluates whether the proposed system is technically, economically, and operationally viable before development begins."},
+  {q:"Who benefits most from the documentation produced in SAD?", opts:["Only the programmers","Only the end users","Both developers and users/stakeholders","Only the database administrator"], ans:2, exp:"Documentation produced in SAD benefits all stakeholders — developers use it as a blueprint, and users/management use it for understanding and approval."},
+
+  // Topic 4: SDLC
+  {q:"SDLC stands for:", opts:["System Design and Life Cycle","Software Development and Logic Cycle","System Development Life Cycle","Structured Design and Logic Components"], ans:2, exp:"SDLC stands for System Development Life Cycle — the framework defining the stages of developing an information system."},
+  {q:"The SDLC provides a structured approach to:", opts:["Marketing software products","Planning, creating, testing, and deploying systems","Writing assembly language","Purchasing hardware"], ans:1, exp:"SDLC provides a structured approach to planning, creating, testing, and deploying information systems."},
+  {q:"Which SDLC phase comes FIRST?", opts:["System Design","Testing","Planning/Initiation","Maintenance"], ans:2, exp:"The SDLC begins with the Planning/Initiation phase where the project scope, goals, and feasibility are defined."},
+  {q:"In which SDLC phase are user requirements collected?", opts:["Testing","Implementation","Requirements Analysis","Maintenance"], ans:2, exp:"The Requirements Analysis phase is dedicated to gathering and documenting user needs and system requirements."},
+  {q:"Which phase of SDLC involves the actual coding of the system?", opts:["Requirements Analysis","System Design","Development","Testing"], ans:2, exp:"The Development phase is where programmers write the actual code based on the design specifications."},
+  {q:"After a system is deployed, the ongoing phase is called:", opts:["Planning","Testing","Requirements Analysis","Maintenance"], ans:3, exp:"The Maintenance phase comes after deployment and involves monitoring, updating, and improving the system over time."},
+  {q:"System Design phase produces:", opts:["User requirements documents","A blueprint/architecture for the new system","Test cases","Source code"], ans:1, exp:"The System Design phase produces a detailed blueprint or architecture that guides the development of the system."},
+
+  // Topic 5: SDLC Models
+  {q:"The Waterfall model follows a:", opts:["Random, unordered approach","Sequential, phase-by-phase approach","Circular iteration approach","Risk-based approach"], ans:1, exp:"The Waterfall model is sequential — each phase must be completed before the next one begins, flowing downward like a waterfall."},
+  {q:"Which SDLC model is best used when requirements are well-defined and unlikely to change?", opts:["Agile","Spiral","Waterfall","Prototyping"], ans:2, exp:"The Waterfall model works best when requirements are clear, well-documented, and not expected to change during development."},
+  {q:"The Prototyping model involves:", opts:["Completing each phase once in sequence","Iterative development with continuous user feedback","Risk analysis at each stage","Only formal documentation"], ans:1, exp:"Prototyping involves building a working prototype early and refining it iteratively based on continuous user feedback."},
+  {q:"Which model specifically incorporates risk management at each cycle?", opts:["Waterfall","Agile","Prototyping","Spiral"], ans:3, exp:"The Spiral model uniquely incorporates risk analysis and management at each cycle of development."},
+  {q:"Scrum is an example of which development approach?", opts:["Waterfall","Object-Oriented","Agile","Structured"], ans:2, exp:"Scrum is one of the most widely used Agile frameworks, emphasizing iterative sprints, collaboration, and continuous delivery."},
+  {q:"The Agile model emphasizes:", opts:["Comprehensive documentation first","Strict sequential phases","Collaboration, flexibility, and rapid iteration","Hardware procurement planning"], ans:2, exp:"Agile emphasizes collaboration between teams and customers, flexibility to change requirements, and rapid iterative delivery."},
+  {q:"Extreme Programming (XP) is associated with which development approach?", opts:["Waterfall","Spiral","Traditional Structured","Agile"], ans:3, exp:"Extreme Programming (XP) is an Agile methodology that emphasizes frequent releases, pair programming, and continuous testing."},
+  {q:"Which model is most suitable for large, high-risk projects?", opts:["Waterfall","Prototyping","Spiral","Simple SDLC"], ans:2, exp:"The Spiral model is best for large, high-risk projects because it includes risk assessment at each cycle of development."},
+  {q:"Agile prioritizes:", opts:["Comprehensive documentation over working software","Working software over comprehensive documentation","Sequential phases","Zero user involvement"], ans:1, exp:"A core Agile principle is 'working software over comprehensive documentation' — delivering functional software frequently."},
+
+  // Topic 6: System Analyst
+  {q:"The primary role of a System Analyst is to:", opts:["Write database queries","Act as a bridge between business needs and technical solutions","Design hardware architecture","Manage server infrastructure"], ans:1, exp:"A System Analyst bridges the gap between business stakeholders (who know what they need) and technical teams (who build it)."},
+  {q:"Which is NOT a key responsibility of a System Analyst?", opts:["Understanding user requirements","Modeling business processes","Writing production code for the entire system","Supporting testing and implementation"], ans:2, exp:"While analysts may write some specifications or code, their primary role is not to write all the production code — that's the developer's role."},
+  {q:"UML in the context of System Analysis stands for:", opts:["Unified Management Language","Universal Machine Learning","Unified Modeling Language","User Management Layer"], ans:2, exp:"UML stands for Unified Modeling Language — a standardized visual language for modeling object-oriented systems."},
+  {q:"Which UML diagram shows how a user interacts with a system?", opts:["Class diagram","Sequence diagram","Use case diagram","State diagram"], ans:2, exp:"A Use Case diagram shows the interactions between users (actors) and the system to achieve specific goals."},
+  {q:"A System Analyst needs to communicate effectively with:", opts:["Only the technical team","Only management","Both management and technical teams","Only end users"], ans:2, exp:"A key skill of a System Analyst is the ability to communicate effectively with both non-technical management and technical development teams."},
+  {q:"Data flow modeling is performed by System Analysts to:", opts:["Write SQL queries","Model how data moves through business processes","Install operating systems","Configure hardware"], ans:1, exp:"Data flow modeling shows how data enters, moves through, and exits systems and processes, helping analysts understand current and future systems."},
+
+  // Topic 7: Approaches
+  {q:"SADT stands for:", opts:["System Analysis and Design Technique","Structured Analysis and Design Technique","Software Architecture Design Theory","Standard Application Development Technique"], ans:1, exp:"SADT stands for Structured Analysis and Design Technique — a method used in traditional structured system development."},
+  {q:"The Object-Oriented approach focuses on:", opts:["Sequential procedures","Objects combining data and behavior","Waterfall phases","Hardware components"], ans:1, exp:"The OO approach models systems using objects that encapsulate both data (attributes) and behavior (methods)."},
+  {q:"Which approach is described as 'heavy on documentation and sequential progress'?", opts:["Agile","Object-Oriented","Traditional Structured","Cloud-based"], ans:2, exp:"The Traditional Structured approach is characterized by heavy documentation and strict sequential progress through defined SDLC phases."},
+  {q:"Cloud-based development is best classified as:", opts:["An SDLC phase","A current trend in SAD","A traditional approach","A type of system"], ans:1, exp:"Cloud-based development is one of the current trends in System Analysis and Design, enabling scalable and flexible system deployment."},
+  {q:"DevOps integration in modern SAD refers to:", opts:["Database operations","Development and Operations collaboration","Design of virtual systems","Documentation verification"], ans:1, exp:"DevOps is a modern trend that integrates Development (Dev) and IT Operations (Ops) to shorten the development lifecycle and deliver continuously."},
+  {q:"Microservices architecture is a trend that involves:", opts:["One large monolithic application","Building systems as small, independent services","Using only open-source tools","Avoiding cloud platforms"], ans:1, exp:"Microservices architecture breaks applications into small, independently deployable services that communicate via APIs."},
+  {q:"Which of these is a current trend in SAD?", opts:["Punch card programming","Low-code/No-code platforms","Assembly language design","Manual data entry systems"], ans:1, exp:"Low-code/No-code platforms are a current trend that allow development with minimal or no programming, making system development accessible."},
+  {q:"The Agile manifesto values 'customer collaboration over':", opts:["Working software","Comprehensive documentation","Contract negotiation","Responding to change"], ans:2, exp:"The Agile manifesto explicitly values 'customer collaboration over contract negotiation,' emphasizing ongoing partnership with stakeholders."},
+  {q:"Which of the following is the correct order of SDLC phases?", opts:["Design→Planning→Analysis→Testing→Development","Planning→Analysis→Design→Development→Testing→Implementation→Maintenance","Testing→Planning→Design→Development","Maintenance→Planning→Analysis→Development"], ans:1, exp:"The correct SDLC order is: Planning → Analysis → Design → Development → Testing → Implementation → Maintenance."},
+];
+
+// ── ESSAY DATA ──
+const essays = [
+  {
+    q:"Define a system and explain its eight key characteristics with examples.",
+    diff:"medium", marks:"10",
+    answer:`<h4>Definition of a System</h4>
+<p>A <span class="key-point">system</span> is a collection of interrelated components working together toward a common purpose by accepting inputs, processing them, and producing outputs.</p>
+<h4>Eight Characteristics</h4>
+<ol>
+<li><strong>Components</strong> – Subsystems or elements making up the system. <em>Example: CPU, memory, storage in a computer system.</em></li>
+<li><strong>Boundary</strong> – Defines the scope/limits of the system. <em>Example: A university system boundary includes students, staff, and courses — but not government ministries.</em></li>
+<li><strong>Environment</strong> – Everything outside the boundary that affects the system. <em>Example: Market changes affecting a business system.</em></li>
+<li><strong>Interface</strong> – Points of interaction between subsystems or the system and environment. <em>Example: API connecting a mobile app to a database server.</em></li>
+<li><strong>Input</strong> – Data/materials entering the system for processing. <em>Example: Student records entered into a university portal.</em></li>
+<li><strong>Output</strong> – Final product or information generated. <em>Example: Printed results slip from a student portal.</em></li>
+<li><strong>Feedback</strong> – Mechanism for controlling/adjusting operations. <em>Example: Sales reports that adjust inventory ordering.</em></li>
+<li><strong>Control</strong> – Ensures the system functions as intended. <em>Example: User authentication controlling access to the system.</em></li>
+</ol>
+<div class="marks-hint">💡 Exam tip: Give at least one real-world example for each characteristic to earn full marks.</div>`
+  },
+  {
+    q:"What is System Analysis and Design (SAD)? Explain its objectives and importance to an organization.",
+    diff:"easy", marks:"8",
+    answer:`<h4>Definition of SAD</h4>
+<p>System Analysis and Design (SAD) is a <span class="key-point">structured process</span> that involves understanding how an existing system functions and designing a new system or improving an existing one to meet organizational goals.</p>
+<h4>Objectives of SAD</h4>
+<ul>
+<li>To improve business efficiency and effectiveness</li>
+<li>To identify and solve problems systematically</li>
+<li>To ensure information systems meet user requirements</li>
+<li>To design systems that are flexible, reliable, and cost-effective</li>
+</ul>
+<h4>Importance to Organizations</h4>
+<ul>
+<li><strong>Reduces project failure risk</strong> – systematic approach identifies issues early</li>
+<li><strong>Improves communication</strong> – creates shared understanding between users and developers</li>
+<li><strong>Provides documentation</strong> – structured records for future reference and audits</li>
+<li><strong>Aligns IT with business goals</strong> – ensures technology investments deliver business value</li>
+</ul>
+<div class="marks-hint">💡 8-mark structure: Definition (2) + 2 objectives with explanation (3) + 3 importance points (3)</div>`
+  },
+  {
+    q:"Describe the System Development Life Cycle (SDLC) and explain each of its phases.",
+    diff:"medium", marks:"12",
+    answer:`<h4>Definition</h4>
+<p>The <span class="key-point">SDLC</span> is the framework that defines the stages involved in the development of an information system. It provides a structured approach to planning, creating, testing, and deploying systems.</p>
+<h4>SDLC Phases</h4>
+<ol>
+<li><strong>Planning/Initiation</strong> – Define project scope, objectives, feasibility, and resources. Conduct feasibility study.</li>
+<li><strong>System Investigation</strong> – Study the current system, identify problems and opportunities for improvement.</li>
+<li><strong>Requirements Analysis</strong> – Gather and document detailed user requirements through interviews, surveys, and observation.</li>
+<li><strong>System Design</strong> – Create architectural blueprint, database design, interface design, and process design.</li>
+<li><strong>Development (Coding)</strong> – Programmers write the actual code based on design specifications.</li>
+<li><strong>Testing & Quality Assurance</strong> – Unit testing, integration testing, and user acceptance testing (UAT) to detect defects.</li>
+<li><strong>Implementation/Deployment</strong> – Install and deploy the system in the live environment. Train users.</li>
+<li><strong>Maintenance & Review</strong> – Monitor performance, fix bugs, implement enhancements, and evaluate effectiveness.</li>
+</ol>
+<div class="marks-hint">💡 For full marks, mention what happens in each phase, not just the name.</div>`
+  },
+  {
+    q:"Compare and contrast the Waterfall model and the Agile model of system development.",
+    diff:"hard", marks:"10",
+    answer:`<h4>Waterfall Model</h4>
+<p>A <span class="key-point">sequential</span>, phase-by-phase approach where each phase must be fully completed before the next begins. Characterized by heavy documentation and strict planning.</p>
+<p><strong>Advantages:</strong> Simple to understand, well-documented, works well for stable requirements.<br><strong>Disadvantages:</strong> Inflexible to changes; problems found late are costly to fix; little user involvement after requirements.</p>
+<h4>Agile Model</h4>
+<p>A <span class="key-point">flexible, iterative</span> approach that emphasizes collaboration, continuous delivery, and adaptability. Works in short cycles called sprints. Examples: Scrum, XP.</p>
+<p><strong>Advantages:</strong> Adapts to changing requirements; frequent deliverables; strong user collaboration.<br><strong>Disadvantages:</strong> Less documentation; harder to predict cost/time; requires high customer involvement.</p>
+<h4>Key Comparisons</h4>
+<ul>
+<li><strong>Flexibility:</strong> Waterfall = rigid; Agile = adaptive</li>
+<li><strong>Documentation:</strong> Waterfall = heavy; Agile = minimal</li>
+<li><strong>User involvement:</strong> Waterfall = mainly at start/end; Agile = continuous</li>
+<li><strong>Suitability:</strong> Waterfall = stable requirements; Agile = evolving requirements</li>
+<li><strong>Delivery:</strong> Waterfall = one final delivery; Agile = incremental deliveries</li>
+</ul>
+<div class="marks-hint">💡 A comparison table earns you presentation marks. Always end with "best used when..."</div>`
+  },
+  {
+    q:"Explain the role and responsibilities of a System Analyst. What skills are required?",
+    diff:"easy", marks:"8",
+    answer:`<h4>Role of a System Analyst</h4>
+<p>A System Analyst is a professional who acts as a <span class="key-point">bridge between business needs and technical solutions</span>. They translate what a business needs into technical specifications that developers can build.</p>
+<h4>Key Responsibilities</h4>
+<ul>
+<li>Understanding user requirements and system needs</li>
+<li>Modeling business processes and data flows using tools like DFDs and UML</li>
+<li>Designing and evaluating system alternatives</li>
+<li>Communicating effectively with both management (non-technical) and technical teams</li>
+<li>Supporting testing, documentation, and implementation</li>
+<li>Ensuring the final system meets the original requirements</li>
+</ul>
+<h4>Required Skills</h4>
+<ul>
+<li><strong>Technical:</strong> Knowledge of databases, system architecture, UML, programming concepts</li>
+<li><strong>Communication:</strong> Must explain technical concepts to non-technical stakeholders</li>
+<li><strong>Analytical:</strong> Ability to diagnose problems and design solutions</li>
+<li><strong>Business domain knowledge:</strong> Understand the industry/organization's processes</li>
+<li><strong>Interpersonal:</strong> Collaboration and negotiation skills</li>
+</ul>
+<div class="marks-hint">💡 The "bridge" metaphor is key — use it in your exam answer.</div>`
+  },
+  {
+    q:"Distinguish between open systems and closed systems with relevant examples.",
+    diff:"easy", marks:"6",
+    answer:`<h4>Open System</h4>
+<p>An <span class="key-point">open system</span> interacts with and is influenced by its external environment. It exchanges information, energy, or materials with the outside world.</p>
+<p><strong>Examples:</strong> A business organization (affected by market, competitors, regulations), a biological organism, a university management system (interacts with government, students, employers).</p>
+<h4>Closed System</h4>
+<p>A <span class="key-point">closed system</span> does not interact with its environment; it is self-contained and isolated.</p>
+<p><strong>Examples:</strong> A chemical reaction in a sealed container, an automated clock mechanism, a standalone calculator with fixed functions.</p>
+<h4>Key Differences</h4>
+<ul>
+<li><strong>Environment interaction:</strong> Open = yes; Closed = no</li>
+<li><strong>Adaptability:</strong> Open = adapts to environment; Closed = fixed behavior</li>
+<li><strong>Real-world relevance:</strong> Most information systems are open systems</li>
+</ul>
+<div class="marks-hint">💡 Note: In practice, truly closed systems are rare — most real systems are open to some degree.</div>`
+  },
+  {
+    q:"What are the three main approaches to system development? Compare their characteristics.",
+    diff:"medium", marks:"9",
+    answer:`<h4>1. Traditional/Structured Approach</h4>
+<p>Based on the SDLC with <span class="key-point">clearly defined, sequential stages</span>. Emphasis on heavy documentation. Examples: Waterfall model, SADT (Structured Analysis and Design Technique).</p>
+<p><strong>Characteristics:</strong> Rigid, well-documented, good for stable requirements, sequential progress.</p>
+<h4>2. Object-Oriented (OO) Approach</h4>
+<p>Focuses on modeling systems using <span class="key-point">objects</span> that combine data (attributes) and behavior (methods). Uses UML diagrams such as use case, class, and sequence diagrams.</p>
+<p><strong>Characteristics:</strong> Reusable components, models real-world entities, good for complex systems, promotes modularity.</p>
+<h4>3. Agile Approach</h4>
+<p>Emphasizes <span class="key-point">flexibility, collaboration, and rapid iteration</span>. Delivers working software in short sprints. Examples: Scrum, Extreme Programming (XP).</p>
+<p><strong>Characteristics:</strong> Adaptive to change, minimal documentation, continuous user involvement, frequent deliveries.</p>
+<h4>Summary Comparison</h4>
+<ul>
+<li>Documentation: Traditional = heaviest; Agile = lightest</li>
+<li>Flexibility: Agile = highest; Traditional = lowest</li>
+<li>User involvement: Agile = continuous; Traditional = minimal post-requirements</li>
+</ul>
+<div class="marks-hint">💡 3 approaches × 3 marks each. Cover definition, example, and key feature for each.</div>`
+  },
+  {
+    q:"Explain the Spiral model of SDLC. Why is it suitable for large, high-risk projects?",
+    diff:"hard", marks:"8",
+    answer:`<h4>The Spiral Model</h4>
+<p>The Spiral Model is an <span class="key-point">iterative development model</span> that combines features of prototyping (iteration) and the waterfall model (systematic phases), with a special focus on <strong>risk analysis</strong>.</p>
+<h4>Four Quadrants of Each Spiral</h4>
+<ol>
+<li><strong>Planning</strong> – Determine objectives, alternatives, and constraints for the current cycle</li>
+<li><strong>Risk Analysis</strong> – Identify, evaluate, and resolve risks; build prototypes if needed</li>
+<li><strong>Engineering</strong> – Develop and test the product for the current iteration</li>
+<li><strong>Evaluation</strong> – Customer reviews the iteration; plan the next spiral</li>
+</ol>
+<h4>Why Suitable for High-Risk Projects</h4>
+<ul>
+<li><strong>Risk management is built-in</strong> – risks are identified and addressed at every cycle</li>
+<li><strong>Iterative nature</strong> – problems discovered early before expensive late-stage fixes</li>
+<li><strong>Stakeholder involvement</strong> – customer evaluates at each cycle, ensuring alignment</li>
+<li><strong>Scalable</strong> – suitable for large systems where requirements may evolve</li>
+<li><strong>Combines strengths</strong> – takes systematic structure from Waterfall + flexibility from Prototyping</li>
+</ul>
+<div class="marks-hint">💡 The key differentiator of Spiral is RISK ANALYSIS — emphasize this in your answer.</div>`
+  },
+  {
+    q:"Define the feasibility study in SAD. What are the main types of feasibility?",
+    diff:"medium", marks:"8",
+    answer:`<h4>Feasibility Study</h4>
+<p>A <span class="key-point">feasibility study</span> is an evaluation conducted during the early stages of SDLC to determine whether the proposed system development project is viable and worthwhile to pursue.</p>
+<h4>Types of Feasibility</h4>
+<ul>
+<li><strong>Technical Feasibility</strong> – Can the technology required to build the system be realistically developed or acquired? Does the organization have the technical expertise?</li>
+<li><strong>Economic/Financial Feasibility</strong> – Is the project cost-effective? Will the benefits justify the costs? Involves cost-benefit analysis.</li>
+<li><strong>Operational Feasibility</strong> – Will the system work in the current organizational environment? Will users accept and use it?</li>
+<li><strong>Legal/Ethical Feasibility</strong> – Does the system comply with laws, regulations, and ethical standards (e.g., data protection laws)?</li>
+<li><strong>Schedule Feasibility</strong> – Can the system be developed within the required timeframe?</li>
+</ul>
+<h4>Outcome</h4>
+<p>The feasibility study produces a <strong>feasibility report</strong> recommending whether to proceed, modify scope, or abandon the project.</p>
+<div class="marks-hint">💡 Remember the acronym TELOS: Technical, Economic, Legal, Operational, Schedule.</div>`
+  },
+  {
+    q:"What are current trends in System Analysis and Design? Discuss at least four trends.",
+    diff:"medium", marks:"8",
+    answer:`<h4>Current Trends in SAD</h4>
+<ol>
+<li><strong>Cloud-Based Development</strong> – Systems are increasingly designed to run on cloud platforms (AWS, Azure, Google Cloud), offering scalability, reduced infrastructure costs, and global accessibility. Analysts now design for cloud deployment from the start.</li>
+<li><strong>Agile and DevOps Integration</strong> – The combination of Agile development with DevOps (Development + Operations) practices enables <span class="key-point">Continuous Integration/Continuous Deployment (CI/CD)</span>, shortening release cycles dramatically.</li>
+<li><strong>AI-Assisted Development</strong> – Artificial intelligence tools assist analysts and developers in requirements analysis, code generation, testing, and even system design recommendations.</li>
+<li><strong>Microservices Architecture</strong> – Instead of monolithic applications, systems are designed as small, independent, loosely-coupled services that communicate via APIs. This improves scalability, maintainability, and resilience.</li>
+<li><strong>Low-Code/No-Code Platforms</strong> – Platforms that allow non-developers to build applications with minimal coding, democratizing system development.</li>
+<li><strong>Cybersecurity-First Design</strong> – Security is now built into the design process from the beginning ("security by design") rather than added as an afterthought.</li>
+</ol>
+<div class="marks-hint">💡 4 trends × 2 marks each. Include a brief explanation of each — not just a list.</div>`
+  },
+  {
+    q:"What is UML and how is it used by System Analysts in the Object-Oriented approach?",
+    diff:"medium", marks:"6",
+    answer:`<h4>UML — Unified Modeling Language</h4>
+<p><span class="key-point">UML</span> (Unified Modeling Language) is a standardized visual modeling language used to design, document, and communicate the structure and behavior of software systems.</p>
+<h4>How System Analysts Use UML</h4>
+<ul>
+<li><strong>Use Case Diagrams</strong> – Show how users (actors) interact with the system to achieve goals. Used to capture functional requirements.</li>
+<li><strong>Class Diagrams</strong> – Represent the structure of the system by showing classes, attributes, methods, and relationships. Used in system design.</li>
+<li><strong>Sequence Diagrams</strong> – Show how objects interact over time in a specific use case. Used to model dynamic behavior.</li>
+<li><strong>Activity Diagrams</strong> – Show the flow of activities/processes. Similar to flowcharts.</li>
+<li><strong>State Diagrams</strong> – Model the states an object can be in and transitions between states.</li>
+</ul>
+<h4>Benefits of UML in SAD</h4>
+<p>UML provides a common language for analysts, designers, and developers — reducing miscommunication and improving documentation quality.</p>
+<div class="marks-hint">💡 The three most commonly asked UML diagrams: Use Case, Class, and Sequence.</div>`
+  },
+  {
+    q:"Explain the concept of feedback in a system and why it is important. Give examples.",
+    diff:"easy", marks:"5",
+    answer:`<h4>Feedback in Systems</h4>
+<p><span class="key-point">Feedback</span> is the mechanism by which information about the system's output is returned to the system to control or adjust its future operations, ensuring the system stays aligned with its goals.</p>
+<h4>Types of Feedback</h4>
+<ul>
+<li><strong>Positive Feedback</strong> – Amplifies change; pushes the system further in the same direction. Example: Viral social media posts getting more recommendations.</li>
+<li><strong>Negative Feedback</strong> – Corrects deviation; brings the system back toward its target. Example: A thermostat turning off heating when target temperature is reached.</li>
+</ul>
+<h4>Examples in Information Systems</h4>
+<ul>
+<li>Sales reports that automatically adjust inventory reorder levels</li>
+<li>Student performance data triggering additional support resources</li>
+<li>Error logs triggering system alerts for administrators</li>
+<li>Customer satisfaction scores influencing service quality improvements</li>
+</ul>
+<h4>Importance</h4>
+<p>Without feedback, systems cannot self-correct and will eventually drift from their intended purpose. Feedback enables continuous improvement and control.</p>
+<div class="marks-hint">💡 The thermostat is the classic feedback example — use it if you can't think of another.</div>`
+  },
+  {
+    q:"Describe three types of SDLC models and give situations where each is most appropriate.",
+    diff:"hard", marks:"9",
+    answer:`<h4>1. Waterfall Model</h4>
+<p>A sequential, phase-by-phase model with heavy documentation. Each phase produces deliverables before the next begins.</p>
+<p><strong>Best for:</strong> Projects with <span class="key-point">well-defined, stable requirements</span> that are unlikely to change. Example: Government contract systems, financial reporting systems where regulations are fixed.</p>
+<h4>2. Prototyping Model</h4>
+<p>An iterative model where a working prototype is built early and continuously refined based on user feedback until requirements are clarified and the system is satisfactory.</p>
+<p><strong>Best for:</strong> Projects where <span class="key-point">requirements are unclear or poorly defined</span>. Example: A startup building a new mobile app where user needs are uncertain and must be explored through experimentation.</p>
+<h4>3. Agile Model</h4>
+<p>A highly flexible, iterative model emphasizing collaboration, continuous delivery in short sprints, and adaptability to changing requirements. Examples: Scrum, XP.</p>
+<p><strong>Best for:</strong> Projects in <span class="key-point">dynamic environments with rapidly changing requirements</span>. Example: E-commerce platforms, social media applications needing frequent feature updates based on user behavior.</p>
+<div class="marks-hint">💡 3 marks each: definition + key feature + appropriate situation with example.</div>`
+  },
+  {
+    q:"What is the difference between System Analysis and System Design?",
+    diff:"easy", marks:"6",
+    answer:`<h4>System Analysis</h4>
+<p><span class="key-point">System Analysis</span> is the process of studying and understanding the current (existing) system — what it does, how it works, what problems it has, and what users need from a new or improved system.</p>
+<p><strong>Focus:</strong> "What does the system need to do?" — understanding requirements</p>
+<p><strong>Activities:</strong> Requirements gathering, studying existing systems, identifying bottlenecks, feasibility study, defining system scope.</p>
+<h4>System Design</h4>
+<p><span class="key-point">System Design</span> is the process of defining how the new system will be built — the architecture, databases, interfaces, and processes that will fulfill the requirements identified in analysis.</p>
+<p><strong>Focus:</strong> "How will the system do it?" — creating the blueprint</p>
+<p><strong>Activities:</strong> Database design, UI design, architecture design, process design, creating data flow diagrams, writing technical specifications.</p>
+<h4>Relationship</h4>
+<p>Analysis must precede design. You cannot design a solution without first fully understanding the problem. Together, they form the core of the SAD process.</p>
+<div class="marks-hint">💡 Key phrase: Analysis = WHAT; Design = HOW. Use this in your answer.</div>`
+  },
+  {
+    q:"Identify and briefly describe five phases of the SDLC and explain their importance.",
+    diff:"medium", marks:"10",
+    answer:`<h4>Five Key SDLC Phases</h4>
+<ol>
+<li><strong>Planning</strong> (Importance: Foundation of the project) – Defines project scope, goals, timeline, and resources. Includes feasibility study. Without planning, projects lack direction and often fail or exceed budgets.</li>
+<li><strong>Requirements Analysis</strong> (Importance: Accuracy of the system) – Collects and documents what users need the system to do. Errors here propagate through all subsequent phases, making this the most critical phase for quality.</li>
+<li><strong>System Design</strong> (Importance: Blueprint for development) – Creates the technical architecture and specifications. A poor design leads to a system that is difficult to maintain, scale, or modify.</li>
+<li><strong>Testing</strong> (Importance: Quality assurance) – Verifies that the system works correctly and meets requirements. Catches defects before the system reaches real users, saving costly post-deployment fixes.</li>
+<li><strong>Maintenance</strong> (Importance: Long-term system value) – Keeps the system operational and up-to-date after deployment. Systems without proper maintenance become obsolete and eventually fail.</li>
+</ol>
+<div class="marks-hint">💡 2 marks per phase: what it involves + why it matters. Don't just list — explain.</div>`
+  },
+  {
+    q:"What factors differentiate a 'good' information system from a 'poor' one? Relate your answer to SAD principles.",
+    diff:"hard", marks:"8",
+    answer:`<h4>Characteristics of a Good Information System</h4>
+<p>SAD principles directly define what makes a system good:</p>
+<ul>
+<li><strong>Meets User Requirements</strong> – A good system does exactly what users need (established through thorough requirements analysis in SAD).</li>
+<li><strong>Reliability</strong> – Functions consistently without failure. Achieved through thorough testing in SDLC.</li>
+<li><strong>Flexibility/Scalability</strong> – Can adapt to future changes. SAD designs for maintainability from the start.</li>
+<li><strong>Cost-effectiveness</strong> – Benefits outweigh costs. Verified through feasibility studies.</li>
+<li><strong>User-friendliness</strong> – Easy for end-users to understand and use. Addressed in UI design phase.</li>
+<li><strong>Security</strong> – Protects data from unauthorized access. Incorporated via security-by-design principles.</li>
+<li><strong>Well-documented</strong> – Has clear documentation for users and maintainers. SAD emphasizes documentation throughout.</li>
+</ul>
+<h4>How SAD Ensures Quality</h4>
+<p>By following structured SDLC phases, involving users throughout (especially Agile), conducting thorough testing, and documenting every step, SAD significantly increases the likelihood of delivering a system with all these qualities.</p>
+<div class="marks-hint">💡 Link each quality back to a SAD activity — that's what earns the higher marks.</div>`
+  },
+  {
+    q:"Explain what is meant by 'system boundary' and 'system environment'. Why are these concepts important?",
+    diff:"easy", marks:"5",
+    answer:`<h4>System Boundary</h4>
+<p>The <span class="key-point">system boundary</span> is a conceptual line that defines the scope and limits of the system — what is inside (part of the system) and what is outside (not part of the system).</p>
+<p><strong>Example:</strong> In a hospital information system, the boundary includes patient records, billing, and appointments but excludes the patient's home life or external insurance company systems.</p>
+<h4>System Environment</h4>
+<p>The <span class="key-point">system environment</span> is everything outside the system boundary that can affect or be affected by the system.</p>
+<p><strong>Example:</strong> For a banking system, the environment includes regulatory bodies, economic conditions, customers, and competing banks — all external but influential.</p>
+<h4>Importance</h4>
+<ul>
+<li><strong>Scope management:</strong> Boundaries prevent scope creep by clearly defining what the project covers</li>
+<li><strong>Interface design:</strong> Understanding what's external helps design the right interfaces</li>
+<li><strong>Risk identification:</strong> Environmental factors that could affect the system are identified during analysis</li>
+<li><strong>Resource allocation:</strong> Teams focus resources on what's inside the boundary</li>
+</ul>
+<div class="marks-hint">💡 Always give an example — abstract definitions alone rarely earn full marks.</div>`
+  },
+  {
+    q:"What is a deterministic system vs a probabilistic system? Give two examples of each.",
+    diff:"easy", marks:"4",
+    answer:`<h4>Deterministic System</h4>
+<p>A <span class="key-point">deterministic system</span> produces a predictable, well-defined output for every specific input. The same input always produces the same output. There is no uncertainty.</p>
+<p><strong>Examples:</strong><br>1. A calculator — inputting 5+3 always produces 8.<br>2. A traffic signal system with fixed timing — the same sequence always runs.</p>
+<h4>Probabilistic System</h4>
+<p>A <span class="key-point">probabilistic system</span> has uncertain outputs — the same input may produce different outputs at different times due to random or unpredictable factors.</p>
+<p><strong>Examples:</strong><br>1. A weather forecasting system — same atmospheric data may yield different predictions.<br>2. A stock market prediction system — market behavior is inherently uncertain.</p>
+<div class="marks-hint">💡 The key distinction: certainty of output. Deterministic = certain; Probabilistic = uncertain.</div>`
+  },
+  {
+    q:"Discuss the importance of user involvement throughout the SDLC.",
+    diff:"medium", marks:"6",
+    answer:`<h4>Why User Involvement Matters</h4>
+<p>User involvement is critical throughout all SDLC phases because systems are built for users — if they don't understand, accept, or use the system, the project fails regardless of technical quality.</p>
+<h4>Phase-by-Phase Importance</h4>
+<ul>
+<li><strong>Requirements Analysis:</strong> Users define what the system must do. Their input prevents building the wrong system.</li>
+<li><strong>Design:</strong> User feedback on prototypes/mockups ensures the interface is intuitive before expensive coding begins.</li>
+<li><strong>Testing (UAT):</strong> User Acceptance Testing validates that the system meets real-world needs from the user's perspective.</li>
+<li><strong>Implementation:</strong> Training and user guides ensure smooth adoption.</li>
+<li><strong>Maintenance:</strong> Ongoing user feedback identifies improvements and bugs in the live system.</li>
+</ul>
+<h4>Consequences of Inadequate User Involvement</h4>
+<ul>
+<li>Systems that don't match actual work processes</li>
+<li>Low adoption and resistance to change</li>
+<li>Expensive rework after deployment</li>
+<li>Project failure despite technical success</li>
+</ul>
+<div class="marks-hint">💡 Agile maximizes user involvement. Waterfall minimizes it — this is why Agile often delivers better user satisfaction.</div>`
+  },
+  {
+    q:"Explain how the components of SAD work together in the development of an effective information system.",
+    diff:"hard", marks:"10",
+    answer:`<h4>Components of SAD</h4>
+<p>SAD consists of interconnected components that together ensure a system is understood, analyzed, and effectively designed:</p>
+<ol>
+<li><strong>Requirements Gathering</strong> – The foundation. Through interviews, observations, questionnaires, and document analysis, analysts collect what users need. All other components depend on accurate requirements.</li>
+<li><strong>System Analysis</strong> – Studying the existing system, identifying its weaknesses, inefficiencies, and gaps. Produces an 'as-is' model of the current state. Tools: DFDs, process models.</li>
+<li><strong>Feasibility Study</strong> – Evaluates viability (technical, economic, operational) before significant investment. Prevents pursuing unviable projects.</li>
+<li><strong>System Design</strong> – Translates requirements and analysis into a technical blueprint. Includes database schema, architecture, interface design, and process specifications.</li>
+<li><strong>Documentation</strong> – Produced throughout, serves as communication between stakeholders, reference during development, and maintenance guide after deployment.</li>
+</ol>
+<h4>How They Work Together</h4>
+<p>The components flow in a logical sequence: <span class="key-point">Requirements → Analysis → Feasibility → Design → Documentation</span>. Each feeds the next. Gaps in requirements lead to flawed analysis; a poor feasibility study risks unviable systems; poor design despite good analysis still produces a bad system. SAD is effective only when all components are executed properly and in coordination.</p>
+<div class="marks-hint">💡 For 10 marks: explain each component (5 × 1.5 = 7.5) + their interconnection (2.5). Use a diagram if allowed.</div>`
+  },
+];
+
+// ── RENDER MCQs ──
+let scoreCorrect=0, scoreTotal=0;
+function renderMCQs(){
+  const c=document.getElementById('mcq-container');
+  mcqs.forEach((m,i)=>{
+    const letters=['A','B','C','D'];
+    const optsHTML=m.opts.map((o,oi)=>`
+      <div class="mcq-opt" data-q="${i}" data-o="${oi}" onclick="selectOpt(this,${i},${oi})">
+        <span class="opt-letter">${letters[oi]}</span>
+        <span>${o}</span>
+      </div>`).join('');
+    c.innerHTML+=`
+    <div class="mcq-card" style="animation-delay:${i*0.04}s">
+      <div class="mcq-num">Question ${i+1} of ${mcqs.length}</div>
+      <div class="mcq-q">${m.q}</div>
+      <div class="mcq-options" id="opts-${i}">${optsHTML}</div>
+      <div class="mcq-feedback" id="fb-${i}"></div>
+      <button class="check-btn" id="btn-${i}" onclick="checkMCQ(${i})" disabled>Check Answer</button>
+    </div>`;
+  });
+  document.getElementById('mcq-count-pill').textContent=mcqs.length+' Questions';
+}
+
+function selectOpt(el,qi,oi){
+  const opts=document.querySelectorAll(`[data-q="${qi}"]`);
+  opts.forEach(o=>{
+    o.classList.remove('selected');
+    if(!o.classList.contains('correct')&&!o.classList.contains('wrong'))
+      o.style.borderColor='';
+  });
+  el.classList.add('selected');
+  document.getElementById('btn-'+qi).disabled=false;
+}
+
+function checkMCQ(qi){
+  const opts=document.querySelectorAll(`[data-q="${qi}"]`);
+  let selected=-1;
+  opts.forEach(o=>{ if(o.classList.contains('selected')) selected=parseInt(o.dataset.o); });
+  if(selected<0) return;
+  const m=mcqs[qi];
+  const fb=document.getElementById('fb-'+qi);
+  const btn=document.getElementById('btn-'+qi);
+  opts.forEach(o=>{ o.onclick=null; o.style.cursor='default'; });
+  opts[m.ans].classList.add('correct');
+  scoreTotal++;
+  if(selected===m.ans){
+    scoreCorrect++;
+    fb.className='mcq-feedback correct-fb show';
+    fb.innerHTML='✅ <strong>Correct!</strong> '+m.exp;
+  } else {
+    opts[selected].classList.add('wrong');
+    fb.className='mcq-feedback wrong-fb show';
+    fb.innerHTML='❌ <strong>Incorrect.</strong> The correct answer is <strong>'+['A','B','C','D'][m.ans]+'</strong>. '+m.exp;
+  }
+  btn.disabled=true;
+  btn.textContent='Answered';
+  updateScore();
+}
+
+function updateScore(){
+  document.getElementById('score-correct').textContent=scoreCorrect;
+  document.getElementById('score-total').textContent=scoreTotal;
+  const pct=scoreTotal>0?(scoreCorrect/scoreTotal*100):0;
+  document.getElementById('score-progress').style.width=pct+'%';
+}
+
+// ── RENDER ESSAYS ──
+function renderEssays(){
+  const c=document.getElementById('essay-container');
+  const diffMap={easy:{cls:'essay-diff-easy',lbl:'EASY'},medium:{cls:'essay-diff-med',lbl:'MEDIUM'},hard:{cls:'essay-diff-hard',lbl:'HARD'}};
+  essays.forEach((e,i)=>{
+    const d=diffMap[e.diff];
+    c.innerHTML+=`
+    <div class="essay-card" style="animation-delay:${i*0.04}s">
+      <div class="essay-label">
+        <span class="${d.cls}">${d.lbl}</span>
+        &nbsp;·&nbsp;
+        <span class="essay-marks">${e.marks} Marks</span>
+        &nbsp;·&nbsp;
+        <span style="color:var(--text-muted)">Q${i+1}</span>
+      </div>
+      <div class="essay-q">${e.q}</div>
+      <button class="answer-toggle" onclick="toggleEssay(this,'ea-${i}')">
+        Show Model Answer
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="answer-body" id="ea-${i}">${e.answer}</div>
+    </div>`;
+  });
+}
+
+function toggleEssay(btn,id){
+  const body=document.getElementById(id);
+  const open=body.classList.toggle('show');
+  btn.classList.toggle('open',open);
+  btn.childNodes[0].textContent=open?'Hide Model Answer ':'Show Model Answer ';
+}
+
+// ── INIT ──
+renderMCQs();
+renderEssays();
+
+// ── NAV TABS (legacy) ──
+function showTab(id){ /* handled by switchSection */ }
+</script>
+</body>
+</html>
