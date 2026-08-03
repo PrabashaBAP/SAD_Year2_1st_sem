@@ -1,0 +1,1026 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 11 – System Design Concepts | Exam Prep</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#050a12;--surf:#0a1525;--card:#0f1e35;--border:#162840;
+  --a1:#e879f9;--a2:#06b6d4;--a3:#10b981;--a4:#f97316;
+  --red:#ef4444;--green:#10b981;--yellow:#f59e0b;
+  --text:#d4e6ff;--muted:#4a6a8a;--white:#f0f8ff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.65;overflow-x:hidden}
+
+/* === HERO === */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:2rem;overflow:hidden}
+#heroCanvas{position:absolute;inset:0;z-index:0}
+.hero-inner{position:relative;z-index:1;max-width:860px}
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.3);border-radius:100px;padding:.38rem 1.2rem;font-size:.76rem;letter-spacing:.1em;color:var(--a1);text-transform:uppercase;margin-bottom:1.6rem;animation:fup .7s ease both}
+.hero h1{font-size:clamp(2.2rem,6vw,5rem);font-weight:700;line-height:1.05;margin-bottom:1rem;animation:fup .7s .1s ease both}
+.grad{background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1rem;color:var(--muted);margin:0 auto 2.5rem;animation:fup .7s .2s ease both}
+.hero-stats{display:flex;gap:2.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;animation:fup .7s .3s ease both}
+.snum{font-size:2.3rem;font-weight:700;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.slbl{font-size:.76rem;color:var(--muted);margin-top:.1rem}
+.cta{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;border-radius:14px;padding:1rem 2.4rem;color:#fff;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .2s,box-shadow .2s;animation:fup .7s .4s ease both}
+.cta:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(232,121,249,.35)}
+
+/* === NAV === */
+.nav{position:sticky;top:0;z-index:200;background:rgba(5,10,18,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:.65rem 1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;justify-content:center}
+.nb{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.36rem .85rem;color:var(--muted);font-size:.76rem;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nb:hover,.nb.on{background:rgba(232,121,249,.12);border-color:var(--a1);color:var(--a1)}
+
+/* === SECTIONS === */
+.sec{max-width:1120px;margin:0 auto;padding:4.5rem 1.5rem}
+.slabel{font-size:.7rem;color:var(--a1);text-transform:uppercase;letter-spacing:.12em;font-family:'JetBrains Mono',monospace;margin-bottom:.4rem}
+.stitle{font-size:2rem;font-weight:700;margin-bottom:.4rem}
+.stitle span{background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ssub{color:var(--muted);margin-bottom:2.5rem;font-size:.9rem}
+hr.dv{border:none;border-top:1px solid var(--border);margin:0}
+
+/* === CARDS === */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.4rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;transition:transform .3s,border-color .3s,box-shadow .3s;opacity:0;transform:translateY(22px)}
+.card.vis{animation:sup .5s ease forwards}
+.card:hover{transform:translateY(-5px);border-color:var(--a1);box-shadow:0 10px 28px rgba(232,121,249,.12)}
+.ci{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+.card h3{font-size:1rem;font-weight:600;margin-bottom:.75rem;color:var(--white)}
+.card ul{list-style:none}
+.card ul li{color:var(--muted);font-size:.85rem;padding:.28rem 0 .28rem 1.1rem;position:relative;border-bottom:1px solid rgba(255,255,255,.04)}
+.card ul li::before{content:'›';position:absolute;left:0;color:var(--a1);font-weight:700}
+.card ul li:last-child{border-bottom:none}
+
+/* === ACCORDION TECHNIQUE CARDS === */
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.3rem}
+.acc{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;opacity:0;transform:translateY(20px)}
+.acc.vis{animation:sup .5s ease forwards}
+.acc-h{padding:1.2rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:1rem;transition:background .2s}
+.acc-h:hover{background:rgba(232,121,249,.05)}
+.acc-icon{font-size:1.8rem;flex-shrink:0}
+.acc-name{font-weight:700;font-size:.97rem;color:var(--white)}
+.acc-tag{font-size:.75rem;color:var(--muted);margin-top:.1rem}
+.acc-arr{margin-left:auto;color:var(--muted);transition:transform .3s;font-size:.9rem;flex-shrink:0}
+.acc.open .acc-arr{transform:rotate(180deg);color:var(--a1)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.acc.open .acc-body{max-height:1500px}
+.acc-inner{padding:0 1.5rem 1.5rem;border-top:1px solid var(--border);padding-top:1.2rem}
+.acc-inner p{font-size:.86rem;color:var(--muted);margin-bottom:.9rem;line-height:1.65}
+.acc-inner h4{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:.55rem}
+.acc-inner ul{list-style:none;margin-bottom:.9rem}
+.acc-inner ul li{font-size:.84rem;padding:.25rem 0 .25rem 1rem;position:relative;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.04)}
+.acc-inner ul li::before{position:absolute;left:0;font-weight:700}
+.acc-inner ul.pro li::before{content:'✓';color:var(--green)}
+.acc-inner ul.con li::before{content:'✗';color:var(--red)}
+.acc-inner ul.dot li::before{content:'›';color:var(--a1)}
+.acc-inner ul li:last-child{border-bottom:none}
+.note-box{background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);border-radius:10px;padding:.85rem 1rem;font-size:.83rem;color:var(--text)}
+.note-box strong{color:var(--a2)}
+
+/* === BIG TABLE === */
+.tbl{width:100%;border-collapse:separate;border-spacing:0 .5rem}
+.tbl th{text-align:left;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;padding:.4rem 1rem;font-family:'JetBrains Mono',monospace}
+.tbl td{background:var(--card);padding:.85rem 1rem;font-size:.85rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.tbl td:first-child{border-left:1px solid var(--border);border-radius:10px 0 0 10px;font-weight:600;color:var(--white)}
+.tbl td:last-child{border-right:1px solid var(--border);border-radius:0 10px 10px 0;color:var(--muted)}
+
+/* === CIA TRIAD === */
+.cia-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-bottom:2rem}
+.cia-card{border-radius:16px;padding:1.5rem;text-align:center;border:1px solid}
+.cia-card .cia-icon{font-size:2.5rem;margin-bottom:.75rem}
+.cia-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.cia-card p{font-size:.83rem;color:var(--muted);line-height:1.6}
+.cia-card .example{margin-top:.75rem;font-size:.78rem;padding:.5rem .75rem;border-radius:8px;font-style:italic}
+
+/* === MCQ === */
+.score-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.8rem;display:flex;align-items:center;gap:2rem;margin-bottom:2rem;flex-wrap:wrap}
+.sring{width:76px;height:76px;border-radius:50%;background:conic-gradient(var(--a1) 0deg,var(--border) 0deg);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 1s}
+.sinner{width:60px;height:60px;background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.97rem;font-family:'JetBrains Mono',monospace}
+.sinfo{flex:1}.sinfo h3{font-size:1rem;margin-bottom:.2rem}.sinfo p{font-size:.82rem;color:var(--muted)}
+.prog-wrap{background:var(--border);border-radius:100px;height:5px;max-width:280px;margin-top:.5rem;overflow:hidden}
+.prog-bar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--a1),var(--a2));width:0;transition:width 1s ease}
+.rbtn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.45rem .95rem;color:var(--muted);font-family:inherit;font-size:.82rem;cursor:pointer;transition:all .2s}
+.rbtn:hover{border-color:var(--a1);color:var(--a1)}
+.fbar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:2rem}
+.fb{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.34rem .82rem;color:var(--muted);font-size:.76rem;font-family:inherit;cursor:pointer;transition:all .2s}
+.fb.on,.fb:hover{background:rgba(232,121,249,.12);border-color:var(--a1);color:var(--a1)}
+.mcq-wrap{display:flex;flex-direction:column;gap:1.3rem}
+.mcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;opacity:0;transform:translateY(18px)}
+.mcard.vis{animation:sup .45s ease forwards}
+.mhead{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.1rem}
+.mnum{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.mqtext{font-weight:600;line-height:1.5;font-size:.96rem}
+.mtag{display:inline-block;font-size:.66rem;padding:.17rem .5rem;border-radius:4px;margin-bottom:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.tg{background:rgba(148,163,184,.15);color:var(--muted)}
+.ti{background:rgba(232,121,249,.15);color:var(--a1)}
+.to{background:rgba(6,182,212,.15);color:var(--a2)}
+.tu{background:rgba(16,185,129,.15);color:var(--green)}
+.ts{background:rgba(249,115,22,.15);color:var(--a4)}
+.tc{background:rgba(245,158,11,.15);color:var(--yellow)}
+.mopts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.9rem}
+.mopt{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:.7rem 1rem;cursor:pointer;font-size:.87rem;font-family:inherit;color:var(--text);text-align:left;transition:all .17s;display:flex;align-items:center;gap:.7rem}
+.mopt:hover{background:rgba(232,121,249,.08);border-color:var(--a1)}
+.mopt.ok{background:rgba(16,185,129,.12);border-color:var(--green);color:var(--green)}
+.mopt.ng{background:rgba(239,68,68,.12);border-color:var(--red);color:var(--red)}
+.oltr{width:22px;height:22px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.exp{display:none;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:.8rem 1rem;font-size:.84rem;color:#6ee7b7;gap:.5rem;align-items:flex-start}
+.exp.show{display:flex}
+
+/* === ESSAY === */
+.ewrap{display:flex;flex-direction:column;gap:1.3rem}
+.ec{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;opacity:0;transform:translateY(18px)}
+.ec.vis{animation:sup .45s ease forwards}
+.eh{padding:1.4rem 1.6rem;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;transition:background .2s}
+.eh:hover{background:rgba(232,121,249,.04)}
+.eq{font-weight:600;font-size:.96rem;line-height:1.5}
+.em{background:rgba(232,121,249,.12);color:var(--a1);padding:.17rem .55rem;border-radius:5px;font-size:.7rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.etog{font-size:.9rem;transition:transform .3s;color:var(--muted);flex-shrink:0}
+.ec.open .etog{transform:rotate(180deg);color:var(--a1)}
+.eb{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.ec.open .eb{max-height:3000px}
+.econt{padding:0 1.6rem 1.6rem;border-top:1px solid var(--border);padding-top:1.4rem}
+.econt h4{color:var(--a1);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-family:'JetBrains Mono',monospace}
+.epoints{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.epoints li{display:flex;gap:.65rem;font-size:.87rem;color:var(--text);line-height:1.55}
+.epoints li::before{content:'▸';color:var(--a2);flex-shrink:0;margin-top:.05rem}
+
+/* === DESIGN AREAS VISUAL === */
+.areas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.area-card{border-radius:14px;padding:1.2rem;text-align:center;border:1px solid;transition:transform .2s,box-shadow .2s;cursor:default}
+.area-card:hover{transform:translateY(-3px)}
+.area-card .ai{font-size:2rem;margin-bottom:.5rem}
+.area-card .an{font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.area-card .as{font-size:.75rem;opacity:.7}
+
+/* === QUICK REF === */
+.qr-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-bottom:2rem}
+
+/* === ANIMATIONS === */
+@keyframes fup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sup{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* === MOBILE === */
+@media(max-width:700px){
+  .hero h1{font-size:2.1rem}.cia-grid{grid-template-columns:1fr}.qr-2col{grid-template-columns:1fr}.sec{padding:3rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="top">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-inner">
+    <div class="badge">🎓 SE201.3 · Systems Analysis and Design</div>
+    <h1>Chapter 11<br><span class="grad">System Design</span><br>Concepts</h1>
+    <p class="hero-sub">Input Design · Output Design · UI Design · Architecture · Security<br>Your complete exam prep — exam in 2 days. Everything you need right here. 🚀</p>
+    <div class="hero-stats">
+      <div><div class="snum">50+</div><div class="slbl">MCQ Questions</div></div>
+      <div><div class="snum">16</div><div class="slbl">Essay Answers</div></div>
+      <div><div class="snum">6</div><div class="slbl">Design Areas</div></div>
+      <div><div class="snum">CIA</div><div class="slbl">Security Triad</div></div>
+    </div>
+    <button class="cta" onclick="document.getElementById('overview').scrollIntoView()">Start Revising ↓</button>
+  </div>
+</section>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav" id="sNav">
+  <button class="nb" onclick="go('overview')">📖 Overview</button>
+  <button class="nb" onclick="go('purpose')">🎯 Purpose</button>
+  <button class="nb" onclick="go('input')">⌨️ Input</button>
+  <button class="nb" onclick="go('output')">📊 Output</button>
+  <button class="nb" onclick="go('ui')">🖥️ UI Design</button>
+  <button class="nb" onclick="go('security')">🔒 Security</button>
+  <button class="nb" onclick="go('mcq')">✅ MCQ</button>
+  <button class="nb" onclick="go('essay')">📝 Essays</button>
+  <button class="nb" onclick="go('quickref')">⚡ Quick Ref</button>
+</nav>
+
+<!-- ═══ OVERVIEW ═══ -->
+<section class="sec" id="overview">
+  <div class="slabel">Chapter Overview</div>
+  <h2 class="stitle">All Key <span>Concepts</span> at a Glance</h2>
+  <p class="ssub">Every topic from your lecture slides — organized for fast revision before your exam.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci" style="background:rgba(232,121,249,.12)">🏗️</div>
+      <h3>What is System Design?</h3>
+      <ul>
+        <li>Process of defining HOW a system will operate</li>
+        <li>Covers: user interaction, data I/O, components</li>
+        <li>Covers: technical architecture, controls, security</li>
+        <li>Analysis asks WHAT — Design asks HOW</li>
+        <li>Transforms requirements into technical specs</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(6,182,212,.12)">🎯</div>
+      <h3>Design Converts Requirements Into</h3>
+      <ul>
+        <li>Screens / Forms — data entry interfaces</li>
+        <li>Reports — formatted outputs for stakeholders</li>
+        <li>Workflows — step-by-step process logic</li>
+        <li>Database Structures — tables, fields, relationships</li>
+        <li>System Components / Services — modules, functions</li>
+        <li>Interfaces Between Modules — communication links</li>
+        <li>Security and Control Mechanisms</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(16,185,129,.12)">✅</div>
+      <h3>A Well-Designed System Is</h3>
+      <ul>
+        <li>Usable — easy to learn and use</li>
+        <li>Efficient — tasks completed quickly, less effort</li>
+        <li>Secure — protects data and operations</li>
+        <li>Aligned with Business Needs</li>
+        <li>Reliable — consistent and predictable</li>
+        <li>Maintainable — easy to update and modify</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(232,121,249,.12)">⌨️</div>
+      <h3>Input Design</h3>
+      <ul>
+        <li>Specifies how data enters the system</li>
+        <li>Ensures: accurate, complete, consistent, timely, secure</li>
+        <li>Sources: users, scanners/sensors, APIs, files, batch</li>
+        <li>Controls: validation, range checks, format checks</li>
+        <li>Good error messages explain HOW to fix errors</li>
+        <li>Never erase all data when one field is wrong</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(6,182,212,.12)">📊</div>
+      <h3>Output Design</h3>
+      <ul>
+        <li>Specifies how information is presented</li>
+        <li>Helps: make decisions, monitor operations</li>
+        <li>Types: External, Internal, Detailed, Summary</li>
+        <li>Types: Real-Time, On-Demand, Scheduled</li>
+        <li>Principles: Relevance, Readability, Usability</li>
+        <li>Principles: Timeliness, Accuracy, Security</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(16,185,129,.12)">🖥️</div>
+      <h3>UI Design Principles</h3>
+      <ul>
+        <li>Consistency — uniform look and behavior</li>
+        <li>Feedback — system responds to user actions</li>
+        <li>Navigation — easy to move through the system</li>
+        <li>Error Prevention — stop mistakes before they happen</li>
+        <li>Accessibility — usable by all users</li>
+        <li>UI (visual) ≠ UX (overall experience)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(249,115,22,.12)">🔒</div>
+      <h3>CIA Security Triad</h3>
+      <ul>
+        <li>Confidentiality — only authorized access</li>
+        <li>Integrity — data accurate, unaltered</li>
+        <li>Availability — system accessible when needed</li>
+        <li>Security must be designed in from the start</li>
+        <li>Adding security later is expensive</li>
+        <li>Authentication, authorization, encryption, logging</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(245,158,11,.12)">🏛️</div>
+      <h3>Architecture Design</h3>
+      <ul>
+        <li>Defines overall technical structure of the system</li>
+        <li>Hardware/software arrangement</li>
+        <li>Layers and components</li>
+        <li>Data storage design</li>
+        <li>Communication between components</li>
+        <li>Deployment environment</li>
+        <li>Answers: How will parts work together?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- ═══ PURPOSE ═══ -->
+<section class="sec" id="purpose">
+  <div class="slabel">Core Theory</div>
+  <h2 class="stitle">Purpose of <span>System Design</span></h2>
+  <p class="ssub">A well-designed system must satisfy four key properties. These are all exam-testable!</p>
+
+  <div class="grid" style="margin-bottom:2.5rem">
+    <div class="card" style="border-color:rgba(232,121,249,.35)">
+      <div class="ci" style="background:rgba(232,121,249,.15)">👤</div>
+      <h3 style="color:var(--a1)">1. Usable</h3>
+      <ul>
+        <li>Easy for users to learn and use</li>
+        <li>Screens, forms, buttons clearly understood</li>
+        <li>Tasks completed with minimum confusion</li>
+        <li>Simple instructions, messages, and navigation</li>
+        <li>Why: difficulty → mistakes, avoidance, extra training</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(6,182,212,.35)">
+      <div class="ci" style="background:rgba(6,182,212,.15)">⚡</div>
+      <h3 style="color:var(--a2)">2. Efficient</h3>
+      <ul>
+        <li>Users complete tasks quickly with less effort</li>
+        <li>Reduce unnecessary steps</li>
+        <li>Minimize repeated data entry</li>
+        <li>Provide fast response times</li>
+        <li>Automate routine tasks where possible</li>
+        <li>Why: efficiency improves productivity, saves time</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(249,115,22,.35)">
+      <div class="ci" style="background:rgba(249,115,22,.15)">🔒</div>
+      <h3 style="color:var(--a4)">3. Secure</h3>
+      <ul>
+        <li>Protect data from unauthorized access/attacks</li>
+        <li>Authentication (login control)</li>
+        <li>Authorization (role-based access)</li>
+        <li>Data validation, encryption</li>
+        <li>Logging and monitoring</li>
+        <li>Why: sensitive data, legal risks, trust</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.35)">
+      <div class="ci" style="background:rgba(16,185,129,.15)">🏢</div>
+      <h3 style="color:var(--green)">4. Aligned with Business Needs</h3>
+      <ul>
+        <li>Supports actual goals and priorities</li>
+        <li>Matches business workflows</li>
+        <li>Supports decision-making</li>
+        <li>Meets reporting requirements</li>
+        <li>Follows policies and regulations</li>
+        <li>Why: technically good ≠ business success</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Major Design Areas</p>
+  <div class="areas-grid">
+    <div class="area-card" style="background:rgba(232,121,249,.07);border-color:rgba(232,121,249,.25)"><div class="ai">⌨️</div><div class="an" style="color:var(--a1)">Input Design</div><div class="as">How data enters the system</div></div>
+    <div class="area-card" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.25)"><div class="ai">📊</div><div class="an" style="color:var(--a2)">Output Design</div><div class="as">How results are presented</div></div>
+    <div class="area-card" style="background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.25)"><div class="ai">🖥️</div><div class="an" style="color:var(--green)">UI Design</div><div class="as">How users interact</div></div>
+    <div class="area-card" style="background:rgba(249,115,22,.07);border-color:rgba(249,115,22,.25)"><div class="ai">🏛️</div><div class="an" style="color:var(--a4)">Architecture</div><div class="as">Technical structure</div></div>
+    <div class="area-card" style="background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.25)"><div class="ai">🗄️</div><div class="an" style="color:var(--yellow)">Database</div><div class="as">Data storage design</div></div>
+    <div class="area-card" style="background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.25)"><div class="ai">🔒</div><div class="an" style="color:var(--red)">Security</div><div class="as">Controls and protection</div></div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- ═══ INPUT DESIGN ═══ -->
+<section class="sec" id="input">
+  <div class="slabel">Design Area 1</div>
+  <h2 class="stitle">Input <span>Design</span></h2>
+  <p class="ssub">Everything about how data enters the system — one of the most testable topics!</p>
+
+  <div class="grid" style="margin-bottom:2.5rem">
+    <div class="card">
+      <div class="ci" style="background:rgba(232,121,249,.12)">📋</div>
+      <h3>What is Input Design?</h3>
+      <ul>
+        <li>Process of specifying how data enters the system</li>
+        <li>Ensures data is accurate, complete, consistent</li>
+        <li>Ensures data is timely and secure</li>
+        <li>Inputs from: users, scanners, sensors</li>
+        <li>Inputs from: external APIs, uploaded files, batch imports</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(6,182,212,.12)">🎯</div>
+      <h3>Objectives of Input Design</h3>
+      <ul>
+        <li>Minimize data entry errors</li>
+        <li>Ensure only valid data enters the system</li>
+        <li>Reduce data entry effort and time</li>
+        <li>Protect data integrity from source to storage</li>
+        <li>Guide users through the data entry process</li>
+        <li>Provide clear, helpful error feedback</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(16,185,129,.12)">✅</div>
+      <h3>Input Validation Techniques</h3>
+      <ul>
+        <li>Format check — data in correct format (date: DD/MM/YYYY)</li>
+        <li>Range check — value within acceptable limits (age: 0–120)</li>
+        <li>Completeness check — required fields are filled</li>
+        <li>Consistency check — related fields match logically</li>
+        <li>Existence check — verifies against database records</li>
+        <li>Reasonableness check — value makes logical sense</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(249,115,22,.12)">⚠️</div>
+      <h3>Input Controls and Error Handling</h3>
+      <ul>
+        <li>Provide inline validation messages (real-time)</li>
+        <li>Highlight the problematic field clearly</li>
+        <li>Explain HOW to fix the error specifically</li>
+        <li>Never erase all entered data when one field is wrong</li>
+        <li>❌ Bad: "Invalid input."</li>
+        <li>✅ Good: "NIC must contain 12 digits."</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(245,158,11,.12)">💡</div>
+      <h3>Input Design Best Practices</h3>
+      <ul>
+        <li>Use drop-downs to constrain choices</li>
+        <li>Default values for common inputs</li>
+        <li>Tab order follows logical reading sequence</li>
+        <li>Group related fields together</li>
+        <li>Mandatory fields clearly marked (e.g., *)</li>
+        <li>Provide helpful placeholder text</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(232,121,249,.12)">🔢</div>
+      <h3>Types of Input Controls</h3>
+      <ul>
+        <li>Text fields — free text input</li>
+        <li>Drop-down lists — constrained selection</li>
+        <li>Radio buttons — single choice from options</li>
+        <li>Checkboxes — multiple selections</li>
+        <li>Date pickers — structured date input</li>
+        <li>File upload — importing external data</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- ═══ OUTPUT DESIGN ═══ -->
+<section class="sec" id="output">
+  <div class="slabel">Design Area 2</div>
+  <h2 class="stitle">Output <span>Design</span></h2>
+  <p class="ssub">How information is presented — types, principles, and common mistakes.</p>
+
+  <div class="grid" style="margin-bottom:2rem">
+    <div class="card">
+      <div class="ci" style="background:rgba(6,182,212,.12)">📤</div>
+      <h3>External Outputs</h3>
+      <ul>
+        <li>Sent OUTSIDE the organization</li>
+        <li>Customer invoice</li>
+        <li>SMS / email notification</li>
+        <li>Payment receipt</li>
+        <li>Legal documents sent to regulators</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(16,185,129,.12)">📥</div>
+      <h3>Internal Outputs</h3>
+      <ul>
+        <li>Used INSIDE the organization</li>
+        <li>Management dashboard</li>
+        <li>Inventory status report</li>
+        <li>Staff performance report</li>
+        <li>Financial summary for management</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(232,121,249,.12)">📋</div>
+      <h3>Detailed Reports</h3>
+      <ul>
+        <li>Transaction-level information</li>
+        <li>Every individual record shown</li>
+        <li>Example: Daily sales transaction list</li>
+        <li>Used by operational staff</li>
+        <li>High volume of data</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(249,115,22,.12)">📈</div>
+      <h3>Summary Reports</h3>
+      <ul>
+        <li>Aggregated data for decision-making</li>
+        <li>Totals, averages, trends</li>
+        <li>Example: Monthly sales by region</li>
+        <li>Used by managers and executives</li>
+        <li>Less detail, more insight</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(245,158,11,.12)">⚡</div>
+      <h3>Real-Time Outputs</h3>
+      <ul>
+        <li>Immediate feedback to the user</li>
+        <li>Example: "Registration successful"</li>
+        <li>Example: Live inventory levels</li>
+        <li>Example: Real-time stock price</li>
+        <li>Critical for transactional systems</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(6,182,212,.12)">🕐</div>
+      <h3>On-Demand vs Scheduled</h3>
+      <ul>
+        <li>On-Demand: generated when user requests</li>
+        <li>On-Demand example: search result, custom report</li>
+        <li>Scheduled: generated at fixed times</li>
+        <li>Scheduled example: weekly attendance summary</li>
+        <li>Scheduled: automatically sent, no user trigger</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-size:1rem;color:var(--white);margin-bottom:1rem">Key Output Design Principles (A–F)</h3>
+  <table class="tbl" style="margin-bottom:2rem">
+    <thead><tr><th>Principle</th><th>What It Means</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>A. Relevance</td><td>Only show what the user needs for the task</td><td>Manager sees summary, not every transaction</td></tr>
+      <tr><td>B. Readability</td><td>Clear headings, labels, spacing, consistent formatting</td><td>Aligned columns, proper number formatting</td></tr>
+      <tr><td>C. Usability</td><td>Outputs support user action</td><td>Report has filters, sort, export options</td></tr>
+      <tr><td>D. Timeliness</td><td>Information reaches user when needed</td><td>Daily reports available at start of business</td></tr>
+      <tr><td>E. Accuracy & Reliability</td><td>Outputs reflect correct processed data</td><td>Sales totals match transaction records exactly</td></tr>
+      <tr><td>F. Security & Privacy</td><td>Sensitive outputs restricted to authorized users</td><td>Salary report only visible to HR department</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card" style="border-color:rgba(239,68,68,.3);max-width:600px">
+    <div class="ci" style="background:rgba(239,68,68,.12)">❌</div>
+    <h3 style="color:var(--red)">Common Output Design Mistakes</h3>
+    <ul>
+      <li>Too much detail for managers (overload)</li>
+      <li>Missing important filters and context</li>
+      <li>Unclear labels and abbreviations</li>
+      <li>Inconsistent date/number formats</li>
+      <li>Exposing sensitive data to wrong users</li>
+      <li>Reports not aligned with decision needs</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- ═══ UI DESIGN ═══ -->
+<section class="sec" id="ui">
+  <div class="slabel">Design Area 3</div>
+  <h2 class="stitle">User Interface <span>Design</span></h2>
+  <p class="ssub">UI vs UX, the 5 core principles, and how they apply to real system screens.</p>
+
+  <div class="grid" style="margin-bottom:2rem">
+    <div class="card">
+      <div class="ci" style="background:rgba(232,121,249,.12)">🖥️</div>
+      <h3>What is UI Design?</h3>
+      <ul>
+        <li>Defines how users interact with the system</li>
+        <li>Includes: screens, menus, controls, navigation</li>
+        <li>Includes: messages, visual layout</li>
+        <li>UI = visual and interaction elements</li>
+        <li>UX = overall experience of using the system</li>
+        <li>Good UI + poor UX = attractive but hard to use</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(6,182,212,.12)">🔄</div>
+      <h3>Consistency</h3>
+      <ul>
+        <li>Same look and behavior throughout the system</li>
+        <li>Same button styles, colors, labels everywhere</li>
+        <li>Users learn once, apply everywhere</li>
+        <li>Example: Save button always green, top-right</li>
+        <li>Inconsistency causes confusion and errors</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(16,185,129,.12)">💬</div>
+      <h3>Feedback</h3>
+      <ul>
+        <li>System must respond to every user action</li>
+        <li>Show confirmation: "Record saved successfully"</li>
+        <li>Show progress: loading indicators</li>
+        <li>Show errors: what went wrong and how to fix it</li>
+        <li>Silence after an action creates uncertainty</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(249,115,22,.12)">🧭</div>
+      <h3>Navigation</h3>
+      <ul>
+        <li>Users must always know where they are</li>
+        <li>Clear menu structure and breadcrumbs</li>
+        <li>Easy to move between sections</li>
+        <li>Back button / cancel always available</li>
+        <li>Logical flow from one step to the next</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(245,158,11,.12)">🛡️</div>
+      <h3>Error Prevention</h3>
+      <ul>
+        <li>Design to prevent errors before they happen</li>
+        <li>Use constraints: drop-downs, date pickers</li>
+        <li>Confirm destructive actions: "Are you sure?"</li>
+        <li>Disable buttons when action is not possible</li>
+        <li>Better to prevent than to display error messages</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(232,121,249,.12)">♿</div>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>System usable by all users, including those with disabilities</li>
+        <li>Screen reader compatibility</li>
+        <li>Sufficient color contrast</li>
+        <li>Keyboard navigation (no mouse required)</li>
+        <li>Text alternatives for images</li>
+        <li>Font size adjustable</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="max-width:700px;border-color:rgba(6,182,212,.3)">
+    <div class="ci" style="background:rgba(6,182,212,.12)">⚖️</div>
+    <h3>UI vs UX — The Key Difference</h3>
+    <ul>
+      <li>UI (User Interface): the visual/interaction elements — buttons, forms, colors, layout</li>
+      <li>UX (User Experience): the overall feeling of using the system — ease, satisfaction, flow</li>
+      <li>A system can look attractive (good UI) but still be difficult to use (poor UX)</li>
+      <li>Good design requires BOTH good UI and good UX</li>
+      <li>UX includes the full journey from start to goal completion</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- ═══ SECURITY ═══ -->
+<section class="sec" id="security">
+  <div class="slabel">Design Area 5</div>
+  <h2 class="stitle">Security <span>Considerations</span></h2>
+  <p class="ssub">The CIA Triad is one of the most testable topics in this chapter — learn all three!</p>
+
+  <div class="card" style="margin-bottom:2rem;border-color:rgba(239,68,68,.3)">
+    <div class="ci" style="background:rgba(239,68,68,.12)">⚠️</div>
+    <h3>Why Security Must Be Designed In from the Start</h3>
+    <ul>
+      <li>Security should NOT be added only at the end — it must be integrated from the beginning</li>
+      <li>If ignored early: vulnerabilities become deeply embedded in the system</li>
+      <li>Fixing security issues later is extremely expensive</li>
+      <li>User trust is damaged if a breach occurs</li>
+      <li>Legal and compliance risks increase without proper security</li>
+    </ul>
+  </div>
+
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.2rem">The CIA Triad — Core Security Objectives</p>
+  <div class="cia-grid">
+    <div class="cia-card" style="background:rgba(232,121,249,.07);border-color:rgba(232,121,249,.3)">
+      <div class="cia-icon">🔐</div>
+      <h3 style="color:var(--a1)">Confidentiality</h3>
+      <p>Only authorized users can access information. Data is protected from unauthorized viewing or disclosure.</p>
+      <div class="example" style="background:rgba(232,121,249,.1);color:var(--a1)">Example: Student marks visible only to authorized staff and the student themselves.</div>
+    </div>
+    <div class="cia-card" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.3)">
+      <div class="cia-icon">🛡️</div>
+      <h3 style="color:var(--a2)">Integrity</h3>
+      <p>Data remains accurate and unaltered except by authorized actions. Protects against unauthorized modification.</p>
+      <div class="example" style="background:rgba(6,182,212,.1);color:var(--a2)">Example: Exam results cannot be changed without proper authorization and audit trail.</div>
+    </div>
+    <div class="cia-card" style="background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.3)">
+      <div class="cia-icon">✅</div>
+      <h3 style="color:var(--green)">Availability</h3>
+      <p>Systems and data must be available when authorized users need them. Protects against downtime and denial of service.</p>
+      <div class="example" style="background:rgba(16,185,129,.1);color:var(--green)">Example: LMS should be accessible during registration periods and exam times.</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:1rem;color:var(--white);margin-bottom:1rem">Security Mechanisms in System Design</h3>
+  <div class="grid">
+    <div class="card">
+      <div class="ci" style="background:rgba(232,121,249,.12)">🔑</div>
+      <h3>Authentication</h3>
+      <ul>
+        <li>Verifies WHO the user is</li>
+        <li>Username and password login</li>
+        <li>Multi-factor authentication (MFA)</li>
+        <li>Biometric verification</li>
+        <li>Session tokens and cookies</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(6,182,212,.12)">🎫</div>
+      <h3>Authorization</h3>
+      <ul>
+        <li>Controls WHAT the user can do</li>
+        <li>Role-based access control (RBAC)</li>
+        <li>Admin vs user vs guest roles</li>
+        <li>Permissions on specific data/functions</li>
+        <li>Least privilege principle</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(16,185,129,.12)">🔐</div>
+      <h3>Encryption & Other Controls</h3>
+      <ul>
+        <li>Encryption: scrambles data to prevent reading</li>
+        <li>Data validation: prevents bad data from entering</li>
+        <li>Logging and monitoring: tracks all actions</li>
+        <li>Audit trails: record of who did what, when</li>
+        <li>Input sanitization: prevents injection attacks</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- ═══ MCQ ═══ -->
+<section class="sec" id="mcq">
+  <div class="slabel">Practice Questions</div>
+  <h2 class="stitle">Multiple Choice <span>Questions</span></h2>
+  <p class="ssub">50+ questions covering every topic. Click an option for instant feedback and explanation.</p>
+
+  <div class="score-panel">
+    <div class="sring" id="scoreRing"><div class="sinner" id="scoreT">0/0</div></div>
+    <div class="sinfo"><h3>Your Score</h3><p id="scoreD">Answer questions to track your score.</p>
+    <div class="prog-wrap"><div class="prog-bar" id="progB"></div></div></div>
+    <button class="rbtn" onclick="resetQ()">↺ Reset All</button>
+  </div>
+
+  <div class="fbar">
+    <button class="fb on" onclick="filt('all',this)">All</button>
+    <button class="fb" onclick="filt('gen',this)">General</button>
+    <button class="fb" onclick="filt('inp',this)">Input Design</button>
+    <button class="fb" onclick="filt('out',this)">Output Design</button>
+    <button class="fb" onclick="filt('ui',this)">UI Design</button>
+    <button class="fb" onclick="filt('sec',this)">Security</button>
+    <button class="fb" onclick="filt('cia',this)">CIA Triad</button>
+  </div>
+  <div class="mcq-wrap" id="mcqWrap"></div>
+</section>
+
+<hr class="dv">
+
+<!-- ═══ ESSAY ═══ -->
+<section class="sec" id="essay">
+  <div class="slabel">Long Answer Questions</div>
+  <h2 class="stitle">Essay <span>Questions</span></h2>
+  <p class="ssub">Tap to reveal complete model answers — every key point you need for full marks.</p>
+  <div class="ewrap" id="essayWrap"></div>
+</section>
+
+<hr class="dv">
+
+<!-- ═══ QUICK REF ═══ -->
+<section class="sec" id="quickref">
+  <div class="slabel">Cheat Sheet</div>
+  <h2 class="stitle">Quick <span>Reference</span></h2>
+
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.2rem">Output Types Summary</p>
+  <table class="tbl" style="margin-bottom:2.5rem">
+    <thead><tr><th>Output Type</th><th>Description</th><th>Example</th><th>Who Uses It</th></tr></thead>
+    <tbody>
+      <tr><td>📤 External</td><td>Sent outside the organization</td><td>Customer invoice, receipt</td><td>Customers, partners</td></tr>
+      <tr><td>📥 Internal</td><td>Used inside organization</td><td>Staff report, dashboard</td><td>Managers, staff</td></tr>
+      <tr><td>📋 Detailed</td><td>Transaction-level data</td><td>Daily sales list</td><td>Operational staff</td></tr>
+      <tr><td>📈 Summary</td><td>Aggregated for decisions</td><td>Monthly region sales</td><td>Managers, executives</td></tr>
+      <tr><td>⚡ Real-Time</td><td>Immediate feedback</td><td>"Registration successful"</td><td>All users</td></tr>
+      <tr><td>🔍 On-Demand</td><td>Generated when requested</td><td>Search results</td><td>Users requesting data</td></tr>
+      <tr><td>📅 Scheduled</td><td>Generated at fixed times</td><td>Weekly attendance</td><td>Managers, HR</td></tr>
+    </tbody>
+  </table>
+
+  <div class="qr-2col">
+    <div>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">Input Validation Controls</p>
+      <table class="tbl">
+        <thead><tr><th>Control Type</th><th>What It Checks</th></tr></thead>
+        <tbody>
+          <tr><td>Format check</td><td>Correct pattern (DD/MM/YYYY)</td></tr>
+          <tr><td>Range check</td><td>Value within limits (0–120)</td></tr>
+          <tr><td>Completeness</td><td>Required fields filled</td></tr>
+          <tr><td>Consistency</td><td>Related fields match</td></tr>
+          <tr><td>Existence</td><td>Verifies against database</td></tr>
+          <tr><td>Reasonableness</td><td>Value makes logical sense</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">CIA Triad — Key Exam Points</p>
+      <table class="tbl">
+        <thead><tr><th>Property</th><th>Core Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>🔐 Confidentiality</td><td>Only authorized users can access data</td></tr>
+          <tr><td>🛡️ Integrity</td><td>Data accurate, unaltered without authorization</td></tr>
+          <tr><td>✅ Availability</td><td>System accessible when users need it</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color:var(--muted);font-size:.9rem;margin:1.5rem 0 1rem">UI Design Principles</p>
+      <table class="tbl">
+        <thead><tr><th>Principle</th><th>Core Idea</th></tr></thead>
+        <tbody>
+          <tr><td>Consistency</td><td>Uniform look and behavior</td></tr>
+          <tr><td>Feedback</td><td>System responds to every action</td></tr>
+          <tr><td>Navigation</td><td>Users always know where they are</td></tr>
+          <tr><td>Error Prevention</td><td>Stop mistakes before they happen</td></tr>
+          <tr><td>Accessibility</td><td>Usable by all, including disabled</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+// ═══ HERO CANVAS — flowing grid particles ═══
+const cv=document.getElementById('heroCanvas'),ctx=cv.getContext('2d');
+let pts=[];
+function resize(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;pts=Array.from({length:80},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.8+.5,hue:Math.random()>0.5?290:190}))}
+let tick=0;
+function draw(){ctx.clearRect(0,0,cv.width,cv.height);tick+=.008;
+pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1;
+const glow=.4+.3*Math.sin(tick+p.x*.01);
+ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`hsla(${p.hue},80%,70%,${glow})`;ctx.fill()});
+pts.forEach((a,i)=>pts.slice(i+1,i+6).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`hsla(290,70%,70%,${.1*(1-d/110)})`;ctx.lineWidth=.6;ctx.stroke()}}));
+requestAnimationFrame(draw)}
+resize();draw();window.addEventListener('resize',resize);
+
+// ═══ NAV ═══
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+const navIds=['overview','purpose','input','output','ui','security','mcq','essay','quickref'];
+window.addEventListener('scroll',()=>{navIds.forEach(id=>{const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();const btn=document.querySelector(`.nb[onclick="go('${id}')"]`);if(btn){if(r.top<200&&r.bottom>100)btn.classList.add('on');else btn.classList.remove('on')}})});
+
+// ═══ OBSERVER ═══
+const obs=new IntersectionObserver(es=>{es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*55);obs.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.card,.acc,.ec,.mcard').forEach(el=>obs.observe(el));
+
+// ═══ MCQ DATA ═══
+const QS=[
+// GENERAL
+{t:'gen',q:'What does system design determine?',o:['What the system should do','How the system will do it','Who will use the system','When the system will be deployed'],a:1,e:'Analysis determines WHAT the system should do; design determines HOW it will do it.'},
+{t:'gen',q:'System design transforms requirements into which of the following?',o:['Marketing plans','Concrete technical and operational specifications','User manuals','Business strategies'],a:1,e:'System design transforms user and business requirements into concrete technical and operational specifications like screens, reports, workflows, and database structures.'},
+{t:'gen',q:'Which of the following is NOT a major design area covered in system design?',o:['Input design','Output design','Market analysis','UI design'],a:2,e:'Market analysis is a business activity, not a system design area. Design areas include input, output, UI, architecture, database, and security design.'},
+{t:'gen',q:'A well-designed system should be which four properties?',o:['Fast, cheap, small, colorful','Usable, efficient, secure, aligned with business needs','Simple, complex, fast, slow','Offline, online, manual, automatic'],a:1,e:'According to the lecture, a well-designed system must be: Usable, Efficient, Secure, and Aligned with Business Needs.'},
+{t:'gen',q:'Which statement best describes "aligned with business needs"?',o:['The system must use the latest technology','The system must support actual organizational goals and processes','The system must have a modern UI','The system must be the cheapest option'],a:1,e:'A system aligned with business needs matches business workflows, supports decision-making, meets reporting requirements, and follows policies — even if it is technically simple.'},
+{t:'gen',q:'A technically advanced system can still be a failure if it:',o:['Is too fast','Has too many features','Does not solve the real business problem','Uses too much storage'],a:2,e:'A technically advanced system is still a failure if it does not solve the real business problem — business alignment is essential.'},
+{t:'gen',q:'Efficiency in system design means:',o:['The system is the most expensive','Users complete tasks quickly with less effort','The system has the most features','The UI uses animations'],a:1,e:'Efficiency means reducing unnecessary steps, minimizing repeated data entry, providing fast response times, and automating routine tasks.'},
+{t:'gen',q:'Good system design reduces all of the following EXCEPT:',o:['Development time','Errors and rework','Business revenue','User training time'],a:2,e:'Good design reduces errors, rework, support costs, training time, and development time — but it does not reduce business revenue. In fact it should improve it.'},
+{t:'gen',q:'Architecture design answers which question?',o:['Who will use the system?','What data will be stored?','How will system parts work together?','When will the system be deployed?'],a:2,e:'Architecture design defines the overall technical structure and answers: How will system parts work together?'},
+
+// INPUT
+{t:'inp',q:'What is the primary goal of input design?',o:['Make the UI attractive','Ensure data is accurate, complete, consistent, timely, and secure','Reduce development cost','Create good-looking forms'],a:1,e:'Input design specifies how data enters the system and ensures the data is accurate, complete, consistent, timely, and secure.'},
+{t:'inp',q:'Which of the following is NOT a source of input to a system?',o:['Users manually entering data','External APIs','System design documents','Scanners and sensors'],a:2,e:'System design documents are internal project artifacts, not system inputs. Inputs come from users, scanners/sensors, external systems/APIs, uploaded files, and batch imports.'},
+{t:'inp',q:'A "range check" in input validation verifies that:',o:['The field is not empty','The data is in the correct format','The value is within acceptable limits','The entry exists in the database'],a:2,e:'A range check ensures the value is within acceptable limits — for example, age must be between 0 and 120.'},
+{t:'inp',q:'A "format check" validates that:',o:['Required fields are filled','The data matches a required pattern like DD/MM/YYYY','The value is within numeric limits','Related fields are logically consistent'],a:1,e:'A format check ensures data is in the correct format — e.g., dates in DD/MM/YYYY, phone numbers with correct digit count.'},
+{t:'inp',q:'Which is an example of a GOOD error message?',o:['"Error occurred"','"Invalid input"','"NIC number must contain 12 digits"','"Please try again"'],a:2,e:'A good error message explains specifically what is wrong and how to fix it. "NIC number must contain 12 digits" is specific and actionable.'},
+{t:'inp',q:'Which is an example of a BAD error message?',o:['"NIC number must contain 12 digits"','"Email address must be in format: user@example.com"','"Invalid input"','"Date must be in DD/MM/YYYY format"'],a:2,e:'"Invalid input" is a bad error message because it does not tell the user what was wrong or how to fix it.'},
+{t:'inp',q:'When a user makes an error in one field of a form, good design should:',o:['Clear all entered data and start fresh','Keep all other field data and only highlight the error','Show a generic error without details','Redirect to the home page'],a:1,e:'Good input design never erases all entered data when one field is wrong. It highlights the specific problematic field and explains how to fix it.'},
+{t:'inp',q:'A "completeness check" ensures:',o:['The format is correct','The value is in range','All required fields are filled','The entry matches database records'],a:2,e:'A completeness check verifies that all required/mandatory fields have been filled in before the data is processed.'},
+{t:'inp',q:'Which input control best prevents format errors in date entry?',o:['Text field','Checkbox','Date picker','Radio button'],a:2,e:'A date picker constrains the user to select a valid date in the correct format, preventing format errors entirely.'},
+{t:'inp',q:'Inline validation means:',o:['Validating data when the database is queried','Showing validation feedback in real-time as the user types or moves between fields','Validating only when the form is submitted','Checking data only on the server'],a:1,e:'Inline validation provides real-time feedback as the user enters data — highlighting errors immediately rather than waiting for form submission.'},
+
+// OUTPUT
+{t:'out',q:'Output design specifies:',o:['How data enters the system','How system information is presented to users or other systems','How the database is structured','How security is implemented'],a:1,e:'Output design specifies how system information is presented to users or other systems. It covers what is shown, when, and in what format.'},
+{t:'out',q:'Which output type is sent OUTSIDE the organization?',o:['Management dashboard','Staff performance report','Internal audit log','Customer invoice'],a:3,e:'External outputs are sent outside the organization — like customer invoices, SMS/email notifications, and payment receipts.'},
+{t:'out',q:'A "monthly sales by region" report is an example of:',o:['Detailed report','External output','Summary report','Real-time output'],a:2,e:'Summary reports show aggregated data for decision-making — totals, averages, and trends — like monthly sales by region.'},
+{t:'out',q:'A "daily sales transaction list" is an example of:',o:['Summary report','Detailed report','Scheduled output','On-demand output'],a:1,e:'Detailed reports show transaction-level information — every individual record. A daily sales transaction list shows every sale made that day.'},
+{t:'out',q:'"Registration successful" after submitting a form is which output type?',o:['Scheduled output','External output','Summary report','Real-time output'],a:3,e:'Real-time outputs provide immediate feedback — like "Registration successful" confirmation immediately after the user acts.'},
+{t:'out',q:'A "weekly attendance summary" automatically generated every Monday is:',o:['On-demand output','Real-time output','Scheduled output','External output'],a:2,e:'Scheduled outputs are generated at fixed, pre-set times automatically — like a weekly attendance summary every Monday morning.'},
+{t:'out',q:'Search results displayed after a user runs a search are:',o:['Scheduled output','On-demand output','Summary report','Internal output'],a:1,e:'On-demand outputs are generated when the user specifically requests them — like search results or a custom report.'},
+{t:'out',q:'Which output design principle says "only show what the user needs"?',o:['Timeliness','Accuracy','Relevance','Readability'],a:2,e:'Relevance means showing only what the user needs for their current task — not overwhelming them with unnecessary data.'},
+{t:'out',q:'Exposing salary data to all employees would violate which output principle?',o:['Readability','Timeliness','Accuracy','Security and Privacy'],a:3,e:'Security and Privacy means sensitive outputs must be restricted to authorized users. Salary data should only be visible to HR and authorized management.'},
+{t:'out',q:'Which is a common output design mistake?',o:['Showing summary data to managers','Providing filter options in reports','Using clear consistent formatting','Using unclear labels and abbreviations'],a:3,e:'Unclear labels and abbreviations are a common output design mistake — users cannot understand the output if labels are confusing or abbreviated without explanation.'},
+{t:'out',q:'Which output principle ensures information reaches the user at the right time?',o:['Relevance','Readability','Security','Timeliness'],a:3,e:'Timeliness means information reaches the user when they need it — early enough to act on it, not so late it becomes useless.'},
+
+// UI
+{t:'ui',q:'UI design defines:',o:['How data is stored in the database','How users interact with the system through screens, menus, and controls','How security is implemented','How the system architecture is structured'],a:1,e:'UI design defines how users interact with the system through screens, menus, controls, navigation, messages, and visual layout.'},
+{t:'ui',q:'What is the difference between UI and UX?',o:['There is no difference','UI is the visual/interaction elements; UX is the overall experience','UI is the backend; UX is the frontend','UI is for developers; UX is for designers'],a:1,e:'UI (User Interface) = visual and interaction elements (buttons, forms, layout). UX (User Experience) = overall experience of using the system (ease, satisfaction, flow).'},
+{t:'ui',q:'A system looks attractive but is difficult to use. This means it has:',o:['Good UI and good UX','Poor UI but good UX','Good UI but poor UX','Poor UI and poor UX'],a:2,e:'A system can look attractive (good UI) but still be difficult to use (poor UX). Good design requires both.'},
+{t:'ui',q:'The Consistency principle in UI design means:',o:['The system runs at the same speed always','Buttons, colors, and labels look and behave the same throughout the system','All users see the same data','The system is always available'],a:1,e:'Consistency means the same look and behavior throughout the system — users learn the interface once and apply it everywhere without confusion.'},
+{t:'ui',q:'Which UI principle says the system must respond to every user action?',o:['Consistency','Navigation','Feedback','Accessibility'],a:2,e:'Feedback means the system must respond to every user action — with confirmations, progress indicators, or error messages. Silence after an action creates uncertainty.'},
+{t:'ui',q:'Error Prevention in UI design aims to:',o:['Display clear error messages after mistakes','Stop mistakes before they happen through design','Log all errors in a database','Provide a help button for users'],a:1,e:'Error Prevention means designing the UI so mistakes cannot easily happen — using constraints like drop-downs, confirming destructive actions, and disabling invalid options.'},
+{t:'ui',q:'Navigation in UI design ensures:',o:['The system loads quickly','Users always know where they are and can move between sections easily','Data is encrypted','Forms have inline validation'],a:1,e:'Navigation ensures users always know where they are in the system, can move between sections easily, and can always go back or cancel.'},
+{t:'ui',q:'Accessibility in UI design means:',o:['The system can be accessed from anywhere','The system is usable by all users including those with disabilities','The system loads quickly','The system has a mobile app'],a:1,e:'Accessibility ensures the system is usable by all users, including those with visual, hearing, motor, or cognitive disabilities — through screen readers, keyboard navigation, sufficient contrast, etc.'},
+{t:'ui',q:'Asking "Are you sure you want to delete this record?" is an example of:',o:['Accessibility','Feedback','Error Prevention','Navigation'],a:2,e:'Confirmation dialogs for destructive actions are a classic Error Prevention technique — stopping the user before they make an irreversible mistake.'},
+
+// SECURITY
+{t:'sec',q:'When should security be designed into a system?',o:['Only at the end before launch','During testing phase only','From the very beginning, integrated into design','After deployment when issues arise'],a:2,e:'Security must be integrated into system design from the very beginning — not added at the end. Adding security late is expensive and leaves vulnerabilities embedded in the system.'},
+{t:'sec',q:'If security is ignored in early system design, which of the following does NOT happen?',o:['Vulnerabilities become embedded','Fixing later is expensive','User trust is damaged','The system becomes faster'],a:3,e:'Ignoring security early leads to embedded vulnerabilities, expensive fixes later, damaged user trust, and legal/compliance risks. The system does not become faster from ignoring security.'},
+{t:'sec',q:'Authentication in system design:',o:['Controls what a user can do','Verifies who the user is','Encrypts data in transit','Monitors system logs'],a:1,e:'Authentication verifies WHO the user is — through passwords, biometrics, or MFA. Authorization controls WHAT they can do after authentication.'},
+{t:'sec',q:'Authorization in system design:',o:['Verifies who the user is','Controls what the authenticated user is permitted to do','Encrypts data','Prevents SQL injection'],a:1,e:'Authorization controls WHAT an authenticated user can do — through role-based access control (RBAC) and permissions.'},
+{t:'sec',q:'Role-based access control (RBAC) is an example of:',o:['Authentication','Encryption','Authorization','Data validation'],a:2,e:'RBAC is an authorization mechanism — it controls what actions users can perform based on their assigned role (admin, manager, user, guest).'},
+{t:'sec',q:'Which security measure scrambles data so unauthorized users cannot read it?',o:['Authentication','Authorization','Encryption','Logging'],a:2,e:'Encryption scrambles data so that even if unauthorized users access it, they cannot read it without the decryption key.'},
+{t:'sec',q:'Logging and monitoring in system design serves which security purpose?',o:['Speeds up the system','Tracks all actions for audit and detection of unauthorized activity','Prevents users from logging in','Reduces database size'],a:1,e:'Logging and monitoring creates audit trails that record who did what, when — enabling detection of unauthorized activity and supporting forensic investigation.'},
+
+// CIA
+{t:'cia',q:'What does CIA stand for in the security CIA Triad?',o:['Computer, Information, Authentication','Confidentiality, Integrity, Availability','Control, Identification, Authorization','Certification, Integration, Access'],a:1,e:'CIA Triad = Confidentiality (who can see data), Integrity (data accuracy), Availability (system accessible when needed).'},
+{t:'cia',q:'Which CIA property ensures only authorized users can access information?',o:['Integrity','Availability','Confidentiality','Authentication'],a:2,e:'Confidentiality ensures that only authorized users can access information — protecting data from unauthorized viewing or disclosure.'},
+{t:'cia',q:'Student marks being visible only to authorized staff is an example of:',o:['Integrity','Availability','Confidentiality','Authorization'],a:2,e:'This is an example of Confidentiality — only authorized people (staff and the student) can see the marks.'},
+{t:'cia',q:'Which CIA property ensures data remains accurate and unaltered?',o:['Confidentiality','Availability','Integrity','Encryption'],a:2,e:'Integrity ensures data remains accurate and unaltered except by authorized actions — protecting against unauthorized modification.'},
+{t:'cia',q:'"Exam results cannot be changed without authorization" is an example of which CIA property?',o:['Confidentiality','Availability','Authentication','Integrity'],a:3,e:'This protects data accuracy and prevents unauthorized modification — the definition of Integrity.'},
+{t:'cia',q:'Which CIA property ensures the system is accessible when users need it?',o:['Confidentiality','Integrity','Availability','Encryption'],a:2,e:'Availability ensures systems and data are accessible when authorized users need them — protecting against downtime and denial of service.'},
+{t:'cia',q:'"The LMS must be accessible during exam periods" is an example of which CIA property?',o:['Integrity','Confidentiality','Authorization','Availability'],a:3,e:'Ensuring system access during critical periods (exams, registration) is an Availability requirement.'},
+{t:'cia',q:'A ransomware attack that makes systems unavailable violates which CIA property?',o:['Confidentiality','Integrity','Availability','Authentication'],a:2,e:'Ransomware locks users out of the system, violating Availability — which requires systems to be accessible when needed.'},
+{t:'cia',q:'A hacker modifies exam grades in the database. Which CIA property is violated?',o:['Confidentiality','Integrity','Availability','Usability'],a:1,e:'Unauthorized modification of data (changing exam grades) violates Integrity — data must remain accurate and unaltered except by authorized actions.'},
+{t:'cia',q:'An unauthorized person reads confidential student records. Which CIA property is violated?',o:['Availability','Integrity','Confidentiality','Authentication'],a:2,e:'Unauthorized reading of confidential data violates Confidentiality — only authorized users should be able to access information.'},
+];
+
+let sv={},corr=0,aCnt=0;
+function renderQ(f='all'){
+  const w=document.getElementById('mcqWrap');w.innerHTML='';
+  const fl=f==='all'?QS:QS.filter(q=>q.t===f);
+  fl.forEach((q,i)=>{
+    const gi=QS.indexOf(q);
+    const tmap={gen:'tg',inp:'ti',out:'to',ui:'tu',sec:'ts',cia:'tc'};
+    const tlbl={gen:'General',inp:'Input Design',out:'Output Design',ui:'UI Design',sec:'Security',cia:'CIA Triad'};
+    const st=sv[gi];
+    const d=document.createElement('div');d.className='mcard';
+    const opts=q.o.map((o,oi)=>{let c='mopt';if(st!==undefined){if(oi===q.a)c+=' ok';else if(oi===st&&st!==q.a)c+=' ng'}
+    return`<button class="${c}" onclick="ansQ(${gi},${oi},this.closest('.mcard'))" ${st!==undefined?'disabled':''}><span class="oltr">${String.fromCharCode(65+oi)}</span>${o}</button>`}).join('');
+    d.innerHTML=`<span class="mtag ${tmap[q.t]}">${tlbl[q.t]}</span>
+    <div class="mhead"><div class="mnum">${i+1}</div><div class="mqtext">${q.q}</div></div>
+    <div class="mopts">${opts}</div>
+    <div class="exp ${st!==undefined?'show':''}"><span>💡</span><span>${q.e}</span></div>`;
+    w.appendChild(d);obs.observe(d);
+  });
+}
+function ansQ(gi,ch,card){
+  const q=QS[gi];sv[gi]=ch;
+  card.querySelectorAll('.mopt').forEach((o,oi)=>{o.disabled=true;if(oi===q.a)o.classList.add('ok');else if(oi===ch&&ch!==q.a)o.classList.add('ng')});
+  card.querySelector('.exp').classList.add('show');updScore();
+}
+function updScore(){
+  const tot=QS.length;aCnt=Object.keys(sv).length;corr=QS.filter((q,i)=>sv[i]===q.a).length;
+  document.getElementById('scoreT').textContent=`${corr}/${aCnt}`;
+  const p=aCnt>0?Math.round(corr/aCnt*100):0;
+  document.getElementById('progB').style.width=p+'%';
+  document.getElementById('scoreD').textContent=aCnt===0?'Answer questions to track your score.':`${p}% correct — ${aCnt}/${tot} answered.`;
+  const deg=(aCnt>0?corr/aCnt:0)*360;
+  document.getElementById('scoreRing').style.background=`conic-gradient(var(--a1) ${deg}deg,var(--border) ${deg}deg)`;
+}
+function resetQ(){sv={};corr=0;aCnt=0;updScore();renderQ('all');document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.fb')[0].classList.add('on')}
+function filt(f,btn){document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderQ(f)}
+
+// ═══ ESSAY DATA ═══
+const ES=[
+  {q:'Define system design and explain what it transforms requirements into.',m:'8 marks',
+   p:['System design is the process of defining HOW a system will operate in terms of user interaction, data I/O, components, technical architecture, and controls.','Analysis asks WHAT the system should do; design asks HOW it will do it.','Design transforms requirements into: Screens/Forms — user interfaces for data entry.','Reports — formatted outputs for users, managers, and external stakeholders.','Workflows — step-by-step process logic and task sequences.','Database Structures — tables, fields, relationships, and data storage.','System Components/Services — modules, functions, and application services.','Interfaces Between Modules — communication links between system parts.','Security and Control Mechanisms — authentication, authorization, validation, logging.']},
+  {q:'Explain the four properties of a well-designed system.',m:'10 marks',
+   p:['A well-designed system must be: Usable, Efficient, Secure, and Aligned with Business Needs.','1. Usable: easy to learn and use. Screens, forms, and buttons clearly understood. Tasks completed with minimum confusion. If difficult to use, users make mistakes or avoid using it.','2. Efficient: helps users complete tasks quickly with less effort. Reduces unnecessary steps, minimizes repeated data entry, provides fast response times, automates routine tasks.','3. Secure: protects data and operations from unauthorized access. Uses authentication, authorization, data validation, encryption, and logging. Poor security can cause breaches, legal issues, and loss of trust.','4. Aligned with Business Needs: supports actual goals and processes of the organization. Matches business workflows, supports decision-making, meets reporting requirements, follows policies.','Key point: A technically advanced system is still a failure if it does not solve the real business problem.']},
+  {q:'What is input design? Explain its objectives and input validation techniques.',m:'10 marks',
+   p:['Input design is the process of specifying how data enters the system and ensuring the data is accurate, complete, consistent, timely, and secure.','Inputs may come from: users (manual entry), scanners/sensors, external APIs, uploaded files, and batch imports.','Objectives: minimize data entry errors; ensure only valid data enters the system; reduce data entry effort; protect data integrity; guide users through entry; provide clear error feedback.','Validation Technique 1 — Format Check: ensures data matches required pattern. Example: date in DD/MM/YYYY format.','Validation Technique 2 — Range Check: value within acceptable limits. Example: age must be 0–120.','Validation Technique 3 — Completeness Check: all required fields are filled before processing.','Validation Technique 4 — Consistency Check: related fields match logically.','Validation Technique 5 — Existence Check: verifies entry against database records.','Validation Technique 6 — Reasonableness Check: value makes logical sense in context.']},
+  {q:'Explain good input error handling. Give an example of a bad and good error message.',m:'6 marks',
+   p:['Good input design must provide clear, specific feedback when users make errors.','Principle 1: Provide inline validation messages — show errors in real time, not only after submission.','Principle 2: Highlight the problematic field clearly so the user knows exactly what is wrong.','Principle 3: Explain specifically how to fix the error — not just that an error occurred.','Principle 4: Never erase all entered data when one field is wrong — preserve all valid data.','BAD error message: "Invalid input." — does not tell the user what was wrong or how to fix it.','GOOD error message: "NIC number must contain 12 digits." — specific, actionable, and helpful.','The purpose of error messages is to help users fix the problem, not punish them for making it.']},
+  {q:'What is output design? Explain the different types of outputs with examples.',m:'12 marks',
+   p:['Output design is the process of specifying how system information is presented to users or other systems.','Outputs help users: make decisions, monitor operations, verify transactions, and perform tasks.','External Outputs: sent outside the organization. Examples: customer invoice, SMS notification, payment receipt.','Internal Outputs: used inside organization. Examples: management dashboard, inventory status report, staff performance report.','Detailed Reports: transaction-level information showing every individual record. Example: daily sales transaction list.','Summary Reports: aggregated data for decision-making (totals, averages, trends). Example: monthly sales by region.','Real-Time Outputs: immediate feedback. Example: "Registration successful" confirmation.','On-Demand Outputs: generated when user requests. Example: search results, custom report.','Scheduled Outputs: generated automatically at fixed times. Example: weekly attendance summary sent every Monday.']},
+  {q:'Explain the six key output design principles.',m:'8 marks',
+   p:['A. Relevance: Only show what the user needs for the current task. Avoid overwhelming users with unnecessary data.','B. Readability: Use clear headings, labels, proper spacing, alignment, and consistent formatting so outputs are easy to read and understand.','C. Usability: Outputs should support user action — provide filters, sort options, and export functionality so users can act on what they see.','D. Timeliness: Information must reach the user when they need it — early enough to take action, not so late it becomes useless.','E. Accuracy and Reliability: Outputs must reflect correctly processed data. Inaccurate output is worse than no output because it leads to wrong decisions.','F. Security and Privacy: Sensitive outputs must be restricted to authorized users. Example: salary reports visible only to HR.','Poor output design can lead to: too much detail for managers, unclear labels, exposing sensitive data to wrong users.']},
+  {q:'What is UI design? Explain the difference between UI and UX.',m:'6 marks',
+   p:['UI (User Interface) design defines how users interact with the system through screens, menus, controls, navigation, messages, and visual layout.','UI = User Interface: the visual and interaction elements — buttons, forms, colors, layout, typography.','UX = User Experience: the overall experience of using the system — ease, satisfaction, efficiency, and flow.','Key difference: UI is about HOW it LOOKS and FEELS to interact. UX is about the QUALITY of the overall experience.','A system can look attractive (good UI) but still be difficult to use (poor UX). Both are required for success.','Good design requires both good UI (visually clear) and good UX (logically smooth and satisfying to use).','UX encompasses the full user journey from first interaction to goal completion.']},
+  {q:'Explain the five common UI design principles with examples.',m:'10 marks',
+   p:['1. Consistency: the same look and behavior throughout the system. Same button styles, colors, and labels everywhere. Users learn once and apply knowledge everywhere. Example: Save button always green and in the same position.','2. Feedback: system must respond to every user action. Show confirmations, progress indicators, and error messages. Silence after an action creates uncertainty. Example: "Record saved successfully" after clicking Save.','3. Navigation: users must always know where they are in the system and be able to move between sections easily. Clear menus, breadcrumbs, and always-available Back/Cancel options. Example: breadcrumb trail showing Home > Students > Attendance.','4. Error Prevention: design to prevent errors before they happen. Use constraints (drop-downs, date pickers), confirm destructive actions, disable invalid options. Example: "Are you sure you want to delete?" before permanent deletion.','5. Accessibility: system usable by all users including those with disabilities. Include screen reader support, keyboard navigation, sufficient color contrast, text alternatives for images, and adjustable font size.']},
+  {q:'Explain why security must be integrated into system design from the beginning.',m:'6 marks',
+   p:['Security should NOT be added only at the end — it must be integrated into system design from the very beginning.','If security is ignored early: vulnerabilities become deeply embedded in code and architecture.','Fixing security vulnerabilities discovered late is extremely expensive — requires redesigning core components.','User trust is damaged if a security breach occurs, especially if it was preventable.','Legal and compliance risks increase when security is neglected — organizations can face fines and penalties.','Many systems handle sensitive information: student records, finance data, employee details.','Poor security can cause data breaches, legal issues, and permanent loss of organizational reputation.','Security must be considered at every design decision — from database design to UI to architecture.']},
+  {q:'Explain the CIA Triad. Give an example for each component.',m:'10 marks',
+   p:['The CIA Triad represents three core security objectives every system must address.','1. CONFIDENTIALITY: Only authorized users can access information. Data is protected from unauthorized viewing or disclosure.','Example: Student marks are visible only to authorized staff and the student themselves — not to other students.','2. INTEGRITY: Data remains accurate and unaltered except by authorized actions. Protects against unauthorized modification.','Example: Exam results cannot be changed without proper authorization and an audit trail recording the change.','3. AVAILABILITY: Systems and data must be available when authorized users need them. Protects against downtime and denial.','Example: The LMS (Learning Management System) must be accessible during registration periods and exam times.','CIA helps designers consider: who can see it (confidentiality), can it be tampered with (integrity), will it be there when needed (availability).','All three must be maintained simultaneously — a system is only truly secure when all three are satisfied.']},
+  {q:'Distinguish between authentication and authorization in system security.',m:'6 marks',
+   p:['Authentication: the process of verifying WHO the user is. It confirms identity before granting access.','Authentication methods: username/password, biometrics, multi-factor authentication (MFA), smart cards.','Authorization: controls WHAT the authenticated user is permitted to do once inside the system.','Authorization methods: role-based access control (RBAC), permission systems, access control lists.','Key difference: Authentication = "Are you who you say you are?" Authorization = "What are you allowed to do?"','Example: Authentication — a user logs in with their ID and password. Authorization — that user can view but not modify student records.','Both are required: authentication without authorization = everyone can do everything once logged in. Authorization without authentication = access control with no identity verification.']},
+  {q:'What is architecture design in system design?',m:'5 marks',
+   p:['Architecture design defines the overall technical structure of the system.','It covers: hardware and software arrangement within the system.','It covers: the layers and components of the system (presentation, logic, data layers).','It covers: data storage design — how and where data is stored.','It covers: communication between components — how parts of the system exchange data.','It covers: deployment environment — servers, cloud, on-premise, or hybrid.','Architecture design answers: How will all system parts work together?','A well-designed architecture makes the system scalable, maintainable, and reliable.','Poor architecture can cause performance bottlenecks, security gaps, and difficulty adding new features.']},
+  {q:'Compare detailed reports and summary reports. When is each appropriate?',m:'6 marks',
+   p:['Detailed Reports: show transaction-level information — every individual record in full detail.','Example: Daily sales transaction list showing every sale with amount, time, product, and customer.','Who uses detailed reports: operational staff who need to verify and process individual records.','When to use: for auditing, verification, day-to-day operations, and compliance checking.','Summary Reports: show aggregated data — totals, averages, trends condensed for high-level view.','Example: Monthly sales by region showing total sales per region, not individual transactions.','Who uses summary reports: managers and executives for decision-making.','When to use: for strategic decisions, performance monitoring, and identifying trends.','Common mistake: giving detailed reports to managers who need summaries — creates information overload.','Good output design matches the report type to the user\'s role and decision-making needs.']},
+  {q:'What are the common output design mistakes and how can they be avoided?',m:'6 marks',
+   p:['Mistake 1: Too much detail for managers — fix by providing summary reports with key metrics, not raw data.','Mistake 2: Missing important filters and context — fix by adding date ranges, category filters, and comparison data.','Mistake 3: Unclear labels and abbreviations — fix by using full descriptive labels and a legend where needed.','Mistake 4: Inconsistent date/number formats — fix by standardizing all formats throughout the system (DD/MM/YYYY everywhere).','Mistake 5: Exposing sensitive data to the wrong users — fix with role-based access control and output filtering by permission.','Mistake 6: Reports not aligned with decision needs — fix by involving users in output design to ensure reports support their actual decisions.','Overall principle: involve users in output design — they know what information they need to do their job.']},
+  {q:'Explain what "usability" means in system design and why it matters.',m:'6 marks',
+   p:['Usability means the system is easy for users to learn and use — a key property of well-designed systems.','The system should allow users to understand screens, forms, and buttons clearly.','Tasks should be completed with minimum confusion and fewest steps needed.','Instructions, messages, and navigation should be simple and intuitive.','Why usability matters: if a system is difficult to use, users make mistakes more frequently.','Poor usability leads to users avoiding the system or using it incorrectly.','Poor usability increases the need for extra training, which raises organizational costs.','Usability is measured by: time to learn, error rate, task completion speed, and user satisfaction.','Good usability design: clear labels, logical flow, helpful messages, minimal memory burden on users.']},
+  {q:'Explain how input design contributes to data quality in a system.',m:'6 marks',
+   p:['Input design directly controls the quality of data that enters the system — "garbage in, garbage out."','Data quality dimensions targeted by input design: accuracy, completeness, consistency, timeliness, and security.','Accuracy: validation controls (format checks, range checks) prevent incorrect data from entering.','Completeness: completeness checks ensure all required fields are filled before processing.','Consistency: consistency checks ensure related fields match logically (end date after start date).','Timeliness: well-designed inputs allow data to be entered and processed quickly and efficiently.','Security: controlled inputs prevent malicious data (e.g., SQL injection) from entering the system.','Error handling: clear, specific error messages help users correct mistakes rather than entering bad data.','Conclusion: well-designed inputs are the first line of defense for maintaining database and system data quality.']},
+];
+
+function renderE(){
+  const w=document.getElementById('essayWrap');
+  ES.forEach((e,i)=>{
+    const d=document.createElement('div');d.className='ec';
+    d.innerHTML=`<div class="eh" onclick="this.parentElement.classList.toggle('open')">
+      <div><div class="eq">Q${i+1}. ${e.q}</div></div>
+      <div style="display:flex;gap:.5rem;align-items:center;flex-shrink:0"><span class="em">${e.m}</span><span class="etog">▼</span></div>
+    </div>
+    <div class="eb"><div class="econt"><h4>Model Answer — Key Points</h4>
+    <ul class="epoints">${e.p.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div></div>`;
+    w.appendChild(d);obs.observe(d);
+  });
+}
+renderQ('all');
+renderE();
+</script>
+</body>
+</html>
+ 

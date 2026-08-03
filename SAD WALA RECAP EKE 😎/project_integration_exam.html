@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 12 – Project Integration | Exam Prep</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#04080f;--surf:#080f1d;--card:#0c1628;--border:#132138;
+  --a1:#38bdf8;--a2:#818cf8;--a3:#34d399;--a4:#fb923c;
+  --red:#f87171;--green:#34d399;--yellow:#fbbf24;--purple:#c084fc;
+  --text:#cbd5f0;--muted:#3d5a7a;--white:#e8f4ff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.65;overflow-x:hidden}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:2rem;overflow:hidden}
+#hc{position:absolute;inset:0;z-index:0}
+.hi{position:relative;z-index:1;max-width:900px}
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:100px;padding:.4rem 1.3rem;font-size:.75rem;letter-spacing:.12em;color:var(--a1);text-transform:uppercase;margin-bottom:1.6rem;animation:fu .7s ease both}
+.hero h1{font-size:clamp(2.2rem,6vw,5.2rem);font-weight:700;line-height:1.05;margin-bottom:1rem;animation:fu .7s .1s ease both}
+.gr{background:linear-gradient(135deg,var(--a1),var(--a2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1rem;color:var(--muted);margin:0 auto 2.5rem;max-width:650px;animation:fu .7s .2s ease both}
+.hstats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;animation:fu .7s .3s ease both}
+.sn{font-size:2.3rem;font-weight:700;background:linear-gradient(135deg,var(--a1),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sl{font-size:.75rem;color:var(--muted)}
+.cta{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;border-radius:14px;padding:1rem 2.4rem;color:#000;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .2s,box-shadow .2s;animation:fu .7s .4s ease both}
+.cta:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(56,189,248,.35)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;background:rgba(4,8,15,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:.65rem 1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;justify-content:center}
+.nb{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.35rem .85rem;color:var(--muted);font-size:.75rem;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nb:hover,.nb.on{background:rgba(56,189,248,.12);border-color:var(--a1);color:var(--a1)}
+
+/* SECTION */
+.sec{max-width:1120px;margin:0 auto;padding:4.5rem 1.5rem}
+.slb{font-size:.69rem;color:var(--a1);text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',monospace;margin-bottom:.4rem}
+.st{font-size:2rem;font-weight:700;margin-bottom:.4rem}
+.st span{background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ss{color:var(--muted);margin-bottom:2.5rem;font-size:.9rem}
+hr.dv{border:none;border-top:1px solid var(--border);margin:0}
+
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:1.4rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;transition:transform .3s,border-color .3s,box-shadow .3s;opacity:0;transform:translateY(22px)}
+.card.vis{animation:su .5s ease forwards}
+.card:hover{transform:translateY(-5px);border-color:var(--a1);box-shadow:0 10px 28px rgba(56,189,248,.12)}
+.ci{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+.card h3{font-size:.99rem;font-weight:600;margin-bottom:.72rem;color:var(--white)}
+.card ul{list-style:none}
+.card ul li{color:var(--muted);font-size:.84rem;padding:.27rem 0 .27rem 1.1rem;position:relative;border-bottom:1px solid rgba(255,255,255,.04)}
+.card ul li::before{content:'›';position:absolute;left:0;color:var(--a1);font-weight:700}
+.card ul li:last-child{border-bottom:none}
+
+/* STEPS */
+.steps-grid{display:flex;flex-direction:column;gap:1.1rem}
+.step{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;opacity:0;transform:translateX(-20px)}
+.step.vis{animation:sr .5s ease forwards}
+.step-h{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.5rem;cursor:pointer;transition:background .2s}
+.step-h:hover{background:rgba(56,189,248,.05)}
+.step-num{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.step-title{font-weight:600;font-size:.97rem;color:var(--white);flex:1}
+.step-arr{color:var(--muted);transition:transform .3s;font-size:.9rem}
+.step.open .step-arr{transform:rotate(180deg);color:var(--a1)}
+.step-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.step.open .step-body{max-height:2000px}
+.step-inner{padding:0 1.5rem 1.5rem 4rem;border-top:1px solid var(--border);padding-top:1.2rem}
+.step-inner p{font-size:.86rem;color:var(--muted);margin-bottom:.75rem;line-height:1.65}
+.step-inner ul{list-style:none;margin-bottom:.75rem}
+.step-inner ul li{font-size:.84rem;color:var(--text);padding:.27rem 0 .27rem 1rem;position:relative;border-bottom:1px solid rgba(255,255,255,.04)}
+.step-inner ul li::before{content:'›';position:absolute;left:0;color:var(--a3);font-weight:700}
+.step-inner ul li:last-child{border-bottom:none}
+.highlight-box{background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.2);border-radius:10px;padding:.85rem 1rem;font-size:.83rem;margin-bottom:.75rem}
+.highlight-box strong{color:var(--a1)}
+.bad-good{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:9px;padding:.7rem .9rem;font-size:.82rem}
+.good{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-radius:9px;padding:.7rem .9rem;font-size:.82rem}
+.bad strong{color:var(--red)}
+.good strong{color:var(--green)}
+
+/* 8 PRINCIPLES */
+.principles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-bottom:2rem}
+.prin{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.3rem;opacity:0;transform:translateY(18px)}
+.prin.vis{animation:su .5s ease forwards}
+.prin:hover{border-color:var(--a1);box-shadow:0 6px 20px rgba(56,189,248,.1)}
+.prin-num{font-size:1.4rem;font-weight:800;font-family:'JetBrains Mono',monospace;margin-bottom:.35rem}
+.prin-name{font-size:.92rem;font-weight:700;color:var(--white);margin-bottom:.3rem}
+.prin-def{font-size:.8rem;color:var(--muted);line-height:1.55}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:separate;border-spacing:0 .45rem}
+.tbl th{text-align:left;font-size:.69rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;padding:.4rem 1rem;font-family:'JetBrains Mono',monospace}
+.tbl td{background:var(--card);padding:.85rem 1rem;font-size:.84rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.tbl td:first-child{border-left:1px solid var(--border);border-radius:10px 0 0 10px;font-weight:600;color:var(--white)}
+.tbl td:last-child{border-right:1px solid var(--border);border-radius:0 10px 10px 0;color:var(--muted)}
+
+/* WHAT IS INTEGRATED TAGS */
+.int-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-bottom:2rem}
+.int-item{border-radius:14px;padding:1.2rem 1.4rem;border:1px solid}
+.int-item .letter{font-size:1.6rem;font-weight:800;font-family:'JetBrains Mono',monospace;margin-bottom:.4rem}
+.int-item h4{font-size:.92rem;font-weight:700;margin-bottom:.4rem}
+.int-item p{font-size:.8rem;color:var(--muted);line-height:1.55}
+
+/* MCQ */
+.sp{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.8rem;display:flex;align-items:center;gap:2rem;margin-bottom:2rem;flex-wrap:wrap}
+.sring{width:76px;height:76px;border-radius:50%;background:conic-gradient(var(--a1) 0deg,var(--border) 0deg);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 1s}
+.sinner{width:60px;height:60px;background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;font-family:'JetBrains Mono',monospace}
+.sinfo{flex:1}.sinfo h3{font-size:1rem;margin-bottom:.2rem}.sinfo p{font-size:.81rem;color:var(--muted)}
+.pw{background:var(--border);border-radius:100px;height:5px;max-width:280px;margin-top:.5rem;overflow:hidden}
+.pb{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--a1),var(--a2));width:0;transition:width 1s ease}
+.rb{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.45rem .95rem;color:var(--muted);font-family:inherit;font-size:.81rem;cursor:pointer;transition:all .2s}
+.rb:hover{border-color:var(--a1);color:var(--a1)}
+.fbar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:2rem}
+.fb{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.33rem .8rem;color:var(--muted);font-size:.75rem;font-family:inherit;cursor:pointer;transition:all .2s}
+.fb.on,.fb:hover{background:rgba(56,189,248,.12);border-color:var(--a1);color:var(--a1)}
+.mqw{display:flex;flex-direction:column;gap:1.3rem}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;opacity:0;transform:translateY(16px)}
+.mc.vis{animation:su .45s ease forwards}
+.mhd{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.1rem}
+.mnum{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.mqt{font-weight:600;line-height:1.5;font-size:.95rem}
+.mtag{display:inline-block;font-size:.65rem;padding:.17rem .5rem;border-radius:4px;margin-bottom:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.tg{background:rgba(148,163,184,.14);color:var(--muted)}
+.ti{background:rgba(56,189,248,.14);color:var(--a1)}
+.tc{background:rgba(129,140,248,.14);color:var(--a2)}
+.ts{background:rgba(52,211,153,.14);color:var(--green)}
+.tp{background:rgba(251,146,60,.14);color:var(--a4)}
+.tt{background:rgba(192,132,252,.14);color:var(--purple)}
+.mopts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.9rem}
+.mopt{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:.7rem 1rem;cursor:pointer;font-size:.87rem;font-family:inherit;color:var(--text);text-align:left;transition:all .17s;display:flex;align-items:center;gap:.7rem}
+.mopt:hover{background:rgba(56,189,248,.08);border-color:var(--a1)}
+.mopt.ok{background:rgba(52,211,153,.12);border-color:var(--green);color:var(--green)}
+.mopt.ng{background:rgba(248,113,113,.12);border-color:var(--red);color:var(--red)}
+.oltr{width:22px;height:22px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.exp{display:none;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.25);border-radius:10px;padding:.8rem 1rem;font-size:.83rem;color:#86efac;gap:.5rem;align-items:flex-start}
+.exp.show{display:flex}
+
+/* ESSAY */
+.ew{display:flex;flex-direction:column;gap:1.2rem}
+.ec{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;opacity:0;transform:translateY(16px)}
+.ec.vis{animation:su .45s ease forwards}
+.eh{padding:1.35rem 1.6rem;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;transition:background .2s}
+.eh:hover{background:rgba(56,189,248,.04)}
+.eq{font-weight:600;font-size:.95rem;line-height:1.5}
+.em{background:rgba(56,189,248,.12);color:var(--a1);padding:.16rem .55rem;border-radius:5px;font-size:.69rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.etog{font-size:.88rem;transition:transform .3s;color:var(--muted);flex-shrink:0}
+.ec.open .etog{transform:rotate(180deg);color:var(--a1)}
+.eb{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.ec.open .eb{max-height:3500px}
+.econt{padding:0 1.6rem 1.6rem;border-top:1px solid var(--border);padding-top:1.4rem}
+.econt h4{color:var(--a1);font-size:.69rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.65rem;font-family:'JetBrains Mono',monospace}
+.eps{list-style:none;display:flex;flex-direction:column;gap:.42rem}
+.eps li{display:flex;gap:.65rem;font-size:.86rem;color:var(--text);line-height:1.55}
+.eps li::before{content:'▸';color:var(--a2);flex-shrink:0;margin-top:.05rem}
+
+/* ANIMATIONS */
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes su{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sr{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes orbit{from{transform:rotate(0deg) translateX(180px) rotate(0deg)}to{transform:rotate(360deg) translateX(180px) rotate(-360deg)}}
+
+@media(max-width:680px){.hero h1{font-size:2.1rem}.bad-good{grid-template-columns:1fr}.sec{padding:3rem 1rem}.step-inner{padding-left:1.5rem}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero" id="top">
+<canvas id="hc"></canvas>
+<div class="hi">
+  <div class="badge">🎓 SE201.3 · Systems Analysis and Design</div>
+  <h1>Chapter 12<br><span class="gr">Project Integration</span></h1>
+  <p class="hero-sub">Compiling Requirements · System Specification · Traceability · Prioritization<br>Everything for your exam in 2 days — 50+ MCQs, 15 essay answers, all 10 steps. 🚀</p>
+  <div class="hstats">
+    <div><div class="sn">50+</div><div class="sl">MCQ Questions</div></div>
+    <div><div class="sn">15</div><div class="sl">Essay Answers</div></div>
+    <div><div class="sn">10</div><div class="sl">Integration Steps</div></div>
+    <div><div class="sn">8</div><div class="sl">Spec Principles</div></div>
+  </div>
+  <button class="cta" onclick="document.getElementById('overview').scrollIntoView()">Start Revising ↓</button>
+</div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="sNav">
+  <button class="nb" onclick="g('overview')">📖 Overview</button>
+  <button class="nb" onclick="g('whatis')">🔗 What Is Integrated</button>
+  <button class="nb" onclick="g('steps')">🪜 10 Steps</button>
+  <button class="nb" onclick="g('spec')">📄 Spec Doc</button>
+  <button class="nb" onclick="g('principles')">✅ 8 Principles</button>
+  <button class="nb" onclick="g('mcq')">🧠 MCQ</button>
+  <button class="nb" onclick="g('essay')">📝 Essays</button>
+  <button class="nb" onclick="g('quickref')">⚡ Quick Ref</button>
+</nav>
+
+<!-- OVERVIEW -->
+<section class="sec" id="overview">
+  <div class="slb">Chapter Overview</div>
+  <h2 class="st">All Key <span>Concepts</span></h2>
+  <p class="ss">Every slide topic organized for fast revision — from definitions to traceability.</p>
+  <div class="grid">
+    <div class="card">
+      <div class="ci" style="background:rgba(56,189,248,.12)">🔗</div>
+      <h3>What is Project Integration?</h3>
+      <ul>
+        <li>Combining all requirements, assumptions, business rules, and models into ONE consistent package</li>
+        <li>Package used by designers, developers, testers, and users</li>
+        <li>Without integration: scattered requirements, misunderstandings, rework</li>
+        <li>Creates a single source of truth</li>
+        <li>Bridges analysis and design phases</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(129,140,248,.12)">⚠️</div>
+      <h3>Problems Without Integration</h3>
+      <ul>
+        <li>Requirements stay scattered in notes, emails, interviews, diagrams</li>
+        <li>Developers misunderstand what to build</li>
+        <li>Testers cannot verify expected behavior</li>
+        <li>Users complain system doesn't match business needs</li>
+        <li>Scope creep increases</li>
+        <li>Rework becomes expensive</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(52,211,153,.12)">✅</div>
+      <h3>Benefits of Proper Integration</h3>
+      <ul>
+        <li>Creates a single source of truth</li>
+        <li>Ensures consistency among models and requirements</li>
+        <li>Improves stakeholder communication</li>
+        <li>Supports design, development, and testing</li>
+        <li>Reduces ambiguity and rework</li>
+        <li>Helps project planning and estimation</li>
+        <li>Improves traceability: need → requirement → design → test</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(251,146,60,.12)">📋</div>
+      <h3>System Specification Document</h3>
+      <ul>
+        <li>Formal document describing what is to be built</li>
+        <li>Also called: SRS / System Definition / Requirements Specification</li>
+        <li>Describes: what to build, what it must do, constraints, data, user interaction, quality attributes</li>
+        <li>Audience: users, analysts, designers, developers, testers, PMs, auditors</li>
+        <li>Serves as communication AND control document</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(192,132,252,.12)">🔍</div>
+      <h3>Traceability</h3>
+      <ul>
+        <li>Links requirements to their sources and downstream deliverables</li>
+        <li>Requirement ↔ Stakeholder need</li>
+        <li>Requirement ↔ Use case / model</li>
+        <li>Requirement ↔ Design component</li>
+        <li>Requirement ↔ Test case</li>
+        <li>Requirement ↔ Change request</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(56,189,248,.12)">🏆</div>
+      <h3>MoSCoW Prioritization</h3>
+      <ul>
+        <li>Must have — non-negotiable core requirements</li>
+        <li>Should have — important but not critical for launch</li>
+        <li>Could have — nice-to-have if time/budget allows</li>
+        <li>Won't have (this release) — explicitly out of scope now</li>
+        <li>Also: Business value vs effort, Risk-based, Regulatory priority</li>
+        <li>Used because not everything can be delivered at once</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(251,146,60,.12)">⚔️</div>
+      <h3>Conflict Types in Requirements</h3>
+      <ul>
+        <li>Stakeholder conflicts — strict control vs flexibility</li>
+        <li>Process conflicts — different dept procedures</li>
+        <li>Terminology conflicts — same term, different meanings</li>
+        <li>Model-text conflicts — diagram ≠ written requirement</li>
+        <li>Scope conflicts — future features listed as current</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(52,211,153,.12)">📊</div>
+      <h3>Good Requirement Characteristics</h3>
+      <ul>
+        <li>Clear — no ambiguity in meaning</li>
+        <li>Specific — precise, not vague</li>
+        <li>Unambiguous — one interpretation only</li>
+        <li>Feasible — can be implemented</li>
+        <li>Testable / Verifiable — can be confirmed</li>
+        <li>Relevant — tied to business need</li>
+        <li>Traceable — linked to source and tests</li>
+        <li>Consistent — no contradictions</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- WHAT IS INTEGRATED -->
+<section class="sec" id="whatis">
+  <div class="slb">Integration Content</div>
+  <h2 class="st">What Is <span>Being Integrated?</span></h2>
+  <p class="ss">Seven categories of artifacts that must be combined into the integrated package.</p>
+  <div class="int-grid">
+    <div class="int-item" style="background:rgba(56,189,248,.07);border-color:rgba(56,189,248,.3)">
+      <div class="letter" style="color:var(--a1)">A</div>
+      <h4 style="color:var(--a1)">Business Requirements</h4>
+      <p>Business goals, expected outcomes, business problems to solve, and success criteria.</p>
+    </div>
+    <div class="int-item" style="background:rgba(129,140,248,.07);border-color:rgba(129,140,248,.3)">
+      <div class="letter" style="color:var(--a2)">B</div>
+      <h4 style="color:var(--a2)">Functional Requirements</h4>
+      <p>What the system must do: processes, services, features, inputs, processing, and outputs.</p>
+    </div>
+    <div class="int-item" style="background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.3)">
+      <div class="letter" style="color:var(--green)">C</div>
+      <h4 style="color:var(--green)">Non-Functional Requirements</h4>
+      <p>Performance, security, usability, reliability, scalability, compliance, maintainability.</p>
+    </div>
+    <div class="int-item" style="background:rgba(251,146,60,.07);border-color:rgba(251,146,60,.3)">
+      <div class="letter" style="color:var(--a4)">D</div>
+      <h4 style="color:var(--a4)">Business Rules</h4>
+      <p>Policies, decision logic, constraints, approval rules, and calculations the system must enforce.</p>
+    </div>
+    <div class="int-item" style="background:rgba(192,132,252,.07);border-color:rgba(192,132,252,.3)">
+      <div class="letter" style="color:var(--purple)">E</div>
+      <h4 style="color:var(--purple)">Models</h4>
+      <p>Use case models, Activity diagrams, DFDs, ERD/data models, Sequence diagrams, UI wireframes, CRUD matrices, state-based logic.</p>
+    </div>
+    <div class="int-item" style="background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3)">
+      <div class="letter" style="color:var(--yellow)">F</div>
+      <h4 style="color:var(--yellow)">Assumptions and Constraints</h4>
+      <p>Budget constraints, technology stack, legal constraints, deadlines, integration constraints with existing systems.</p>
+    </div>
+    <div class="int-item" style="background:rgba(248,113,113,.07);border-color:rgba(248,113,113,.3)">
+      <div class="letter" style="color:var(--red)">G</div>
+      <h4 style="color:var(--red)">Scope Definition</h4>
+      <p>In-scope functions, out-of-scope items, defined releases and phases of the project.</p>
+    </div>
+  </div>
+
+  <div class="card" style="max-width:650px;border-color:rgba(56,189,248,.3)">
+    <div class="ci" style="background:rgba(56,189,248,.1)">👥</div>
+    <h3>Who Uses the Integrated Package?</h3>
+    <ul>
+      <li>Designers — to create the system architecture and UI</li>
+      <li>Developers — to build the correct system</li>
+      <li>Testers — to verify expected behavior against requirements</li>
+      <li>Users — to confirm the system matches business needs</li>
+      <li>Project Managers — for planning, estimation, and tracking</li>
+      <li>Auditors / QA Reviewers — for governance and quality assurance</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- 10 STEPS -->
+<section class="sec" id="steps">
+  <div class="slb">Core Process</div>
+  <h2 class="st">10 Steps in Compiling <span>Requirements & Models</span></h2>
+  <p class="ss">Click each step to expand full details — all 10 steps are highly examinable!</p>
+  <div class="steps-grid" id="stepsContainer"></div>
+</section>
+
+<hr class="dv">
+
+<!-- SPEC DOC -->
+<section class="sec" id="spec">
+  <div class="slb">Key Deliverable</div>
+  <h2 class="st">System Specification <span>Document</span></h2>
+  <p class="ss">The formal output of project integration — understand its purpose and audience.</p>
+  <div class="grid" style="margin-bottom:2rem">
+    <div class="card">
+      <div class="ci" style="background:rgba(56,189,248,.12)">📄</div>
+      <h3>What It Describes</h3>
+      <ul>
+        <li>What system is to be built</li>
+        <li>What it must do (functional behavior)</li>
+        <li>What constraints apply</li>
+        <li>What data it uses</li>
+        <li>How users interact with it</li>
+        <li>What quality attributes it must satisfy</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(129,140,248,.12)">🎯</div>
+      <h3>Purpose of the Spec Doc</h3>
+      <ul>
+        <li>Communicate agreed requirements clearly</li>
+        <li>Provide baseline for design and implementation</li>
+        <li>Support testing and acceptance criteria</li>
+        <li>Reduce misunderstandings</li>
+        <li>Enable project estimation and planning</li>
+        <li>Support maintenance and future enhancements</li>
+        <li>Provide evidence for governance/QA reviews</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(52,211,153,.12)">👥</div>
+      <h3>Audience / Who Uses It</h3>
+      <ul>
+        <li>Users — confirm it meets their needs</li>
+        <li>Analysts — as the master record of requirements</li>
+        <li>Designers — translate to technical specifications</li>
+        <li>Developers — build what is specified</li>
+        <li>Testers — create test cases from it</li>
+        <li>Project Managers — plan and track against it</li>
+        <li>Auditors / QA Reviewers — verify quality and compliance</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ci" style="background:rgba(251,146,60,.12)">📛</div>
+      <h3>Other Names for the Spec Doc</h3>
+      <ul>
+        <li>SRS — System Requirements Specification</li>
+        <li>System Definition</li>
+        <li>Requirements Specification</li>
+        <li>Business Requirements Document (BRD)</li>
+        <li>Functional Specification Document (FSD)</li>
+        <li>Name varies by organization — content is what matters</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- 8 PRINCIPLES -->
+<section class="sec" id="principles">
+  <div class="slb">Quality Standards</div>
+  <h2 class="st">8 Principles of a <span>Good Specification</span></h2>
+  <p class="ss">A high-quality specification must satisfy ALL eight of these — each is individually examinable.</p>
+  <div class="principles-grid" id="prinGrid"></div>
+
+  <h3 style="font-size:1rem;color:var(--white);margin-bottom:1rem">Good vs Poor Requirement Examples</h3>
+  <div class="bad-good">
+    <div class="bad"><strong>❌ Poor:</strong> "System should be user friendly."</div>
+    <div class="good"><strong>✅ Better:</strong> "New users should complete the student registration task without training, using on-screen guidance and validation messages."</div>
+    <div class="bad"><strong>❌ Poor:</strong> "System should be secure."</div>
+    <div class="good"><strong>✅ Better:</strong> "The system shall enforce role-based access control and require authenticated login before accessing student academic records."</div>
+    <div class="bad"><strong>❌ Poor:</strong> "Reports should be fast."</div>
+    <div class="good"><strong>✅ Better:</strong> "The monthly attendance report shall be generated and available to download within 5 seconds of user request."</div>
+    <div class="bad"><strong>❌ Poor:</strong> "The system should handle many users."</div>
+    <div class="good"><strong>✅ Better:</strong> "The system shall support a minimum of 500 concurrent users without degradation in response time below 3 seconds."</div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- MCQ -->
+<section class="sec" id="mcq">
+  <div class="slb">Practice Questions</div>
+  <h2 class="st">Multiple Choice <span>Questions</span></h2>
+  <p class="ss">50+ questions across all topics. Click any option — instant feedback and full explanation.</p>
+  <div class="sp">
+    <div class="sring" id="sr"><div class="sinner" id="st2">0/0</div></div>
+    <div class="sinfo"><h3>Your Score</h3><p id="sd">Answer questions to see your progress.</p>
+    <div class="pw"><div class="pb" id="pb2"></div></div></div>
+    <button class="rb" onclick="resetQ()">↺ Reset All</button>
+  </div>
+  <div class="fbar">
+    <button class="fb on" onclick="flt('all',this)">All</button>
+    <button class="fb" onclick="flt('gen',this)">General</button>
+    <button class="fb" onclick="flt('int',this)">Integration</button>
+    <button class="fb" onclick="flt('comp',this)">Compiling</button>
+    <button class="fb" onclick="flt('spec',this)">Spec Doc</button>
+    <button class="fb" onclick="flt('pri',this)">Prioritization</button>
+    <button class="fb" onclick="flt('trc',this)">Traceability</button>
+  </div>
+  <div class="mqw" id="mqw"></div>
+</section>
+
+<hr class="dv">
+
+<!-- ESSAY -->
+<section class="sec" id="essay">
+  <div class="slb">Long Answer</div>
+  <h2 class="st">Essay <span>Questions</span></h2>
+  <p class="ss">15 exam-style questions with complete model answers. Tap to reveal.</p>
+  <div class="ew" id="ew"></div>
+</section>
+
+<hr class="dv">
+
+<!-- QUICK REF -->
+<section class="sec" id="quickref">
+  <div class="slb">Cheat Sheet</div>
+  <h2 class="st">Quick <span>Reference</span></h2>
+
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">10-Step Summary</p>
+  <table class="tbl" style="margin-bottom:2.5rem">
+    <thead><tr><th>Step</th><th>Action</th><th>Key Outcome</th></tr></thead>
+    <tbody>
+      <tr><td>Step 1</td><td>Gather and Centralize All Artifacts</td><td>Single shared repository</td></tr>
+      <tr><td>Step 2</td><td>Categorize Requirements</td><td>Organized by type for easier management</td></tr>
+      <tr><td>Step 3</td><td>Standardize Requirement Statements</td><td>Clear, testable, unambiguous requirements</td></tr>
+      <tr><td>Step 4</td><td>Remove Duplicates and Merge Related</td><td>No redundancy in requirements list</td></tr>
+      <tr><td>Step 5</td><td>Resolve Conflicts</td><td>Agreed, consistent requirements</td></tr>
+      <tr><td>Step 6</td><td>Check Completeness Across Models</td><td>All models support each other</td></tr>
+      <tr><td>Step 7</td><td>Validate Internal Consistency</td><td>No contradictions between requirements and models</td></tr>
+      <tr><td>Step 8</td><td>Prioritize Requirements</td><td>MoSCoW priority assigned to all requirements</td></tr>
+      <tr><td>Step 9</td><td>Establish Traceability</td><td>All requirements linked to sources and tests</td></tr>
+      <tr><td>Step 10</td><td>Baseline the Requirements Package</td><td>Versioned, approved, formally controlled document</td></tr>
+    </tbody>
+  </table>
+
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">8 Principles of a Good Specification</p>
+  <table class="tbl" style="margin-bottom:2.5rem">
+    <thead><tr><th>#</th><th>Principle</th><th>What It Means</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Correct</td><td>Represents real stakeholder needs accurately</td></tr>
+      <tr><td>2</td><td>Complete</td><td>All requirements, exceptions, and constraints included</td></tr>
+      <tr><td>3</td><td>Consistent</td><td>No contradictions between sections or models</td></tr>
+      <tr><td>4</td><td>Unambiguous</td><td>Different readers interpret it the same way</td></tr>
+      <tr><td>5</td><td>Verifiable</td><td>Can be tested or inspected</td></tr>
+      <tr><td>6</td><td>Feasible</td><td>Can be implemented with available resources/technology</td></tr>
+      <tr><td>7</td><td>Traceable</td><td>Each requirement linked to source and tests</td></tr>
+      <tr><td>8</td><td>Modifiable</td><td>Well-structured and versioned so updates are easy</td></tr>
+    </tbody>
+  </table>
+
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Conflict Types at a Glance</p>
+  <table class="tbl">
+    <thead><tr><th>Conflict Type</th><th>Example</th><th>Resolution</th></tr></thead>
+    <tbody>
+      <tr><td>Stakeholder</td><td>One group wants strict control, another wants flexibility</td><td>Stakeholder workshop, escalation to sponsor</td></tr>
+      <tr><td>Process</td><td>Different departments follow different procedures</td><td>Facilitated review meeting, standardize process</td></tr>
+      <tr><td>Terminology</td><td>Same term "active student" means different things</td><td>Create shared glossary, documented decisions</td></tr>
+      <tr><td>Model-Text</td><td>Diagram says one thing, written requirement says another</td><td>Align models with text, version control</td></tr>
+      <tr><td>Scope</td><td>Future features included as current requirements</td><td>MoSCoW prioritization, scope definition document</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+// === HERO CANVAS ===
+const cv=document.getElementById('hc'),cx=cv.getContext('2d');
+let pts=[];
+function rsz(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;
+  pts=Array.from({length:90},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.6+.4,hue:Math.random()>0.5?200:260,p:Math.random()*Math.PI*2}))}
+let tk=0;
+function draw(){cx.clearRect(0,0,cv.width,cv.height);tk+=.007;
+pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1;
+const o=.35+.35*Math.sin(tk+p.p);cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fillStyle=`hsla(${p.hue},90%,72%,${o})`;cx.fill()});
+pts.forEach((a,i)=>pts.slice(i+1,i+5).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.strokeStyle=`rgba(56,189,248,${.09*(1-d/110)})`;cx.lineWidth=.6;cx.stroke()}}));
+requestAnimationFrame(draw)}
+rsz();draw();window.addEventListener('resize',rsz);
+
+// === NAV ===
+function g(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+const nids=['overview','whatis','steps','spec','principles','mcq','essay','quickref'];
+window.addEventListener('scroll',()=>{nids.forEach(id=>{const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();const btn=document.querySelector(`.nb[onclick="g('${id}')"]`);if(btn){if(r.top<200&&r.bottom>100)btn.classList.add('on');else btn.classList.remove('on')}})});
+
+// === OBSERVER ===
+const obs=new IntersectionObserver(es=>{es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*55);obs.unobserve(e.target)}})},{threshold:.07});
+document.querySelectorAll('.card,.ec,.mc,.prin').forEach(el=>obs.observe(el));
+
+// === 10 STEPS DATA ===
+const STEPS=[
+  {n:1,title:'Gather and Centralize All Artifacts',
+   desc:'Bring all analysis outputs into one shared repository so nothing is lost or fragmented across individual files, emails, or notes.',
+   items:['Interview summaries and transcripts','Requirement lists from all sessions','Diagrams (use cases, ERDs, DFDs, wireframes)','Issue logs and open questions','Assumptions recorded during analysis','Meeting decisions and agreed outcomes','Prototypes and mockups'],
+   note:'Without centralization, requirements stay scattered — the most common cause of integration failure.'},
+  {n:2,title:'Categorize Requirements',
+   desc:'Group requirements by type so they are easier to review, manage, and assign to the right team members.',
+   items:['Functional requirements','Non-functional requirements','Data requirements','Interface requirements','Reporting requirements','Security requirements','Business rules','Regulatory/compliance requirements'],
+   note:'Good categorization makes the document easier to navigate and prevents requirements from being overlooked.'},
+  {n:3,title:'Standardize Requirement Statements',
+   desc:'Rewrite vague or poor requirements into clear, specific, testable statements that all readers interpret the same way.',
+   items:['Clear — no ambiguity','Specific — precise, not general','Unambiguous — one interpretation only','Feasible — can actually be built','Testable/Verifiable — pass/fail can be confirmed','Relevant — tied to a real business need','Traceable — linked to source and test','Consistent — no contradictions'],
+   bad1:'System should be user friendly.',
+   good1:'New users should complete the student registration task without training, using on-screen guidance and validation messages.',
+   bad2:'System should be secure.',
+   good2:'The system shall enforce role-based access control and require authenticated login before accessing student academic records.'},
+  {n:4,title:'Remove Duplicates and Merge Related Requirements',
+   desc:'Multiple stakeholders often describe the same need in different ways during separate interviews. These must be merged into one unified requirement.',
+   items:['Identify requirements that describe the same underlying need','Merge into one clear, combined statement','Keep cross-reference to original sources for traceability'],
+   note:'Example: "Admin must approve special registration" + "HOD approval needed if student exceeds credit limit" + "Extra module requests require authorization" → all describe an approval workflow requirement.'},
+  {n:5,title:'Resolve Conflicts',
+   desc:'Conflicting requirements are very common when stakeholders have different priorities, processes, or understanding of the system.',
+   items:['Stakeholder conflicts — one group wants strict control, another wants flexibility','Process conflicts — different departments follow different procedures','Terminology conflicts — same term used differently (e.g., "active student")','Model-text conflicts — diagram says one thing, written requirement says another','Scope conflicts — optional future features included as current requirements'],
+   note:'Resolution techniques: stakeholder workshops, facilitated review meetings, MoSCoW prioritization, escalation to sponsor, documented decisions and rationale.'},
+  {n:6,title:'Check Completeness Across Models',
+   desc:'Each model provides only ONE view of the system. The analyst must verify all views are consistent and mutually supporting.',
+   items:['Use cases show interactions — are all user scenarios covered?','Process models show workflow — are all business processes represented?','ERD shows data — are all data entities and relationships accounted for?','UI prototypes show screens — is every screen traceable to a requirement?','The analyst must ensure these views support each other without gaps'],
+   note:'A missing model view = a missing perspective on the system. Completeness means no single view is forgotten.'},
+  {n:7,title:'Validate Internal Consistency',
+   desc:'Requirements and models must not contradict each other. Even small contradictions cause major problems in development and testing.',
+   items:['Use case says login is optional, but security requirement says authentication is mandatory → contradiction!','ERD shows one advisor per student, but process says student can have multiple advisors → contradiction!','UI prototype includes "Export PDF" button, but no requirement mentions that feature → gap!'],
+   note:'Inconsistency is often subtle. A formal review process with multiple readers is the best way to catch these issues.'},
+  {n:8,title:'Prioritize Requirements',
+   desc:'Not all requirements can be delivered at once due to time, budget, and risk constraints. Prioritization determines what gets built first.',
+   items:['MoSCoW — Must / Should / Could / Won\'t have (this release)','Business value vs implementation effort matrix','Risk-based priority — high-risk items first','Regulatory/mandatory priority — compliance items cannot be deferred'],
+   note:'Prioritization protects the project from scope creep and ensures the most important requirements are delivered first.'},
+  {n:9,title:'Establish Traceability',
+   desc:'Traceability connects each requirement to its origin and to every downstream artifact that depends on it.',
+   items:['Requirement ↔ Stakeholder need (where did this come from?)','Requirement ↔ Use case/model (what model supports this?)','Requirement ↔ Design component (what design element implements this?)','Requirement ↔ Test case (how will this be verified?)','Requirement ↔ Change request (what changes affected this?)'],
+   note:'Traceability enables impact analysis: if a requirement changes, you can identify everything that needs to change with it.'},
+  {n:10,title:'Baseline the Compiled Requirements Package',
+   desc:'Once all requirements have been reviewed and agreed, the package is formally approved and placed under version control.',
+   items:['Version the document — assign a version number (e.g., v1.0)','Record approvals — formal sign-off from stakeholders','Mark as baseline — official reference point for the project','Manage future changes formally — all changes go through a change control process'],
+   note:'Baselining prevents unauthorized changes and provides a clear point of reference for the team. Any future changes must be formally approved.'}
+];
+
+const sc=document.getElementById('stepsContainer');
+STEPS.forEach((s,i)=>{
+  const d=document.createElement('div');d.className='step';
+  const bg=s.bad1?`
+    <div class="bad-good">
+      <div class="bad"><strong>❌ Poor:</strong> ${s.bad1}</div>
+      <div class="good"><strong>✅ Better:</strong> ${s.good1}</div>
+      <div class="bad"><strong>❌ Poor:</strong> ${s.bad2}</div>
+      <div class="good"><strong>✅ Better:</strong> ${s.good2}</div>
+    </div>`:'';
+  d.innerHTML=`<div class="step-h" onclick="this.parentElement.classList.toggle('open')">
+    <div class="step-num">${s.n}</div>
+    <div class="step-title">${s.title}</div>
+    <div class="step-arr">▼</div>
+  </div>
+  <div class="step-body"><div class="step-inner">
+    <p>${s.desc}</p>
+    ${bg}
+    <ul>${s.items.map(it=>`<li>${it}</li>`).join('')}</ul>
+    <div class="highlight-box"><strong>📌 Key Point:</strong> ${s.note}</div>
+  </div></div>`;
+  sc.appendChild(d);obs.observe(d);
+});
+
+// === 8 PRINCIPLES DATA ===
+const PRINS=[
+  {n:'1',name:'Correct',def:'Represents real stakeholder needs accurately. Not what analysts assume — what stakeholders actually need.',c:'rgba(56,189,248,.15)',bc:'rgba(56,189,248,.4)',nc:'var(--a1)'},
+  {n:'2',name:'Complete',def:'Includes all necessary requirements, exceptions, and constraints. Nothing important is missing.',c:'rgba(129,140,248,.15)',bc:'rgba(129,140,248,.4)',nc:'var(--a2)'},
+  {n:'3',name:'Consistent',def:'No contradictions between sections or models. All parts of the document agree with each other.',c:'rgba(52,211,153,.15)',bc:'rgba(52,211,153,.4)',nc:'var(--green)'},
+  {n:'4',name:'Unambiguous',def:'Different readers interpret it the same way. One meaning only — no vague words like "fast" or "user-friendly".',c:'rgba(251,146,60,.15)',bc:'rgba(251,146,60,.4)',nc:'var(--a4)'},
+  {n:'5',name:'Verifiable',def:'Can be tested or inspected. A pass/fail criterion must be definable for every requirement.',c:'rgba(192,132,252,.15)',bc:'rgba(192,132,252,.4)',nc:'var(--purple)'},
+  {n:'6',name:'Feasible',def:'Can be implemented with available resources and technology within the project constraints.',c:'rgba(251,191,36,.15)',bc:'rgba(251,191,36,.4)',nc:'var(--yellow)'},
+  {n:'7',name:'Traceable',def:'Each requirement can be linked to its source (why it exists) and to its test (how it is verified).',c:'rgba(248,113,113,.15)',bc:'rgba(248,113,113,.4)',nc:'var(--red)'},
+  {n:'8',name:'Modifiable',def:'Well-structured and versioned so updates can be made cleanly without invalidating other parts.',c:'rgba(56,189,248,.15)',bc:'rgba(56,189,248,.3)',nc:'var(--a1)'},
+];
+const pg=document.getElementById('prinGrid');
+PRINS.forEach((p,i)=>{
+  const d=document.createElement('div');d.className='prin';
+  d.style.background=p.c;d.style.borderColor=p.bc;
+  d.style.animationDelay=(i*.07)+'s';
+  d.innerHTML=`<div class="prin-num" style="color:${p.nc}">${p.n}.</div>
+  <div class="prin-name">${p.name}</div>
+  <div class="prin-def">${p.def}</div>`;
+  pg.appendChild(d);obs.observe(d);
+});
+
+// === MCQ DATA ===
+const QS=[
+// GENERAL
+{t:'gen',q:'What is project integration in systems analysis and design?',o:['Writing the source code for the system','Combining all requirements, assumptions, business rules, and models into one consistent package','Designing the database schema','Creating the user interface mockups'],a:1,e:'Project integration combines all requirements, assumptions, business rules, and system models into one consistent package usable by designers, developers, testers, and users.'},
+{t:'gen',q:'Without proper project integration, which of the following does NOT occur?',o:['Requirements remain scattered in notes and emails','Testers cannot verify expected behavior','The system becomes easier to maintain','Scope creep increases'],a:2,e:'Without integration: requirements scatter, developers misunderstand what to build, testers cannot verify behavior, users complain, scope creep increases, and rework becomes expensive. The system does NOT become easier to maintain.'},
+{t:'gen',q:'Which of the following is a benefit of proper project integration?',o:['Increases the number of requirements','Creates a single source of truth','Makes the project take longer','Increases complexity of models'],a:1,e:'Proper integration creates a single source of truth — one authoritative, consistent reference for everyone on the project.'},
+{t:'gen',q:'Project integration improves traceability from:',o:['Code → deployment → testing → maintenance','Need → requirement → design → test','User → manager → developer → tester','Meeting → email → note → diagram'],a:1,e:'Good project integration improves traceability along the chain: need → requirement → design → test.'},
+{t:'gen',q:'Which stakeholders use the integrated requirements package? (choose best answer)',o:['Only developers','Only the project manager','Designers, developers, testers, and users','Only the client'],a:2,e:'The integrated package is used by designers, developers, testers, users, project managers, and auditors/QA reviewers.'},
+{t:'gen',q:'Scope creep is best controlled through:',o:['Adding more features frequently','Proper project integration with a defined scope','Increasing the project budget','Hiring more developers'],a:1,e:'Proper project integration includes scope definition (in-scope vs out-of-scope) which directly controls scope creep.'},
+{t:'gen',q:'What does "single source of truth" mean in project integration?',o:['Only one developer knows the requirements','All requirements are stored in one consistent, authoritative repository','The system has only one database','Only the project manager can change requirements'],a:1,e:'A single source of truth means all requirements, models, and decisions are stored in one consistent, authoritative repository — not scattered across multiple documents.'},
+
+// INTEGRATION
+{t:'int',q:'Which of the following is NOT one of the 7 categories being integrated in a project?',o:['Business requirements','Functional requirements','Developer resumes','Models (use cases, ERDs, etc.)'],a:2,e:'The 7 categories are: A) Business Requirements, B) Functional Requirements, C) Non-Functional Requirements, D) Business Rules, E) Models, F) Assumptions and Constraints, G) Scope Definition. Developer resumes are not included.'},
+{t:'int',q:'Business rules in the integration package include:',o:['Hardware specifications','Policies, decision logic, approval rules, and calculations','UI color schemes','Database backup schedules'],a:1,e:'Business Rules (Category D) include: policies, decision logic, constraints, approval rules, and calculations that the system must enforce.'},
+{t:'int',q:'Which category includes Use case models, ERDs, and UI wireframes?',o:['Business requirements','Non-functional requirements','Models','Assumptions and constraints'],a:2,e:'Models (Category E) include: Use case models, Activity diagrams, DFDs, Domain/class models, ERD/data models, Sequence diagrams, UI sketches/wireframes, CRUD matrices.'},
+{t:'int',q:'Technology stack constraints and budget limitations belong to which integration category?',o:['Business rules','Scope definition','Functional requirements','Assumptions and constraints'],a:3,e:'Assumptions and Constraints (Category F) include budget constraints, technology stack constraints, legal constraints, deadlines, and integration constraints with existing systems.'},
+{t:'int',q:'In-scope and out-of-scope items are defined in which integration category?',o:['Assumptions and constraints','Scope definition','Business requirements','Models'],a:1,e:'Scope Definition (Category G) specifies in-scope functions, out-of-scope items, and defined releases/phases.'},
+{t:'int',q:'Non-functional requirements include all EXCEPT:',o:['Performance','Security','User login functionality','Scalability'],a:2,e:'"User login functionality" is a functional requirement — it describes what the system does. Performance, security, and scalability are quality attributes — non-functional requirements.'},
+
+// COMPILING
+{t:'comp',q:'What is the purpose of Step 1 in compiling requirements?',o:['To write the code','To gather and centralize all analysis artifacts into a shared repository','To test the system','To deploy the application'],a:1,e:'Step 1 is to Gather and Centralize All Artifacts — bringing all interview summaries, requirement lists, diagrams, issue logs, assumptions, meeting decisions, and prototypes into one shared repository.'},
+{t:'comp',q:'Step 2 (Categorize Requirements) groups requirements by type. Which is NOT a common category?',o:['Security requirements','Functional requirements','Hardware purchase orders','Business rules'],a:2,e:'Hardware purchase orders are a procurement matter, not a requirement category. Common categories include: Functional, Non-functional, Data, Interface, Reporting, Security, Business rules, and Regulatory requirements.'},
+{t:'comp',q:'When multiple stakeholders describe the same need in different ways, Step 4 requires the analyst to:',o:['Keep all duplicate requirements separately','Remove duplicates and merge related requirements into one','Ask stakeholders to rewrite all requirements','Delete the less important version'],a:1,e:'Step 4 requires removing duplicates and merging related requirements — when multiple stakeholders describe the same need differently, they are combined into one clear, unified requirement.'},
+{t:'comp',q:'Three stakeholders say: "Admin must approve special registration", "HOD approval needed if student exceeds credit limit", "Extra module requests require authorization." These should be:',o:['Kept as three separate requirements','Merged into one approval workflow requirement','Removed as duplicates','Assigned to three different developers'],a:1,e:'These three statements all describe an approval workflow — they should be merged into one clear, unified requirement in Step 4 (Remove Duplicates and Merge Related Requirements).'},
+{t:'comp',q:'In Step 5, a "terminology conflict" occurs when:',o:['Two models show different diagrams','The same term is used with different meanings by different stakeholders','The budget exceeds estimates','The deadline is missed'],a:1,e:'Terminology conflict occurs when the same term is used differently by different stakeholders — for example, "active student" meaning different things to different departments.'},
+{t:'comp',q:'Which conflict resolution technique is used when the conflict cannot be resolved at the analyst level?',o:['Terminology standardization','Documentation','Escalation to sponsor/business owner','Creating more diagrams'],a:2,e:'Escalation to sponsor/business owner is used when lower-level resolution fails — the sponsor has authority to make the final decision.'},
+{t:'comp',q:'Step 6 (Check Completeness Across Models) is needed because:',o:['Each model provides only one view of the system','Models are always identical','Requirements and models never need to match','Models replace written requirements'],a:0,e:'Each model shows only ONE view of the system — use cases show interactions, process models show workflow, ERD shows data, UI prototypes show screens. All views must support each other.'},
+{t:'comp',q:'Which is an example of an INTERNAL CONSISTENCY problem (Step 7)?',o:['A new feature is discovered','The project budget increases','Use case says login is optional but security requirement says authentication is mandatory','The team wants more requirements'],a:2,e:'When a use case says login is optional but the security requirement mandates authentication, these two requirements contradict each other — a classic internal consistency problem.'},
+{t:'comp',q:'Step 10 (Baseline the Requirements) means:',o:['Starting development immediately','Formally versioning, approving, and controlling the requirements package so future changes are managed through formal change control','Deleting all old requirements','Sharing requirements informally by email'],a:1,e:'Baselining means versioning the document, recording approvals, marking as baseline, and managing future changes formally through a change control process.'},
+{t:'comp',q:'Why is Step 9 (Establish Traceability) important when requirements change?',o:['It speeds up development','It enables impact analysis — identifying everything affected by a change','It reduces the number of requirements','It replaces testing'],a:1,e:'Traceability enables impact analysis: if requirement X changes, you can immediately identify all use cases, design components, and test cases that must also change.'},
+{t:'comp',q:'Which model in Step 6 shows DATA structure?',o:['Use case model','Process model / Activity diagram','ERD (Entity Relationship Diagram)','UI prototype'],a:2,e:'ERD (Entity Relationship Diagram) shows data structure — entities, attributes, and relationships. Use cases show interactions; process models show workflow; UI prototypes show screens.'},
+
+// SPEC DOC
+{t:'spec',q:'What is a System Specification Document?',o:['A project budget plan','The source code of the system','A formal document describing what the system is to be built, what it must do, constraints, data, user interaction, and quality attributes','A marketing document for the client'],a:2,e:'A System Specification Document describes: what system is to be built, what it must do, what constraints apply, what data it uses, how users interact with it, and what quality attributes it must satisfy.'},
+{t:'spec',q:'Which of the following is NOT another name for the System Specification Document?',o:['System Requirements Specification (SRS)','System Definition','Project Cost Estimate','Requirements Specification'],a:2,e:'The Spec Document is also called: SRS (System Requirements Specification), System Definition, and Requirements Specification. A Project Cost Estimate is a financial document, not a requirements document.'},
+{t:'spec',q:'The System Specification Document serves as a:',o:['Source code repository','Communication and control document','Marketing brochure','Hardware purchase order'],a:1,e:'The System Specification Document serves as both a communication document (shared with all stakeholders) and a control document (basis for design, development, testing, and change management).'},
+{t:'spec',q:'Testers use the System Specification Document to:',o:['Design the database','Write marketing materials','Create test cases from specified requirements','Build the user interface'],a:2,e:'Testers use the Spec Document to create test cases — each requirement that can be tested becomes the basis for one or more test cases.'},
+{t:'spec',q:'Project Managers use the System Specification Document primarily to:',o:['Write the source code','Plan, estimate, and track the project against specified requirements','Design the UI','Conduct stakeholder interviews'],a:1,e:'Project Managers use the Spec Document to enable project estimation and planning — it defines what needs to be built, from which schedule and cost estimates can be derived.'},
+{t:'spec',q:'Which purpose of the Spec Document directly supports governance and quality reviews?',o:['Reducing ambiguity','Supporting maintenance','Providing evidence for governance/quality reviews','Enabling project estimation'],a:2,e:'The Spec Document provides evidence for governance and quality reviews — auditors and QA reviewers can verify that what was built matches what was specified.'},
+
+// PRIORITIZATION
+{t:'pri',q:'Why must requirements be prioritized in Step 8?',o:['Because some requirements are more interesting','Because not all requirements can be delivered at once due to time, budget, and risk constraints','Because developers prefer some requirements over others','Because the client does not always know what they need'],a:1,e:'Not all requirements can be delivered at once due to time, budget, and risk constraints — prioritization determines what gets built first and what is deferred.'},
+{t:'pri',q:'In MoSCoW, what does "W" (Won\'t have) mean?',o:['The requirement has been permanently rejected','The requirement is explicitly excluded from the CURRENT release but may be addressed in a future phase','The requirement is unimportant','The requirement is impossible to implement'],a:1,e:'"Won\'t have (this release)" means the requirement is explicitly excluded from the current delivery but is acknowledged and may be included in a future release.'},
+{t:'pri',q:'A legal compliance requirement (e.g., data protection law) should be prioritized as:',o:['Could have','Won\'t have (this release)','Should have','Must have / Regulatory mandatory'],a:3,e:'Legal/regulatory requirements cannot be deferred — they are mandatory. They are categorized as Must have or given Regulatory/mandatory priority, meaning they must be delivered.'},
+{t:'pri',q:'The MoSCoW method stands for:',o:['More, Some, Could, Won\'t','Must, Should, Could, Won\'t','More, Shall, Can, Want','Mandatory, Standard, Custom, Waived'],a:1,e:'MoSCoW = Must have, Should have, Could have, Won\'t have (this release) — a widely used requirement prioritization method.'},
+{t:'pri',q:'Which prioritization method involves plotting requirements on a matrix of business value against implementation effort?',o:['MoSCoW','Risk-based priority','Business value vs implementation effort','Regulatory mandatory priority'],a:2,e:'Business value vs implementation effort is a matrix-based prioritization — requirements with high business value and low implementation effort are prioritized first (quick wins).'},
+
+// TRACEABILITY
+{t:'trc',q:'What is traceability in project integration?',o:['The ability to trace user movements in the system','Connecting requirements to their sources and downstream deliverables such as models, design components, and test cases','Tracking the project budget','Monitoring developer productivity'],a:1,e:'Traceability connects requirements to their sources (why they exist) and downstream deliverables (what they produce) — use cases, design components, test cases, and change requests.'},
+{t:'trc',q:'The traceability link "Requirement ↔ Test case" means:',o:['Every test case must be written before requirements','Each requirement can be linked to the test case(s) that verify it was correctly implemented','Testers write requirements','Requirements and tests are the same document'],a:1,e:'"Requirement ↔ Test case" means each requirement has a corresponding test case that verifies its correct implementation — this is the basis for acceptance testing.'},
+{t:'trc',q:'If a requirement changes, traceability enables the team to:',o:['Ignore other affected items','Immediately identify all models, design components, and test cases that must also change (impact analysis)','Delete the requirement','Create a new project'],a:1,e:'Traceability enables impact analysis — when a requirement changes, you can trace forward to see all downstream artifacts (designs, tests) that must also be updated.'},
+{t:'trc',q:'"Requirement ↔ Stakeholder need" traceability link answers which question?',o:['How was this implemented?','Where did this requirement come from? Which stakeholder need does it address?','When was this requirement created?','Who will test this requirement?'],a:1,e:'The "Requirement ↔ Stakeholder need" link provides backward traceability — it answers "where did this requirement come from?" linking it to the stakeholder who expressed the need.'},
+{t:'trc',q:'A requirement that cannot be traced to any stakeholder need should be:',o:['Kept — it might be useful later','Immediately implemented','Questioned and potentially removed — it may not represent a real business need','Made a high-priority requirement'],a:2,e:'If a requirement cannot be traced to a stakeholder need, it may not represent a real business need — it should be questioned, and if no justification is found, removed to prevent scope creep.'},
+{t:'trc',q:'The process of formally approving and version-controlling the requirements package is called:',o:['Traceability','Prioritization','Baselining','Categorization'],a:2,e:'Baselining (Step 10) is the process of formally versioning, approving, and controlling the requirements package — establishing it as the official reference document for the project.'},
+];
+
+let sv={},corr=0,ac=0;
+function rQ(f='all'){
+  const w=document.getElementById('mqw');w.innerHTML='';
+  const fl=f==='all'?QS:QS.filter(q=>q.t===f);
+  fl.forEach((q,i)=>{
+    const gi=QS.indexOf(q);
+    const tm={gen:'tg',int:'ti',comp:'tc',spec:'ts',pri:'tp',trc:'tt'};
+    const tl={gen:'General',int:'Integration',comp:'Compiling',spec:'Spec Doc',pri:'Prioritization',trc:'Traceability'};
+    const st=sv[gi];
+    const d=document.createElement('div');d.className='mc';
+    const opts=q.o.map((o,oi)=>{let c='mopt';if(st!==undefined){if(oi===q.a)c+=' ok';else if(oi===st&&st!==q.a)c+=' ng'}
+    return`<button class="${c}" onclick="aQ(${gi},${oi},this.closest('.mc'))" ${st!==undefined?'disabled':''}><span class="oltr">${String.fromCharCode(65+oi)}</span>${o}</button>`}).join('');
+    d.innerHTML=`<span class="mtag ${tm[q.t]}">${tl[q.t]}</span>
+    <div class="mhd"><div class="mnum">${i+1}</div><div class="mqt">${q.q}</div></div>
+    <div class="mopts">${opts}</div>
+    <div class="exp ${st!==undefined?'show':''}"><span>💡</span><span>${q.e}</span></div>`;
+    w.appendChild(d);obs.observe(d);
+  });
+}
+function aQ(gi,ch,card){
+  const q=QS[gi];sv[gi]=ch;
+  card.querySelectorAll('.mopt').forEach((o,oi)=>{o.disabled=true;if(oi===q.a)o.classList.add('ok');else if(oi===ch&&ch!==q.a)o.classList.add('ng')});
+  card.querySelector('.exp').classList.add('show');upd();
+}
+function upd(){
+  ac=Object.keys(sv).length;corr=QS.filter((q,i)=>sv[i]===q.a).length;
+  document.getElementById('st2').textContent=`${corr}/${ac}`;
+  const p=ac>0?Math.round(corr/ac*100):0;
+  document.getElementById('pb2').style.width=p+'%';
+  document.getElementById('sd').textContent=ac===0?'Answer questions to see your progress.':`${p}% correct — ${ac}/${QS.length} answered.`;
+  const deg=(ac>0?corr/ac:0)*360;
+  document.getElementById('sr').style.background=`conic-gradient(var(--a1) ${deg}deg,var(--border) ${deg}deg)`;
+}
+function resetQ(){sv={};corr=0;ac=0;upd();rQ('all');document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.fb')[0].classList.add('on')}
+function flt(f,btn){document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');rQ(f)}
+
+// === ESSAY DATA ===
+const ES=[
+  {q:'Define project integration and explain why it is important in systems analysis and design.',m:'8 marks',
+   p:['Project integration is the process of combining all requirements, assumptions, business rules, and system models into one consistent, unified package.','The package is used by designers, developers, testers, and users throughout the project.','Without proper integration: requirements remain scattered in notes, emails, interviews, and diagrams.','Developers misunderstand what to build → wrong system is delivered.','Testers cannot verify expected behavior → testing is unreliable.','Users complain that the final system does not match business needs.','Scope creep increases because requirements are not clearly bounded.','Rework becomes expensive when contradictions and gaps are discovered late.','Proper integration: creates a single source of truth, ensures consistency, improves communication, reduces ambiguity, and supports all downstream activities.']},
+  {q:'List and explain all seven categories of artifacts that are integrated during project integration.',m:'14 marks',
+   p:['A. Business Requirements: business goals, expected outcomes, business problems to solve, success criteria — the "why" behind the system.','B. Functional Requirements: what the system must do — processes, services, features, inputs, processing, outputs. The actions the system performs.','C. Non-Functional Requirements: how well the system performs — performance, security, usability, reliability, scalability, compliance, maintainability.','D. Business Rules: policies, decision logic, constraints, approval rules, calculations the system must enforce.','E. Models: Use case models, Activity diagrams, DFDs, Domain/class models, ERD/data models, Sequence diagrams, UI wireframes, CRUD matrices — visual representations of the system.','F. Assumptions and Constraints: budget constraints, technology stack, legal constraints, deadlines, integration constraints with existing systems.','G. Scope Definition: in-scope functions, out-of-scope items, defined releases and phases.','All seven categories must be integrated to form a complete picture of what the system must be and do.']},
+  {q:'Explain all 10 steps in compiling requirements and models.',m:'20 marks',
+   p:['Step 1 — Gather and Centralize All Artifacts: bring all analysis outputs (interview summaries, requirement lists, diagrams, issue logs, assumptions, meeting decisions, prototypes) into a shared repository.','Step 2 — Categorize Requirements: group by type (functional, non-functional, data, interface, reporting, security, business rules, regulatory) for easier management.','Step 3 — Standardize Requirement Statements: rewrite requirements to be clear, specific, unambiguous, feasible, testable, relevant, traceable, and consistent.','Step 4 — Remove Duplicates and Merge Related: identify when multiple stakeholders described the same need differently and merge into one unified requirement.','Step 5 — Resolve Conflicts: address stakeholder, process, terminology, model-text, and scope conflicts using workshops, facilitated meetings, MoSCoW, escalation, and documented decisions.','Step 6 — Check Completeness Across Models: verify use cases, process models, ERD, and UI prototypes all support each other with no gaps.','Step 7 — Validate Internal Consistency: ensure requirements and models do not contradict each other (no requirement says X while model shows Y).','Step 8 — Prioritize Requirements: assign MoSCoW priorities (Must/Should/Could/Won\'t) considering time, budget, business value, risk, and regulatory obligations.','Step 9 — Establish Traceability: link each requirement to stakeholder need, use case, design component, test case, and change requests.','Step 10 — Baseline the Package: version the document, record formal approvals, mark as baseline, and manage future changes through formal change control.']},
+  {q:'Explain Step 3: Standardizing Requirement Statements. Include examples of poor and good requirements.',m:'10 marks',
+   p:['Step 3 requires rewriting vague, ambiguous requirements into precise, testable statements that all readers interpret the same way.','A good requirement must be: Clear, Specific, Unambiguous, Feasible, Testable/Verifiable, Relevant, Traceable, and Consistent.','Poor requirements use vague, subjective language that cannot be tested.','Example 1 — POOR: "System should be user friendly." This cannot be tested — "user friendly" means different things to different people.','Example 1 — BETTER: "New users should be able to complete the student registration task without training, using on-screen guidance and validation messages."','Example 2 — POOR: "System should be secure." This is completely untestable without specifics.','Example 2 — BETTER: "The system shall enforce role-based access control and require authenticated login before accessing student academic records."','Key rule: if a requirement cannot be tested (pass/fail), it is not a good requirement and must be rewritten.','Standardization is critical because poor requirements cause: misunderstandings, incorrect systems, failed testing, expensive rework.']},
+  {q:'Describe the five types of requirement conflicts and explain how each is resolved.',m:'10 marks',
+   p:['1. Stakeholder Conflicts: one group wants strict control while another wants flexibility. Resolution: stakeholder workshop where both sides negotiate, with escalation to sponsor if unresolved.','2. Process Conflicts: different departments follow different procedures for the same task. Resolution: facilitated review meetings with process owners to standardize the agreed approach.','3. Terminology Conflicts: the same term is used differently by different stakeholders (e.g., "active student" means enrolled vs paid). Resolution: create a shared project glossary with agreed definitions; document decisions.','4. Model-Text Conflicts: a diagram shows one behavior while the written requirement says something different. Resolution: reconcile the model and text — update whichever is wrong; version control both.','5. Scope Conflicts: optional future features are listed as current project requirements. Resolution: apply MoSCoW prioritization to explicitly classify items as Won\'t have (this release) and document the scope boundary.','General resolution techniques: stakeholder workshops, facilitated review meetings, prioritization, escalation to sponsor, documented decisions and rationale.']},
+  {q:'What is the System Specification Document? Explain its purpose and who uses it.',m:'10 marks',
+   p:['A System Specification Document (also called SRS, System Definition, or Requirements Specification) is the formal document that describes what system is to be built, what it must do, what constraints apply, what data it uses, how users interact with it, and what quality attributes it must satisfy.','Purpose 1: Communicate agreed system requirements clearly to all stakeholders.','Purpose 2: Provide a baseline for design and implementation — the agreed starting point.','Purpose 3: Support testing and acceptance criteria — requirements become test cases.','Purpose 4: Reduce misunderstandings between analysts, developers, and users.','Purpose 5: Enable project estimation and planning.','Purpose 6: Support maintenance and future enhancements.','Purpose 7: Provide evidence for governance and quality reviews.','Users — confirm it meets their business needs.','Analysts — master record of requirements.','Designers — translate requirements into technical specifications.','Developers — build what is specified.','Testers — create test cases from requirements.','Project Managers — plan and track the project.','Auditors/QA Reviewers — verify compliance with requirements.']},
+  {q:'List and explain all 8 principles of a high-quality specification document.',m:'16 marks',
+   p:['1. Correct: represents real stakeholder needs accurately — not analyst assumptions, but verified stakeholder requirements.','2. Complete: includes ALL necessary requirements, exceptions, error conditions, and constraints — nothing important is missing.','3. Consistent: no contradictions between sections or models — every part of the document agrees with every other part.','4. Unambiguous: different readers interpret it the same way — no vague words like "fast", "user-friendly", or "secure" without specific measurable criteria.','5. Verifiable: every requirement can be tested or inspected — a pass/fail criterion must be definable for each requirement.','6. Feasible: every requirement can be implemented with available resources, technology, and within the project budget and timeline.','7. Traceable: each requirement can be linked to its source (stakeholder need) and to how it is tested (test case).','8. Modifiable: well-structured and versioned so updates can be made cleanly and easily without invalidating other parts of the document.','All 8 principles must be satisfied simultaneously — a document that is complete but inconsistent, or correct but untestable, is still a poor specification.']},
+  {q:'What is traceability? Explain all five traceability links with their purpose.',m:'10 marks',
+   p:['Traceability connects each requirement to its origins and to every downstream artifact that depends on it.','It enables impact analysis: when a requirement changes, traceability reveals everything else that must change.','1. Requirement ↔ Stakeholder Need: backward traceability — shows WHY this requirement exists and which stakeholder expressed this need. Ensures every requirement has a legitimate business justification.','2. Requirement ↔ Use Case/Model: shows WHICH model(s) implement this requirement. Ensures every requirement is represented in at least one model.','3. Requirement ↔ Design Component: shows HOW the requirement is implemented in the technical design. Enables verification that all requirements are covered in design.','4. Requirement ↔ Test Case: shows HOW the requirement will be verified. Ensures every requirement has at least one test that confirms correct implementation.','5. Requirement ↔ Change Request: shows the history of modifications to the requirement. Supports audit trails and change management.','Traceability should be established in Step 9 of the compiling process, after requirements are consistent and prioritized.']},
+  {q:'Explain the MoSCoW prioritization method and why prioritization is necessary.',m:'8 marks',
+   p:['MoSCoW is a requirement prioritization method that classifies every requirement into one of four categories.','Prioritization is necessary because not all requirements can be delivered at once due to time, budget, and risk constraints.','M — Must Have: non-negotiable core requirements. The system cannot go live without these. Example: user login functionality.','S — Should Have: important requirements that are not critical for the initial launch. Example: email notification of registration.','C — Could Have: nice-to-have requirements that can be included if time and budget allow. Example: system theme customization.','W — Won\'t Have (This Release): explicitly excluded from the current delivery. Acknowledged but deferred to a future phase. Example: mobile application version.','Other prioritization methods: Business value vs implementation effort matrix (quick wins first), Risk-based priority (high-risk items first), Regulatory/mandatory priority (compliance items cannot be deferred).','Benefits: controls scope creep, ensures critical requirements are delivered first, aligns team on what matters most.']},
+  {q:'What is Step 10 (Baselining)? Why is it critical to the project?',m:'6 marks',
+   p:['Baselining is the process of formally finalizing the compiled requirements package after all reviews and approvals are complete.','Step 10 requires: versioning the document (e.g., v1.0), recording formal approvals from stakeholders, marking the document as the official baseline, and managing all future changes through formal change control.','Why baselining is critical:','1. It establishes a single, authoritative reference point for the entire project team.','2. It prevents unauthorized changes to requirements — all changes must go through formal approval.','3. It provides legal and contractual protection — the baseline defines what was agreed.','4. It enables impact analysis — changes to baseline requirements can be tracked and assessed.','5. It supports project tracking — progress can be measured against the baseline.','Without baselining, the requirements document becomes a living document that anyone can change informally, leading to confusion, scope creep, and untraceable changes.']},
+  {q:'Compare and contrast functional requirements, non-functional requirements, and business rules. Give examples of each.',m:'9 marks',
+   p:['Functional Requirements describe WHAT the system must do — specific behaviors, functions, and features.','Example: "The system shall allow registered students to enroll in modules for the current semester."','Non-Functional Requirements describe HOW WELL the system performs — quality attributes and constraints.','Example: "The enrollment process shall complete within 3 seconds under normal load conditions."','Business Rules describe POLICIES and DECISIONS the system must enforce — logic that reflects organizational policy rather than system function.','Example: "A student cannot enroll in more than 21 credits per semester without HOD approval."','Key difference between FR and BR: FR describes system behavior; BR describes a policy/rule that CONSTRAINS system behavior.','Key difference between FR and NFR: FR describes what is done; NFR describes how well it is done.','All three types must be included in the integrated requirements package for the system to be complete and correct.']},
+  {q:'What are the problems that occur when requirements are NOT properly integrated? Explain each.',m:'8 marks',
+   p:['Problem 1 — Requirements remain scattered: interview notes, emails, diagrams, and stakeholder requests exist in separate places with no unified view. Team members work from different, potentially conflicting versions.','Problem 2 — Developers misunderstand what to build: without a clear, integrated spec, developers make their own interpretations, leading to a system that does not match what stakeholders needed.','Problem 3 — Testers cannot verify expected behavior: if requirements are unclear or scattered, testers cannot create accurate test cases or confirm the system works correctly.','Problem 4 — Users complain the system doesn\'t match business needs: the final delivered system solves the wrong problem because real needs were never properly captured and agreed.','Problem 5 — Scope creep increases: without clear boundaries (in-scope/out-of-scope), new features keep being added during development, extending the project indefinitely.','Problem 6 — Rework becomes expensive: errors discovered late (during testing or after deployment) cost many times more to fix than if caught during requirements integration.','Conclusion: proper integration prevents all these problems by creating one clear, agreed, traceable requirements package.']},
+  {q:'Explain the purpose of Step 6 (Check Completeness Across Models) and Step 7 (Validate Internal Consistency).',m:'8 marks',
+   p:['Step 6 — Check Completeness Across Models: each model shows only ONE view of the system. No single model is sufficient alone.','Use cases show user interactions. Process models show workflow. ERD shows data. UI prototypes show screens.','The analyst must verify that all views support each other — if a use case mentions a function, there should be a corresponding process in the process model and relevant data in the ERD.','A missing model = a missing perspective on the system. Completeness means no view is forgotten.','Step 7 — Validate Internal Consistency: requirements and models must not contradict each other.','Example inconsistency: Use case says login is optional; security requirement says authentication is mandatory. → Contradiction!','Example inconsistency: ERD shows one advisor per student; process model shows student can have multiple advisors. → Contradiction!','Example gap: UI prototype includes "Export PDF" button; but no requirement mentions this feature. → Undocumented feature!','The difference: Step 6 checks nothing is MISSING; Step 7 checks nothing is CONTRADICTORY. Both must be done.']},
+  {q:'What characteristics make a good requirement statement? Give examples.',m:'8 marks',
+   p:['A good requirement must satisfy 8 characteristics: Clear, Specific, Unambiguous, Feasible, Testable/Verifiable, Relevant, Traceable, Consistent.','Clear: the statement is easily understood without needing further explanation.','Specific: precise about what exactly is required — not vague or general.','Unambiguous: only one possible interpretation — no room for different readers to understand it differently.','Feasible: the requirement can actually be implemented with available technology and resources.','Testable/Verifiable: a pass/fail test can be designed to confirm it was implemented correctly.','Relevant: directly tied to a stakeholder need or business goal — not a "nice idea" disconnected from real needs.','Traceable: can be linked to its source stakeholder and to its corresponding test case.','Consistent: does not contradict any other requirement in the document.','POOR: "System should be user friendly." (Not specific, not testable, not unambiguous)','BETTER: "New users shall complete student registration without training, using on-screen guidance and validation messages." (Specific, testable, clear)']},
+  {q:'How does project integration support the testing phase of a project?',m:'6 marks',
+   p:['Project integration produces a clear, consistent, traceable requirements package that directly enables systematic testing.','1. Every requirement is testable (one of the 8 spec principles) — meaning a pass/fail criterion exists for each requirement.','2. Traceability (Requirement ↔ Test Case) ensures every requirement has at least one test case covering it — nothing is left untested.','3. The baseline spec provides the "expected behavior" against which testers compare actual system behavior.','4. Categorized requirements help testers organize test suites by area (functional tests, security tests, performance tests, etc.).','5. Conflict resolution in Step 5 ensures testers are not confused by contradictory requirements — there is one agreed expected behavior.','6. The spec document supports acceptance testing — users can confirm the system meets what was formally agreed and documented.','Without integration, testers have no reliable basis for testing — they cannot verify behavior against scattered, contradictory, untestable requirements.']},
+];
+
+function rE(){
+  const w=document.getElementById('ew');
+  ES.forEach((e,i)=>{
+    const d=document.createElement('div');d.className='ec';
+    d.innerHTML=`<div class="eh" onclick="this.parentElement.classList.toggle('open')">
+      <div><div class="eq">Q${i+1}. ${e.q}</div></div>
+      <div style="display:flex;gap:.5rem;align-items:center;flex-shrink:0"><span class="em">${e.m}</span><span class="etog">▼</span></div>
+    </div>
+    <div class="eb"><div class="econt"><h4>Model Answer — Key Points</h4>
+    <ul class="eps">${e.p.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div></div>`;
+    w.appendChild(d);obs.observe(d);
+  });
+}
+rQ('all');rE();
+</script>
+</body>
+</html>

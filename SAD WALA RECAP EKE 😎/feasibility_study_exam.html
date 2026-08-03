@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 04 – Feasibility Study | Exam Prep</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0b0f1a;
+    --surface: #111827;
+    --card: #1a2235;
+    --border: #1f2d45;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --accent3: #06b6d4;
+    --green: #10b981;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+  .scroll-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 12px;
+    padding: 0.9rem 2rem;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .scroll-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(59,130,246,0.4); }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11,15,26,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.4rem 0.9rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nav-btn:hover, .nav-btn.active {
+    background: rgba(59,130,246,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── CONTENT CARDS ── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .content-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .content-card.visible {
+    animation: slideUp 0.5s ease forwards;
+  }
+
+  .content-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 30px rgba(59,130,246,0.15);
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .content-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--white);
+  }
+
+  .content-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .content-card ul li {
+    color: var(--muted);
+    font-size: 0.88rem;
+    padding: 0.3rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .content-card ul li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .content-card ul li:last-child { border-bottom: none; }
+
+  /* ── FEASIBILITY TYPE PILLS ── */
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .type-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  .type-pill.visible { animation: slideRight 0.4s ease forwards; }
+  .type-pill:hover { border-color: var(--accent); background: rgba(59,130,246,0.08); }
+
+  .pill-icon { font-size: 1.8rem; }
+  .pill-label { font-weight: 600; font-size: 0.95rem; }
+  .pill-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+
+  /* ── MCQ ── */
+  .mcq-container { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .mcq-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: border-color 0.2s;
+  }
+
+  .mcq-card.visible { animation: slideUp 0.5s ease forwards; }
+
+  .mcq-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    align-items: flex-start;
+  }
+
+  .mcq-num {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .mcq-question { font-weight: 600; line-height: 1.5; font-size: 1rem; }
+
+  .mcq-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .mcq-opt {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--text);
+    text-align: left;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .mcq-opt:hover { background: rgba(59,130,246,0.1); border-color: var(--accent); }
+  .mcq-opt.correct { background: rgba(16,185,129,0.12); border-color: var(--green); color: var(--green); }
+  .mcq-opt.wrong { background: rgba(239,68,68,0.12); border-color: var(--red); color: var(--red); }
+  .mcq-opt.show-correct { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.4); }
+
+  .opt-letter {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .mcq-answer {
+    display: none;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    font-size: 0.88rem;
+    color: #6ee7b7;
+    margin-top: 0.75rem;
+  }
+
+  .mcq-answer.show { display: flex; gap: 0.5rem; align-items: flex-start; }
+
+  .mcq-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .tag-tech { background: rgba(59,130,246,0.2); color: var(--accent); }
+  .tag-op { background: rgba(139,92,246,0.2); color: #a78bfa; }
+  .tag-eco { background: rgba(16,185,129,0.2); color: var(--green); }
+  .tag-sched { background: rgba(245,158,11,0.2); color: var(--yellow); }
+  .tag-legal { background: rgba(6,182,212,0.2); color: var(--accent3); }
+  .tag-gen { background: rgba(148,163,184,0.2); color: var(--muted); }
+
+  /* ── ESSAY ── */
+  .essay-container { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .essay-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .essay-card.visible { animation: slideUp 0.5s ease forwards; }
+
+  .essay-header {
+    padding: 1.5rem 1.75rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: background 0.2s;
+  }
+
+  .essay-header:hover { background: rgba(59,130,246,0.05); }
+
+  .essay-q { font-weight: 600; font-size: 1rem; line-height: 1.5; }
+  .essay-marks {
+    background: rgba(59,130,246,0.15);
+    color: var(--accent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .essay-toggle {
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .essay-card.open .essay-toggle { transform: rotate(180deg); color: var(--accent); }
+
+  .essay-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .essay-card.open .essay-body { max-height: 2000px; }
+
+  .essay-content {
+    padding: 0 1.75rem 1.75rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+
+  .essay-content h4 {
+    color: var(--accent);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .essay-content p { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.85rem; line-height: 1.7; }
+
+  .essay-points {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .essay-points li {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .essay-points li::before {
+    content: '▸';
+    color: var(--accent2);
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  /* ── QUICK REFERENCE ── */
+  .ref-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+  }
+
+  .ref-table th {
+    text-align: left;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.5rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ref-table td {
+    background: var(--card);
+    padding: 0.9rem 1rem;
+    font-size: 0.88rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td:first-child {
+    border-left: 1px solid var(--border);
+    border-radius: 10px 0 0 10px;
+    font-weight: 700;
+  }
+
+  .ref-table td:last-child {
+    border-right: 1px solid var(--border);
+    border-radius: 0 10px 10px 0;
+    color: var(--muted);
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 100px;
+    height: 6px;
+    margin: 0.4rem 0;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    width: 0;
+    transition: width 1s ease;
+  }
+
+  /* ── SCORE PANEL ── */
+  .score-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .score-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent) 0deg, var(--border) 0deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .score-inner {
+    width: 64px;
+    height: 64px;
+    background: var(--card);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .score-text { flex: 1; }
+  .score-text h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+  .score-text p { font-size: 0.85rem; color: var(--muted); }
+
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.4rem 0.9rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: rgba(59,130,246,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .section-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Smooth scrolling */
+  html { scroll-behavior: smooth; }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2.2rem; }
+    .hero-stats { gap: 1.5rem; }
+    .nav { padding: 0.5rem 1rem; }
+    .section { padding: 3rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="top">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="hero-content">
+    <div class="badge">📚 SE201.3 · Systems Analysis and Design</div>
+    <h1>Chapter 04<br><span>Feasibility Study</span></h1>
+    <p class="hero-sub">Your complete exam prep guide — all key concepts, MCQs with instant feedback, and model essay answers. Exam in 2 days. Let's ace it. 🎯</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">40+</div><div class="stat-label">MCQ Questions</div></div>
+      <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Essay Questions</div></div>
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Feasibility Types</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Model Answers</div></div>
+    </div>
+    <button class="scroll-btn" onclick="document.getElementById('overview').scrollIntoView()">
+      Start Studying ↓
+    </button>
+  </div>
+</section>
+
+<!-- ══ NAV ══ -->
+<nav class="nav" id="stickyNav">
+  <button class="nav-btn" onclick="scrollTo('overview')">📖 Overview</button>
+  <button class="nav-btn" onclick="scrollTo('types')">🔍 Types</button>
+  <button class="nav-btn" onclick="scrollTo('mcq')">✅ MCQ</button>
+  <button class="nav-btn" onclick="scrollTo('essay')">📝 Essays</button>
+  <button class="nav-btn" onclick="scrollTo('quickref')">⚡ Quick Ref</button>
+</nav>
+
+<!-- ══ OVERVIEW ══ -->
+<section class="section" id="overview">
+  <div class="section-label">Module Overview</div>
+  <h2 class="section-title">What You Need to <span>Know</span></h2>
+  <p class="section-sub">Every concept from the slides, organized for quick revision.</p>
+
+  <div class="content-grid">
+    <div class="content-card">
+      <div class="card-icon" style="background:rgba(59,130,246,0.15);">🔎</div>
+      <h3>What is a Feasibility Study?</h3>
+      <ul>
+        <li>Evaluates if a proposed system is worth developing</li>
+        <li>Checks technical possibility</li>
+        <li>Assesses operational acceptability</li>
+        <li>Confirms economic viability</li>
+        <li>Conducted before system design</li>
+        <li>Helps make go / no-go decisions</li>
+        <li>Reduces risk of system failure</li>
+      </ul>
+    </div>
+    <div class="content-card">
+      <div class="card-icon" style="background:rgba(139,92,246,0.15);">🎯</div>
+      <h3>Objectives of a Feasibility Study</h3>
+      <ul>
+        <li>Assess practicality of the proposed system</li>
+        <li>Identify potential risks and constraints</li>
+        <li>Estimate costs, benefits, and timelines</li>
+        <li>Ensure alignment with organizational goals</li>
+        <li>Avoid investing resources in infeasible projects</li>
+      </ul>
+    </div>
+    <div class="content-card">
+      <div class="card-icon" style="background:rgba(6,182,212,0.15);">📋</div>
+      <h3>6 Types of Feasibility</h3>
+      <ul>
+        <li>Technical feasibility</li>
+        <li>Operational feasibility</li>
+        <li>Economic feasibility</li>
+        <li>Schedule feasibility</li>
+        <li>Legal feasibility</li>
+        <li>Political / Cultural feasibility</li>
+      </ul>
+    </div>
+    <div class="content-card">
+      <div class="card-icon" style="background:rgba(16,185,129,0.15);">💡</div>
+      <h3>Importance of Feasibility Study</h3>
+      <ul>
+        <li>Prevents project failure</li>
+        <li>Saves organizational resources</li>
+        <li>Supports strategic decision making</li>
+        <li>Improves system success rate</li>
+        <li>Part of the System Analysis phase</li>
+        <li>Reduces investment risk</li>
+      </ul>
+    </div>
+    <div class="content-card">
+      <div class="card-icon" style="background:rgba(245,158,11,0.15);">💰</div>
+      <h3>Economic Feasibility – Costs</h3>
+      <ul>
+        <li>Development costs</li>
+        <li>Hardware and software costs</li>
+        <li>Training costs</li>
+        <li>Maintenance and operational costs</li>
+        <li>Hidden and indirect costs</li>
+      </ul>
+    </div>
+    <div class="content-card">
+      <div class="card-icon" style="background:rgba(239,68,68,0.15);">📈</div>
+      <h3>Economic Feasibility – Benefits</h3>
+      <ul>
+        <li>Tangible: Reduced labor cost</li>
+        <li>Tangible: Increased productivity</li>
+        <li>Intangible: Improved customer satisfaction</li>
+        <li>Intangible: Better decision making</li>
+        <li>AKA: Cost-benefit analysis</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══ TYPES ══ -->
+<section class="section" id="types">
+  <div class="section-label">Deep Dive</div>
+  <h2 class="section-title">Types of <span>Feasibility</span></h2>
+  <p class="section-sub">Click a type to expand full details — key questions, examples, and exam tips.</p>
+
+  <div class="types-grid" id="typesGrid">
+    <!-- JS generated -->
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══ MCQ ══ -->
+<section class="section" id="mcq">
+  <div class="section-label">Practice Questions</div>
+  <h2 class="section-title">Multiple Choice <span>Questions</span></h2>
+  <p class="section-sub">Click an option to check your answer. All 40+ questions with instant feedback.</p>
+
+  <div class="score-panel" id="scorePanel">
+    <div class="score-circle" id="scoreCircle">
+      <div class="score-inner" id="scoreText">0/0</div>
+    </div>
+    <div class="score-text">
+      <h3>Your Score</h3>
+      <p id="scoreDesc">Answer some questions to see your progress.</p>
+      <div class="progress-bar-wrap" style="max-width:300px;margin-top:0.5rem;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetQuiz()">↺ Reset All</button>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterMCQ('all',this)">All Topics</button>
+    <button class="filter-btn" onclick="filterMCQ('gen',this)">General</button>
+    <button class="filter-btn" onclick="filterMCQ('tech',this)">Technical</button>
+    <button class="filter-btn" onclick="filterMCQ('op',this)">Operational</button>
+    <button class="filter-btn" onclick="filterMCQ('eco',this)">Economic</button>
+    <button class="filter-btn" onclick="filterMCQ('sched',this)">Schedule</button>
+    <button class="filter-btn" onclick="filterMCQ('legal',this)">Legal</button>
+  </div>
+
+  <div class="mcq-container" id="mcqContainer">
+    <!-- JS generated -->
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══ ESSAY ══ -->
+<section class="section" id="essay">
+  <div class="section-label">Long Answer</div>
+  <h2 class="section-title">Essay <span>Questions</span></h2>
+  <p class="section-sub">Tap any question to reveal a full model answer with key points.</p>
+
+  <div class="essay-container" id="essayContainer">
+    <!-- JS generated -->
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══ QUICK REF ══ -->
+<section class="section" id="quickref">
+  <div class="section-label">Cheat Sheet</div>
+  <h2 class="section-title">Quick <span>Reference</span></h2>
+  <p class="section-sub">All 6 feasibility types in one table.</p>
+
+  <table class="ref-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Key Question</th>
+        <th>Focus</th>
+        <th>Example Risk</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>⚙️ Technical</td>
+        <td>Can we build it?</td>
+        <td>Technology capability (not cost)</td>
+        <td>Unfamiliar technology</td>
+      </tr>
+      <tr>
+        <td>👥 Operational</td>
+        <td>Will it be used?</td>
+        <td>User acceptance & culture</td>
+        <td>Employee resistance</td>
+      </tr>
+      <tr>
+        <td>💰 Economic</td>
+        <td>Is it worth it?</td>
+        <td>Benefits > Costs (CBA)</td>
+        <td>Hidden costs exceed benefits</td>
+      </tr>
+      <tr>
+        <td>⏱️ Schedule</td>
+        <td>Can we finish in time?</td>
+        <td>Deadlines & resource availability</td>
+        <td>Unrealistic deadlines</td>
+      </tr>
+      <tr>
+        <td>⚖️ Legal</td>
+        <td>Is it allowed?</td>
+        <td>Laws, regulations, IP rights</td>
+        <td>Data protection violation</td>
+      </tr>
+      <tr>
+        <td>🌐 Political/Cultural</td>
+        <td>Will stakeholders support it?</td>
+        <td>Org politics & cultural fit</td>
+        <td>Lack of management support</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+// ══ CANVAS HERO ANIMATION ══
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+let nodes = [], W, H;
+
+function resize() {
+  W = canvas.width = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+
+function initNodes() {
+  nodes = Array.from({length: 60}, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: Math.random() * 2 + 1
+  }));
+}
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, W, H);
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(59,130,246,0.5)';
+    ctx.fill();
+  });
+  nodes.forEach((a, i) => nodes.slice(i+1).forEach(b => {
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    if (d < 120) {
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = `rgba(59,130,246,${0.15 * (1 - d/120)})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+  }));
+  requestAnimationFrame(drawCanvas);
+}
+
+resize();
+initNodes();
+drawCanvas();
+window.addEventListener('resize', () => { resize(); initNodes(); });
+
+// ══ SCROLL NAV ══
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+// ══ INTERSECTION OBSERVER ══
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.1});
+
+// ══ FEASIBILITY TYPES DATA ══
+const types = [
+  {
+    icon: '⚙️', label: 'Technical Feasibility',
+    sub: 'Can we build it?',
+    color: '#3b82f6',
+    questions: ['Does the org have required hardware?', 'Does the org have required software?', 'Are skilled technical staff available?', 'Is the technology proven or experimental?', 'Compatible with existing systems?', 'Can the system meet performance requirements?'],
+    examples: ['Using cloud computing instead of on-premise servers', 'Migrating from legacy systems to modern platforms', 'Introducing AI-based features without internal expertise'],
+    note: 'Focuses on technology capability, NOT cost.'
+  },
+  {
+    icon: '👥', label: 'Operational Feasibility',
+    sub: 'Will users accept it?',
+    color: '#8b5cf6',
+    questions: ['User acceptance and resistance to change', 'Management support available?', 'Impact on daily work processes', 'Training requirements', 'Organizational policies and procedures'],
+    examples: ['Employees refusing to use a new ERP system', 'Lack of training leading to system misuse', 'System not matching real work practices'],
+    note: 'Even a technically sound system can fail operationally.'
+  },
+  {
+    icon: '💰', label: 'Economic Feasibility',
+    sub: 'Is it financially justified?',
+    color: '#10b981',
+    questions: ['Do benefits outweigh costs?', 'What are development costs?', 'Hardware/software costs?', 'Training costs?', 'Tangible vs intangible benefits?'],
+    examples: ['ROI calculation for new ERP system', 'Cost-benefit analysis of automating payroll', 'Comparing in-house vs outsourced development'],
+    note: 'Also known as Cost-Benefit Analysis (CBA).'
+  },
+  {
+    icon: '⏱️', label: 'Schedule Feasibility',
+    sub: 'Can we finish in time?',
+    color: '#f59e0b',
+    questions: ['Can system be completed within required time?', 'Are deadlines realistic?', 'Are developers available?', 'Dependencies on external vendors?', 'Impact of requirement changes?'],
+    examples: ['Government deadline for e-filing system', 'Hospital management system before hospital opens', 'Academic system before new semester'],
+    note: 'Considers time constraints AND resource availability.'
+  },
+  {
+    icon: '⚖️', label: 'Legal Feasibility',
+    sub: 'Is it legally compliant?',
+    color: '#06b6d4',
+    questions: ['Does it comply with data protection laws?', 'Are intellectual property rights respected?', 'Are licensing agreements in order?', 'Industry standards compliance?'],
+    examples: ['GDPR compliance for data storage system', 'Licensing third-party software components', 'Healthcare system complying with medical data regulations'],
+    note: 'Includes data protection laws, IP rights, licensing.'
+  },
+  {
+    icon: '🌐', label: 'Political/Cultural Feasibility',
+    sub: 'Will stakeholders support it?',
+    color: '#ec4899',
+    questions: ['Do stakeholders support the system?', 'Does it align with org culture?', 'Any political opposition?', 'Cross-departmental conflicts?'],
+    examples: ['Management opposing system that reduces their control', 'Union resistance to automation', 'Cultural mismatch in international systems'],
+    note: 'Often overlooked but critical for project success.'
+  }
+];
+
+const typesGrid = document.getElementById('typesGrid');
+types.forEach((t, i) => {
+  const div = document.createElement('div');
+  div.className = 'type-pill';
+  div.style.animationDelay = (i * 0.1) + 's';
+  div.innerHTML = `<div class="pill-icon">${t.icon}</div><div><div class="pill-label">${t.label}</div><div class="pill-sub">${t.sub}</div></div>`;
+  div.onclick = () => showTypeModal(t);
+  typesGrid.appendChild(div);
+  obs.observe(div);
+});
+
+function showTypeModal(t) {
+  const existing = document.getElementById('typeModal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'typeModal';
+  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px);`;
+  modal.innerHTML = `
+    <div style="background:#1a2235;border:1px solid #1f2d45;border-radius:20px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;padding:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <span style="font-size:2rem;">${t.icon}</span>
+          <div>
+            <div style="font-weight:700;font-size:1.2rem;">${t.label}</div>
+            <div style="color:${t.color};font-size:0.85rem;">${t.sub}</div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('typeModal').remove()" style="background:transparent;border:1px solid #1f2d45;border-radius:8px;width:32px;height:32px;color:#64748b;cursor:pointer;font-size:1.1rem;">×</button>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:1rem;margin-bottom:1.25rem;border-left:3px solid ${t.color};">
+        <p style="font-size:0.88rem;color:#94a3b8;">⚠️ ${t.note}</p>
+      </div>
+      <h4 style="color:${t.color};font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;font-family:'JetBrains Mono',monospace;">Key Questions</h4>
+      <ul style="list-style:none;margin-bottom:1.5rem;">${t.questions.map(q=>`<li style="font-size:0.88rem;color:#94a3b8;padding:0.35rem 0;padding-left:1.2rem;position:relative;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <span style="position:absolute;left:0;color:${t.color};">›</span>${q}</li>`).join('')}</ul>
+      <h4 style="color:${t.color};font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;font-family:'JetBrains Mono',monospace;">Real-World Examples</h4>
+      <ul style="list-style:none;">${t.examples.map(e=>`<li style="font-size:0.88rem;color:#e2e8f0;padding:0.5rem;background:rgba(255,255,255,0.03);border-radius:8px;margin-bottom:0.4rem;padding-left:1.2rem;position:relative;">
+        <span style="position:absolute;left:0.4rem;color:${t.color};">▸</span>${e}</li>`).join('')}</ul>
+    </div>
+  `;
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
+  document.body.appendChild(modal);
+}
+
+// ══ MCQ DATA ══
+const mcqs = [
+  // GENERAL
+  { tag:'gen', q:'What is the primary purpose of a feasibility study?', opts:['To design the system interface','To evaluate whether a proposed system is worth developing','To write source code','To test the final system'], ans:1, exp:'A feasibility study evaluates whether a proposed system is worth developing, technically possible, operationally acceptable, and economically viable.' },
+  { tag:'gen', q:'When is a feasibility study conducted in the SDLC?', opts:['After system design','During system testing','Before system design','After deployment'], ans:2, exp:'A feasibility study is conducted before system design to help management make go/no-go decisions.' },
+  { tag:'gen', q:'A feasibility study helps management make which type of decision?', opts:['Recruitment decisions','Go / No-go decisions','Marketing decisions','Legal decisions'], ans:1, exp:'The study helps management decide whether to proceed (go) or abandon (no-go) the proposed system.' },
+  { tag:'gen', q:'Which phase of systems development includes the feasibility study?', opts:['System design','System testing','System maintenance','System analysis'], ans:3, exp:'The feasibility study is part of the System Analysis phase of SDLC.' },
+  { tag:'gen', q:'What does a feasibility study reduce?', opts:['Development speed','Risk of system failure','System features','Programming complexity'], ans:1, exp:'Feasibility studies reduce the risk of system failure by identifying issues before development begins.' },
+  { tag:'gen', q:'How many main types of feasibility are covered in SE201.3?', opts:['3','4','5','6'], ans:3, exp:'There are 6 types: Technical, Operational, Economic, Schedule, Legal, and Political/Cultural feasibility.' },
+  { tag:'gen', q:'Which of the following is NOT an objective of a feasibility study?', opts:['Identify potential risks','Write the system code','Estimate costs and benefits','Ensure alignment with organizational goals'], ans:1, exp:'Writing code is part of system development, not a feasibility study objective.' },
+  { tag:'gen', q:'Feasibility studies help avoid investing resources in which kind of projects?', opts:['Large projects','Infeasible projects','Government projects','Software projects'], ans:1, exp:'Feasibility studies prevent wasting resources on projects that cannot succeed.' },
+
+  // TECHNICAL
+  { tag:'tech', q:'Technical feasibility focuses on which aspect?', opts:['Cost of technology','Technology capability','User acceptance','Project timeline'], ans:1, exp:'Technical feasibility focuses on technology capability, not cost — that is economic feasibility.' },
+  { tag:'tech', q:'Which of the following is a technical feasibility question?', opts:['Will employees accept the system?','Is the deadline realistic?','Does the organization have the required hardware?','Does the system comply with data laws?'], ans:2, exp:'Technical feasibility asks whether the organization has required hardware, software, and skilled staff.' },
+  { tag:'tech', q:'An organization introduces AI features without internal expertise. This is an example of risk in which feasibility type?', opts:['Operational','Economic','Technical','Schedule'], ans:2, exp:'Introducing unfamiliar technology without expertise is a technical feasibility risk.' },
+  { tag:'tech', q:'Which scenario represents a technical feasibility consideration?', opts:['Employees refusing a new system','Using cloud computing instead of on-premise servers','Training costs exceeding budget','Meeting a government deadline'], ans:1, exp:'Moving to cloud computing involves evaluating technology capability — a technical feasibility concern.' },
+  { tag:'tech', q:'Technical feasibility does NOT evaluate which of the following?', opts:['Whether technology is available','Whether staff have technical expertise','Whether benefits outweigh costs','Whether systems are compatible'], ans:2, exp:'Cost-benefit analysis (whether benefits outweigh costs) is economic feasibility, not technical.' },
+  { tag:'tech', q:'A legacy system migration to a modern platform is an example of:', opts:['Economic feasibility challenge','Technical feasibility challenge','Legal feasibility challenge','Operational feasibility challenge'], ans:1, exp:'Migrating from legacy systems to modern platforms is a technical feasibility scenario.' },
+  { tag:'tech', q:'Experimental or unproven technology increases risk in which type of feasibility?', opts:['Schedule','Legal','Technical','Operational'], ans:2, exp:'Using experimental technology is a high risk factor in technical feasibility assessment.' },
+
+  // OPERATIONAL
+  { tag:'op', q:'Operational feasibility evaluates whether the system:', opts:['Can be built on time','Will comply with legal requirements','Will be used effectively by people','Is financially justified'], ans:2, exp:'Operational feasibility assesses whether the system will be used effectively and fits organizational culture.' },
+  { tag:'op', q:'Employees refusing to use a new ERP system is an example of failure in:', opts:['Technical feasibility','Operational feasibility','Economic feasibility','Legal feasibility'], ans:1, exp:'User resistance is an operational feasibility failure — even technically sound systems can fail operationally.' },
+  { tag:'op', q:'Which factor is considered in operational feasibility?', opts:['Hardware cost','Data protection laws','Management support','Licensing agreements'], ans:2, exp:'Management support is a key operational feasibility factor alongside user acceptance.' },
+  { tag:'op', q:'Training requirements are assessed under which type of feasibility?', opts:['Technical','Schedule','Operational','Economic'], ans:2, exp:'Training requirements are a key operational feasibility consideration.' },
+  { tag:'op', q:'A system not matching real work practices is a problem of:', opts:['Technical feasibility','Operational feasibility','Schedule feasibility','Economic feasibility'], ans:1, exp:'When a system does not match how people actually work, it is an operational feasibility failure.' },
+  { tag:'op', q:'Which statement about operational feasibility is true?', opts:['It focuses on cost only','A technically sound system can still fail operationally','It is done after deployment','It only considers hardware'], ans:1, exp:'Even technically perfect systems can fail if users do not adopt or accept them.' },
+
+  // ECONOMIC
+  { tag:'eco', q:'Economic feasibility is also known as:', opts:['SWOT analysis','Risk analysis','Cost-benefit analysis','Gap analysis'], ans:2, exp:'Economic feasibility is also called Cost-Benefit Analysis (CBA) — it evaluates if benefits outweigh costs.' },
+  { tag:'eco', q:'Which of the following is a TANGIBLE benefit?', opts:['Improved customer satisfaction','Better decision making','Reduced labor cost','Enhanced company reputation'], ans:2, exp:'Reduced labor cost is measurable (tangible). Customer satisfaction and reputation are intangible benefits.' },
+  { tag:'eco', q:'Which of the following is an INTANGIBLE benefit?', opts:['Reduced labor cost','Increased productivity','Improved customer satisfaction','Lower hardware costs'], ans:2, exp:'Improved customer satisfaction cannot be directly measured in dollars — it is intangible.' },
+  { tag:'eco', q:'Hidden and indirect costs are considered under which feasibility type?', opts:['Technical','Operational','Economic','Schedule'], ans:2, exp:'Economic feasibility includes development costs, hardware/software, training, maintenance, and hidden costs.' },
+  { tag:'eco', q:'Economic feasibility asks:', opts:['Can the system be technically built?','Will users accept the system?','Do the benefits outweigh the costs?','Can the system be completed in time?'], ans:2, exp:'Economic feasibility determines if the financial benefits justify the costs of developing the system.' },
+  { tag:'eco', q:'Which type of cost is included in economic feasibility analysis?', opts:['Legal compliance cost only','All types: development, hardware, training, maintenance, hidden','User satisfaction cost','Only hardware cost'], ans:1, exp:'Economic feasibility covers all cost types — development, hardware/software, training, maintenance, and hidden costs.' },
+
+  // SCHEDULE
+  { tag:'sched', q:'Schedule feasibility evaluates whether the system can be:', opts:['Legally compliant','Used by all employees','Completed within required deadlines','Built using existing hardware'], ans:2, exp:'Schedule feasibility determines if the project can be completed within the required time frame.' },
+  { tag:'sched', q:'Which of the following is a schedule feasibility issue?', opts:['Lack of hardware','Unrealistic deadlines','Data protection violations','Employee resistance'], ans:1, exp:'Unrealistic deadlines are a primary schedule feasibility concern.' },
+  { tag:'sched', q:'Dependencies on external vendors affect which type of feasibility?', opts:['Economic','Technical','Schedule','Operational'], ans:2, exp:'External vendor dependencies can delay projects and are a schedule feasibility risk.' },
+  { tag:'sched', q:'Schedule feasibility considers:', opts:['Only project deadlines','Time constraints AND resource availability','Only developer count','Only vendor contracts'], ans:1, exp:'Schedule feasibility considers both time constraints and resource availability together.' },
+  { tag:'sched', q:'Delays due to requirement changes is a risk in:', opts:['Legal feasibility','Technical feasibility','Economic feasibility','Schedule feasibility'], ans:3, exp:'Changing requirements mid-project cause delays — this is a schedule feasibility risk.' },
+
+  // LEGAL
+  { tag:'legal', q:'Legal feasibility evaluates compliance with:', opts:['User acceptance','Budget constraints','Laws, regulations, and industry standards','Technology availability'], ans:2, exp:'Legal feasibility checks that the system complies with laws, regulations, licensing, and industry standards.' },
+  { tag:'legal', q:'Data protection laws are assessed under:', opts:['Operational feasibility','Technical feasibility','Economic feasibility','Legal feasibility'], ans:3, exp:'Data protection laws (e.g., GDPR) are a legal feasibility concern.' },
+  { tag:'legal', q:'Intellectual property rights are assessed under which feasibility type?', opts:['Technical','Legal','Economic','Operational'], ans:1, exp:'IP rights are part of legal feasibility analysis.' },
+  { tag:'legal', q:'Licensing agreements fall under which type of feasibility?', opts:['Technical','Schedule','Legal','Operational'], ans:2, exp:'Licensing agreements are a legal feasibility consideration.' },
+  { tag:'legal', q:'A healthcare system must comply with medical data regulations. This is a concern of:', opts:['Schedule feasibility','Operational feasibility','Legal feasibility','Economic feasibility'], ans:2, exp:'Medical data regulations are a legal compliance issue — evaluated under legal feasibility.' },
+
+  // MORE GENERAL / TRICKY
+  { tag:'gen', q:'Which type of feasibility checks if the system fits organizational culture?', opts:['Technical','Legal','Operational','Economic'], ans:2, exp:'Operational feasibility evaluates whether the system fits organizational culture and will be accepted.' },
+  { tag:'gen', q:'A feasibility study is conducted to support:', opts:['Code debugging','Strategic decision making','UI design','Database normalization'], ans:1, exp:'Feasibility studies support strategic decision making about whether to proceed with a project.' },
+  { tag:'gen', q:'Which benefit is intangible?', opts:['Cost reduction','Time savings','Better decision making','Increased throughput'], ans:2, exp:'Better decision making cannot be directly measured financially — it is an intangible benefit.' },
+  { tag:'gen', q:'The go/no-go decision after a feasibility study is made by:', opts:['End users','Developers','Management','External auditors'], ans:2, exp:'Management makes the go/no-go decision based on feasibility study results.' },
+];
+
+// ══ RENDER MCQ ══
+let answers = {};
+let correctCount = 0;
+let answeredCount = 0;
+
+function renderMCQ(filter = 'all') {
+  const container = document.getElementById('mcqContainer');
+  container.innerHTML = '';
+
+  const filtered = filter === 'all' ? mcqs : mcqs.filter(q => q.tag === filter);
+
+  filtered.forEach((q, i) => {
+    const globalIdx = mcqs.indexOf(q);
+    const card = document.createElement('div');
+    card.className = 'mcq-card';
+    card.dataset.tag = q.tag;
+    card.dataset.idx = globalIdx;
+
+    const tagNames = { gen:'General', tech:'Technical', op:'Operational', eco:'Economic', sched:'Schedule', legal:'Legal' };
+    const tagClass = { gen:'tag-gen', tech:'tag-tech', op:'tag-op', eco:'tag-eco', sched:'tag-sched', legal:'tag-legal' };
+
+    const savedState = answers[globalIdx];
+    const optionHTML = q.opts.map((opt, oi) => {
+      let cls = 'mcq-opt';
+      if (savedState !== undefined) {
+        if (oi === q.ans) cls += ' correct';
+        else if (oi === savedState && savedState !== q.ans) cls += ' wrong';
+        else if (oi !== savedState) cls += ' show-correct';
+      }
+      return `<button class="${cls}" onclick="answerMCQ(${globalIdx},${oi},this.closest('.mcq-card'))" ${savedState !== undefined ? 'disabled' : ''}>
+        <span class="opt-letter">${String.fromCharCode(65+oi)}</span>${opt}
+      </button>`;
+    }).join('');
+
+    const answerShow = savedState !== undefined ? 'show' : '';
+
+    card.innerHTML = `
+      <span class="mcq-tag ${tagClass[q.tag]}">${tagNames[q.tag]}</span>
+      <div class="mcq-header">
+        <div class="mcq-num">${i+1}</div>
+        <div class="mcq-question">${q.q}</div>
+      </div>
+      <div class="mcq-options">${optionHTML}</div>
+      <div class="mcq-answer ${answerShow}">
+        <span>💡</span><span>${q.exp}</span>
+      </div>
+    `;
+
+    container.appendChild(card);
+    obs.observe(card);
+  });
+}
+
+function answerMCQ(idx, chosen, card) {
+  const q = mcqs[idx];
+  answers[idx] = chosen;
+
+  const opts = card.querySelectorAll('.mcq-opt');
+  opts.forEach((opt, oi) => {
+    opt.disabled = true;
+    if (oi === q.ans) opt.classList.add('correct');
+    else if (oi === chosen && chosen !== q.ans) opt.classList.add('wrong');
+  });
+
+  card.querySelector('.mcq-answer').classList.add('show');
+
+  updateScore();
+}
+
+function updateScore() {
+  const total = mcqs.length;
+  answeredCount = Object.keys(answers).length;
+  correctCount = mcqs.filter((q,i) => answers[i] === q.ans).length;
+
+  document.getElementById('scoreText').textContent = `${correctCount}/${answeredCount}`;
+  const pct = answeredCount > 0 ? Math.round((correctCount/answeredCount)*100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('scoreDesc').textContent = answeredCount === 0
+    ? 'Answer some questions to see your progress.'
+    : `${pct}% correct — ${answeredCount} of ${total} answered.`;
+
+  const deg = (correctCount / Math.max(answeredCount, 1)) * 360;
+  document.getElementById('scoreCircle').style.background =
+    `conic-gradient(var(--accent) ${deg}deg, var(--border) ${deg}deg)`;
+}
+
+function resetQuiz() {
+  answers = {};
+  correctCount = 0;
+  answeredCount = 0;
+  updateScore();
+  renderMCQ('all');
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn')[0].classList.add('active');
+}
+
+function filterMCQ(tag, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMCQ(tag);
+}
+
+// ══ ESSAY DATA ══
+const essays = [
+  {
+    q: 'What is a feasibility study? Explain why it is important in system development.',
+    marks: '10 marks',
+    points: [
+      'A feasibility study is an analysis conducted to evaluate whether a proposed system is worth developing.',
+      'It determines if the system is technically possible, operationally acceptable, and economically viable.',
+      'Conducted BEFORE system design — part of the System Analysis phase.',
+      'Helps management make go/no-go decisions about the project.',
+      'Importance: Prevents project failure by identifying problems early.',
+      'Importance: Saves organizational resources (time, money, staff).',
+      'Importance: Supports strategic decision making.',
+      'Importance: Improves system success rate by ensuring suitability.',
+      'Reduces the risk of investing in unworkable solutions.',
+      'Acts as a foundation for effective project planning.'
+    ]
+  },
+  {
+    q: 'Explain the six types of feasibility with examples for each.',
+    marks: '12 marks',
+    points: [
+      'Technical Feasibility: Evaluates if technology is available and org has expertise. E.g., migrating to cloud computing.',
+      'Operational Feasibility: Evaluates if system will be used effectively. E.g., employees refusing a new ERP system.',
+      'Economic Feasibility: Evaluates if benefits outweigh costs (CBA). E.g., comparing savings from automation vs investment.',
+      'Schedule Feasibility: Evaluates if system can be completed in time. E.g., meeting government filing deadline.',
+      'Legal Feasibility: Evaluates compliance with laws and regulations. E.g., GDPR compliance for data storage.',
+      'Political/Cultural Feasibility: Evaluates stakeholder support and cultural fit. E.g., management opposing system that reduces their control.',
+      'All six types must be analyzed — failure in any one can cause the project to be rejected.',
+      'Each type addresses a different dimension of project viability.'
+    ]
+  },
+  {
+    q: 'Distinguish between tangible and intangible benefits in economic feasibility. Give two examples of each.',
+    marks: '8 marks',
+    points: [
+      'Tangible benefits are measurable in monetary terms.',
+      'Example 1 (tangible): Reduced labor cost — fewer staff needed after automation.',
+      'Example 2 (tangible): Increased productivity — more units produced in same time.',
+      'Intangible benefits cannot be directly measured in money.',
+      'Example 1 (intangible): Improved customer satisfaction — customers are happier.',
+      'Example 2 (intangible): Better decision making — managers have better information.',
+      'Economic feasibility (CBA) tries to quantify both types.',
+      'Tangible benefits are easier to justify to management; intangible benefits are strategic.'
+    ]
+  },
+  {
+    q: 'Explain technical feasibility and describe the key questions that must be answered.',
+    marks: '8 marks',
+    points: [
+      'Technical feasibility evaluates whether the required technology is available and usable.',
+      'Key focus: Technology CAPABILITY, not cost.',
+      'Question 1: Does the organization have the required hardware?',
+      'Question 2: Does the organization have the required software?',
+      'Question 3: Does the organization have skilled technical staff?',
+      'Question 4: Is the technology proven or experimental?',
+      'Question 5: Is it compatible with existing systems?',
+      'Question 6: Can the system meet performance requirements?',
+      'High risk exists when unfamiliar or experimental technology is used.',
+      'Example: Introducing AI features without internal AI expertise is high technical risk.'
+    ]
+  },
+  {
+    q: 'Why might a technically feasible system still fail? Explain operational feasibility.',
+    marks: '8 marks',
+    points: [
+      'A technically feasible system can fail if users refuse to use it — this is operational failure.',
+      'Operational feasibility evaluates whether the system will be used effectively.',
+      'It checks if the system fits organizational culture.',
+      'Factors: User acceptance, resistance to change, management support.',
+      'Factors: Impact on daily work processes, training requirements.',
+      'Factors: Organizational policies and procedures.',
+      'Example: Employees refusing to use a new ERP system.',
+      'Example: System not matching real work practices.',
+      'Even the best-designed system fails if people reject it.',
+      'Conclusion: User buy-in is essential for system success.'
+    ]
+  },
+  {
+    q: 'What is schedule feasibility? What are the common issues that affect it?',
+    marks: '6 marks',
+    points: [
+      'Schedule feasibility evaluates whether the system can be completed within required timeframes.',
+      'It considers project deadlines AND resource availability.',
+      'Issue 1: Unrealistic deadlines set by management without technical input.',
+      'Issue 2: Limited availability of developers.',
+      'Issue 3: Dependencies on external vendors causing delays.',
+      'Issue 4: Delays due to requirement changes mid-project.',
+      'Schedule infeasibility means the project cannot be delivered when needed.',
+      'A delayed system may be useless if the business need has passed.'
+    ]
+  },
+  {
+    q: 'What is legal feasibility? Name four legal aspects that must be considered.',
+    marks: '6 marks',
+    points: [
+      'Legal feasibility evaluates whether the system complies with laws, regulations, and industry standards.',
+      'Aspect 1: Data protection laws (e.g., GDPR for EU, similar laws elsewhere).',
+      'Aspect 2: Intellectual property rights — not infringing on patents or software.',
+      'Aspect 3: Licensing agreements — ensuring proper licenses for all components.',
+      'Aspect 4: Industry standards — e.g., healthcare, finance regulations.',
+      'Legal non-compliance can result in fines, lawsuits, or system shutdown.',
+      'Legal feasibility must be checked before development to avoid costly redesigns.'
+    ]
+  },
+  {
+    q: 'Compare economic feasibility and technical feasibility. How are they different?',
+    marks: '6 marks',
+    points: [
+      'Technical feasibility asks: CAN we build it? Economic feasibility asks: SHOULD we build it?',
+      'Technical feasibility focuses on technology capability, not cost.',
+      'Economic feasibility focuses on financial justification — benefits vs costs.',
+      'Technical: Evaluates hardware, software, skills, compatibility.',
+      'Economic: Evaluates development costs, maintenance, training, and benefits.',
+      'A project can be technically feasible but economically infeasible (too expensive).',
+      'A project can be economically justified but technically impossible (no technology exists).',
+      'Both must be feasible for a project to proceed successfully.'
+    ]
+  },
+  {
+    q: 'What role does the feasibility study play in the decision-making process?',
+    marks: '6 marks',
+    points: [
+      'The feasibility study provides evidence-based information for management decisions.',
+      'It results in a go/no-go decision by management.',
+      'It reduces the risk of committing resources to unworkable projects.',
+      'It helps prioritize projects based on feasibility and alignment with goals.',
+      'It ensures the system aligns with organizational strategic goals.',
+      'It identifies risks early so they can be mitigated or avoided.',
+      'Without a feasibility study, management would make decisions based on assumptions alone.',
+      'The study transforms intuition into structured, informed decision making.'
+    ]
+  },
+  {
+    q: 'Describe three real-world examples of technical feasibility problems.',
+    marks: '6 marks',
+    points: [
+      'Example 1: Using cloud computing instead of on-premise servers — requires evaluating if the org has cloud skills and bandwidth.',
+      'Example 2: Migrating from a legacy system to a modern platform — requires checking compatibility and migration tools.',
+      'Example 3: Introducing AI-based features without internal AI expertise — high risk as no skill exists internally.',
+      'In each case, the risk is HIGH if the technology is unfamiliar to the organization.',
+      'Technical feasibility problems can be resolved by hiring experts, training staff, or choosing simpler technology.',
+      'Organizations must honestly assess their capabilities before committing to a technical solution.'
+    ]
+  },
+  {
+    q: 'List and briefly explain the objectives of a feasibility study.',
+    marks: '5 marks',
+    points: [
+      'Objective 1: Assess the practicality of the proposed system.',
+      'Objective 2: Identify potential risks and constraints that could hinder development.',
+      'Objective 3: Estimate costs, benefits, and timelines to guide planning.',
+      'Objective 4: Ensure the system aligns with organizational goals and strategy.',
+      'Objective 5: Avoid investing resources in projects that cannot succeed.',
+      'These objectives collectively ensure that only viable, valuable systems are developed.',
+      'The feasibility study is essentially a health check for the project before it begins.'
+    ]
+  },
+  {
+    q: 'What types of costs are analyzed in economic feasibility? Give examples.',
+    marks: '6 marks',
+    points: [
+      'Development costs: Salaries of analysts, designers, and programmers.',
+      'Hardware costs: Servers, computers, networking equipment.',
+      'Software costs: Licenses for tools, frameworks, operating systems.',
+      'Training costs: Teaching staff how to use the new system.',
+      'Maintenance and operational costs: Ongoing support, updates, hosting.',
+      'Hidden and indirect costs: Power consumption, security upgrades, downtime during transition.',
+      'All costs must be estimated and compared against expected benefits.',
+      'Underestimating costs leads to budget overruns and project failure.'
+    ]
+  },
+  {
+    q: 'How does feasibility study prevent project failure? Support with examples.',
+    marks: '8 marks',
+    points: [
+      'Early identification of problems: Issues found before coding begins cost far less to fix.',
+      'Technical prevention: Identifies if technology is unavailable before commitment.',
+      'Economic prevention: Prevents spending on systems whose costs exceed benefits.',
+      'Operational prevention: Ensures users will accept the system before it is built.',
+      'Schedule prevention: Confirms realistic timelines before resources are allocated.',
+      'Legal prevention: Avoids systems that would violate laws and cause fines.',
+      'Example: A company planning a biometric system discovers the technology is too expensive (economic) — project cancelled before money is lost.',
+      'Example: Hospital planning AI diagnosis tool discovers no legal framework exists — legal feasibility prevents a compliance disaster.',
+      'Result: Organizations save resources, avoid failures, and build confidence in project success.'
+    ]
+  },
+  {
+    q: 'What is meant by "go / no-go decision" in the context of feasibility study?',
+    marks: '4 marks',
+    points: [
+      'A go/no-go decision is a management decision made after reviewing feasibility study results.',
+      '"Go" means the project is feasible and approved to proceed to system design.',
+      '"No-go" means the project is not feasible in its current form and should be abandoned or modified.',
+      'Management evaluates all six feasibility types before deciding.',
+      'The decision is binary but may lead to modified proposals if the project has potential but issues.',
+      'This decision prevents wasted investment by stopping bad projects early.'
+    ]
+  },
+  {
+    q: 'Define feasibility study and explain how it differs from system design.',
+    marks: '4 marks',
+    points: [
+      'Feasibility study: An evaluation conducted to determine if a proposed system is viable.',
+      'System design: The phase where the approved system is architected and specified in detail.',
+      'Difference 1: Feasibility study comes BEFORE system design in the SDLC.',
+      'Difference 2: Feasibility study asks "should we build it?" — design asks "how do we build it?"',
+      'Difference 3: Feasibility study is broad and evaluative; design is technical and detailed.',
+      'You cannot do effective design without first confirming feasibility.',
+      'The feasibility study outputs a recommendation; system design outputs blueprints.'
+    ]
+  }
+];
+
+// ══ RENDER ESSAYS ══
+function renderEssays() {
+  const container = document.getElementById('essayContainer');
+  essays.forEach((e, i) => {
+    const card = document.createElement('div');
+    card.className = 'essay-card';
+
+    card.innerHTML = `
+      <div class="essay-header" onclick="toggleEssay(this.parentElement)">
+        <div>
+          <div class="essay-q">Q${i+1}. ${e.q}</div>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-shrink:0;">
+          <span class="essay-marks">${e.marks}</span>
+          <span class="essay-toggle">▼</span>
+        </div>
+      </div>
+      <div class="essay-body">
+        <div class="essay-content">
+          <h4>Model Answer Key Points</h4>
+          <ul class="essay-points">
+            ${e.points.map(p => `<li>${p}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+    obs.observe(card);
+  });
+}
+
+function toggleEssay(card) {
+  card.classList.toggle('open');
+}
+
+// ══ INIT ══
+renderMCQ('all');
+renderEssays();
+
+// ══ NAV ACTIVE STATE ══
+const sections = ['overview','types','mcq','essay','quickref'];
+window.addEventListener('scroll', () => {
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const btn = document.querySelector(`.nav-btn[onclick="scrollTo('${id}')"]`);
+    if (btn) {
+      if (rect.top < 200 && rect.bottom > 100) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+  });
+});
+
+// ══ OBSERVE CONTENT CARDS ══
+document.querySelectorAll('.content-card').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

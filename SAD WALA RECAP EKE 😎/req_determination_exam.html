@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 05 – Requirements | Exam Prep</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root {
+  --bg:#060d1a; --surf:#0d1b2e; --card:#112240; --border:#1a3050;
+  --a1:#00d4ff; --a2:#7c3aed; --a3:#10b981; --a4:#f59e0b;
+  --red:#ef4444; --green:#10b981; --text:#ccd6f6; --muted:#5a7a9a; --white:#e6f1ff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.6;overflow-x:hidden}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:2rem;overflow:hidden}
+#starCanvas{position:absolute;inset:0;z-index:0}
+.hero-content{position:relative;z-index:1;max-width:800px}
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);border-radius:100px;padding:.4rem 1.2rem;font-size:.78rem;letter-spacing:.1em;color:var(--a1);text-transform:uppercase;margin-bottom:1.5rem;animation:fadeUp .6s ease both}
+.hero h1{font-size:clamp(2.2rem,6vw,4.8rem);font-weight:700;line-height:1.05;margin-bottom:1rem;animation:fadeUp .6s .1s ease both}
+.glow{background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.05rem;color:var(--muted);margin:0 auto 2.5rem;animation:fadeUp .6s .2s ease both}
+.hero-stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;animation:fadeUp .6s .3s ease both}
+.stat-num{font-size:2.2rem;font-weight:700;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:.78rem;color:var(--muted)}
+.cta-btn{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;border-radius:14px;padding:1rem 2.2rem;color:#000;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .2s,box-shadow .2s;animation:fadeUp .6s .4s ease both}
+.cta-btn:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,212,255,.35)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,13,26,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:.7rem 1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;justify-content:center}
+.nav-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.38rem .85rem;color:var(--muted);font-size:.78rem;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nav-btn:hover,.nav-btn.active{background:rgba(0,212,255,.12);border-color:var(--a1);color:var(--a1)}
+
+/* SECTIONS */
+.section{max-width:1120px;margin:0 auto;padding:4.5rem 1.5rem}
+.sec-label{font-size:.72rem;color:var(--a1);text-transform:uppercase;letter-spacing:.12em;font-family:'JetBrains Mono',monospace;margin-bottom:.4rem}
+.sec-title{font-size:2rem;font-weight:700;margin-bottom:.4rem}
+.sec-title span{background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-sub{color:var(--muted);margin-bottom:2.5rem;font-size:.93rem}
+hr.div{border:none;border-top:1px solid var(--border);margin:0}
+
+/* GRID CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.4rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;transition:transform .3s,border-color .3s,box-shadow .3s;opacity:0;transform:translateY(22px)}
+.card.vis{animation:slideUp .5s ease forwards}
+.card:hover{transform:translateY(-5px);border-color:var(--a1);box-shadow:0 10px 30px rgba(0,212,255,.12)}
+.card-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1rem}
+.card h3{font-size:1rem;font-weight:600;margin-bottom:.7rem;color:var(--white)}
+.card ul{list-style:none}
+.card ul li{color:var(--muted);font-size:.86rem;padding:.28rem 0 .28rem 1.1rem;position:relative;border-bottom:1px solid rgba(255,255,255,.04)}
+.card ul li::before{content:'›';position:absolute;left:0;color:var(--a1);font-weight:700}
+.card ul li:last-child{border-bottom:none}
+
+/* TECHNIQUE CARDS */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.4rem}
+.tech-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;opacity:0;transform:translateY(22px)}
+.tech-card.vis{animation:slideUp .5s ease forwards}
+.tech-header{padding:1.3rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:1rem;transition:background .2s}
+.tech-header:hover{background:rgba(0,212,255,.05)}
+.tech-icon{font-size:2rem;flex-shrink:0}
+.tech-name{font-weight:700;font-size:1rem;color:var(--white)}
+.tech-tagline{font-size:.8rem;color:var(--muted);margin-top:.1rem}
+.tech-arrow{margin-left:auto;color:var(--muted);transition:transform .3s;font-size:1rem}
+.tech-card.open .tech-arrow{transform:rotate(180deg);color:var(--a1)}
+.tech-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.tech-card.open .tech-body{max-height:1200px}
+.tech-inner{padding:0 1.5rem 1.5rem;border-top:1px solid var(--border);padding-top:1.3rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.tech-col h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:.6rem}
+.tech-col.pro h4{color:var(--green)}
+.tech-col.con h4{color:var(--red)}
+.tech-col ul{list-style:none}
+.tech-col ul li{font-size:.83rem;padding:.25rem 0 .25rem 1rem;position:relative;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.04)}
+.tech-col ul li::before{position:absolute;left:0;font-weight:700}
+.tech-col.pro ul li::before{content:'✓';color:var(--green)}
+.tech-col.con ul li::before{content:'✗';color:var(--red)}
+.tech-col ul li:last-child{border-bottom:none}
+.tech-when{grid-column:1/-1;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:.9rem 1rem;font-size:.84rem;color:var(--text)}
+.tech-when strong{color:var(--a1)}
+
+/* NFR TABLE */
+.nfr-table{width:100%;border-collapse:separate;border-spacing:0 .5rem}
+.nfr-table th{text-align:left;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;padding:.4rem 1rem;font-family:'JetBrains Mono',monospace}
+.nfr-table td{background:var(--card);padding:.85rem 1rem;font-size:.86rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.nfr-table td:first-child{border-left:1px solid var(--border);border-radius:10px 0 0 10px;font-weight:700;color:var(--white)}
+.nfr-table td:last-child{border-right:1px solid var(--border);border-radius:0 10px 10px 0;color:var(--muted)}
+
+/* MCQ */
+.score-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.8rem;display:flex;align-items:center;gap:2rem;margin-bottom:2rem;flex-wrap:wrap}
+.score-ring{width:76px;height:76px;border-radius:50%;background:conic-gradient(var(--a1) 0deg,var(--border) 0deg);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 1s}
+.score-inner{width:60px;height:60px;background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;font-family:'JetBrains Mono',monospace}
+.score-info{flex:1}
+.score-info h3{font-size:1rem;margin-bottom:.2rem}
+.score-info p{font-size:.83rem;color:var(--muted)}
+.prog-wrap{background:var(--border);border-radius:100px;height:5px;max-width:280px;margin-top:.5rem;overflow:hidden}
+.prog-bar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--a1),var(--a2));width:0;transition:width 1s ease}
+.reset-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.45rem .95rem;color:var(--muted);font-family:inherit;font-size:.82rem;cursor:pointer;transition:all .2s}
+.reset-btn:hover{border-color:var(--a1);color:var(--a1)}
+.filter-bar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:2rem}
+.fbtn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:.35rem .85rem;color:var(--muted);font-size:.78rem;font-family:inherit;cursor:pointer;transition:all .2s}
+.fbtn.active,.fbtn:hover{background:rgba(0,212,255,.12);border-color:var(--a1);color:var(--a1)}
+.mcq-wrap{display:flex;flex-direction:column;gap:1.4rem}
+.mcq-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;opacity:0;transform:translateY(18px)}
+.mcq-card.vis{animation:slideUp .45s ease forwards}
+.mcq-head{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.1rem}
+.mcq-num{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.mcq-q{font-weight:600;line-height:1.5;font-size:.97rem}
+.mcq-tag{display:inline-block;font-size:.67rem;padding:.18rem .5rem;border-radius:4px;margin-bottom:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.t-gen{background:rgba(148,163,184,.15);color:var(--muted)}
+.t-req{background:rgba(0,212,255,.15);color:var(--a1)}
+.t-fr{background:rgba(124,58,237,.15);color:#a78bfa}
+.t-nfr{background:rgba(16,185,129,.15);color:var(--green)}
+.t-tech{background:rgba(245,158,11,.15);color:var(--a4)}
+.t-ana{background:rgba(239,68,68,.15);color:var(--red)}
+.opts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.9rem}
+.opt{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:.7rem 1rem;cursor:pointer;font-size:.88rem;font-family:inherit;color:var(--text);text-align:left;transition:all .17s;display:flex;align-items:center;gap:.7rem}
+.opt:hover{background:rgba(0,212,255,.08);border-color:var(--a1)}
+.opt.correct{background:rgba(16,185,129,.12);border-color:var(--green);color:var(--green)}
+.opt.wrong{background:rgba(239,68,68,.12);border-color:var(--red);color:var(--red)}
+.opt-ltr{width:22px;height:22px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.exp{display:none;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:.8rem 1rem;font-size:.85rem;color:#6ee7b7;gap:.5rem;align-items:flex-start}
+.exp.show{display:flex}
+
+/* ESSAY */
+.essay-wrap{display:flex;flex-direction:column;gap:1.3rem}
+.ec{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;opacity:0;transform:translateY(18px)}
+.ec.vis{animation:slideUp .45s ease forwards}
+.eh{padding:1.4rem 1.6rem;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;transition:background .2s}
+.eh:hover{background:rgba(0,212,255,.04)}
+.eq{font-weight:600;font-size:.97rem;line-height:1.5}
+.em{background:rgba(0,212,255,.12);color:var(--a1);padding:.18rem .55rem;border-radius:5px;font-size:.72rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.etog{font-size:1rem;transition:transform .3s;color:var(--muted);flex-shrink:0}
+.ec.open .etog{transform:rotate(180deg);color:var(--a1)}
+.eb{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.ec.open .eb{max-height:3000px}
+.econt{padding:0 1.6rem 1.6rem;border-top:1px solid var(--border);padding-top:1.4rem}
+.econt h4{color:var(--a1);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-family:'JetBrains Mono',monospace}
+.epoints{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.epoints li{display:flex;gap:.65rem;font-size:.87rem;color:var(--text);line-height:1.5}
+.epoints li::before{content:'▸';color:var(--a2);flex-shrink:0;margin-top:.05rem}
+
+/* QUICK REF */
+.moscow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2.5rem}
+.moscow-card{border-radius:14px;padding:1.3rem;text-align:center;border:1px solid}
+.moscow-card .mlabel{font-size:1.3rem;font-weight:700;margin-bottom:.3rem}
+.moscow-card .msub{font-size:.8rem;margin-bottom:.7rem}
+.moscow-card .mex{font-size:.78rem;opacity:.7}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+@media(max-width:600px){.hero h1{font-size:2rem}.tech-inner{grid-template-columns:1fr}.section{padding:3rem 1rem}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <canvas id="starCanvas"></canvas>
+  <div class="hero-content">
+    <div class="badge">📚 SE201.3 · Systems Analysis and Design</div>
+    <h1>Chapter 05<br><span class="glow">Requirements</span></h1>
+    <p class="hero-sub">Determination · Gathering · Analysis — everything for your exam in 2 days. 45+ MCQs, 16 essay answers, all 6 gathering techniques. Let's go! 🚀</p>
+    <div class="hero-stats">
+      <div><div class="stat-num">45+</div><div class="stat-lbl">MCQ Questions</div></div>
+      <div><div class="stat-num">16</div><div class="stat-lbl">Essay Answers</div></div>
+      <div><div class="stat-num">6</div><div class="stat-lbl">Gathering Techniques</div></div>
+      <div><div class="stat-num">6</div><div class="stat-lbl">NFR Types</div></div>
+    </div>
+    <button class="cta-btn" onclick="document.getElementById('overview').scrollIntoView()">Start Studying ↓</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="stickyNav">
+  <button class="nav-btn" onclick="goTo('overview')">📖 Overview</button>
+  <button class="nav-btn" onclick="goTo('frvsnfr')">⚡ FR vs NFR</button>
+  <button class="nav-btn" onclick="goTo('techniques')">🛠️ Techniques</button>
+  <button class="nav-btn" onclick="goTo('analysis')">🔍 Analysis</button>
+  <button class="nav-btn" onclick="goTo('mcq')">✅ MCQ</button>
+  <button class="nav-btn" onclick="goTo('essay')">📝 Essays</button>
+  <button class="nav-btn" onclick="goTo('quickref')">⚡ Quick Ref</button>
+</nav>
+
+<!-- OVERVIEW -->
+<section class="section" id="overview">
+  <div class="sec-label">Module Content</div>
+  <h2 class="sec-title">All Key <span>Concepts</span></h2>
+  <p class="sec-sub">Everything from the lecture slides, organized for rapid revision.</p>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon" style="background:rgba(0,212,255,.12)">📋</div>
+      <h3>What Are Requirements?</h3>
+      <ul>
+        <li>Statement of what the system must do or must have</li>
+        <li>Describe system behavior</li>
+        <li>Describe system constraints</li>
+        <li>Describe system quality attributes</li>
+        <li>Foundation of system design</li>
+        <li>Errors here are expensive to fix later</li>
+        <li>60%+ of software failures caused by poor requirements</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(124,58,237,.12)">🔍</div>
+      <h3>Requirement Determination</h3>
+      <ul>
+        <li>Process of discovering, documenting, and understanding user needs</li>
+        <li>Source 1: Users — end users, operational needs</li>
+        <li>Source 2: Managers — reports, dashboards, KPIs</li>
+        <li>Source 3: Stakeholders — customers, suppliers, regulators</li>
+        <li>Source 4: Existing systems — weaknesses, missing features</li>
+        <li>Source 5: Documents — policies, forms, manuals</li>
+        <li>Source 6: External — laws, regulations, standards</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(16,185,129,.12)">✅</div>
+      <h3>Functional Requirements (FR)</h3>
+      <ul>
+        <li>Describe WHAT the system should do</li>
+        <li>Action-oriented — described using verbs</li>
+        <li>Directly linked to business processes</li>
+        <li>Example: User can log in</li>
+        <li>Example: System calculates total bill</li>
+        <li>Example: System generates invoice</li>
+        <li>"What functions must the system perform?"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(245,158,11,.12)">⚙️</div>
+      <h3>Non-Functional Requirements (NFR)</h3>
+      <ul>
+        <li>Describe HOW WELL the system performs</li>
+        <li>Performance: page loads in &lt;3 seconds</li>
+        <li>Security: password encryption</li>
+        <li>Usability: user-friendly interface</li>
+        <li>Reliability: 99.9% uptime</li>
+        <li>Scalability: support 10,000 users</li>
+        <li>Legal: follow data protection laws</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(239,68,68,.12)">🎯</div>
+      <h3>Requirement Gathering Techniques</h3>
+      <ul>
+        <li>1. Interviews — direct conversation with stakeholders</li>
+        <li>2. Questionnaires / Surveys — large groups</li>
+        <li>3. Observation — watch users work</li>
+        <li>4. Document Analysis — study existing docs</li>
+        <li>5. Workshops / JAD — group collaboration</li>
+        <li>6. Prototyping — build early model</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(0,212,255,.12)">📊</div>
+      <h3>Requirement Analysis</h3>
+      <ul>
+        <li>Validation: correctness, completeness, feasibility, consistency</li>
+        <li>Techniques: requirement reviews, walkthroughs</li>
+        <li>Techniques: prototyping feedback, stakeholder approval</li>
+        <li>Conflict: conflicting stakeholder needs</li>
+        <li>Ambiguity: vague statements like "fast"</li>
+        <li>Resolution: clarification meetings, modeling, standards</li>
+        <li>MoSCoW prioritization method</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- FR vs NFR -->
+<section class="section" id="frvsnfr">
+  <div class="sec-label">Core Concept</div>
+  <h2 class="sec-title">Functional vs <span>Non-Functional</span></h2>
+  <p class="sec-sub">This comparison is a high-probability exam topic — know it cold.</p>
+
+  <div class="grid" style="margin-bottom:2.5rem">
+    <div class="card" style="border-color:rgba(124,58,237,.4)">
+      <div class="card-icon" style="background:rgba(124,58,237,.15)">🔵</div>
+      <h3 style="color:#a78bfa">Functional Requirements</h3>
+      <ul>
+        <li>Describe WHAT the system does</li>
+        <li>Use action verbs (calculate, generate, display)</li>
+        <li>Linked to business processes</li>
+        <li>User can register an account</li>
+        <li>System sends order confirmation email</li>
+        <li>Admin can generate monthly report</li>
+        <li>System validates payment details</li>
+        <li>User can search products by category</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.4)">
+      <div class="card-icon" style="background:rgba(16,185,129,.15)">🟢</div>
+      <h3 style="color:var(--green)">Non-Functional Requirements</h3>
+      <ul>
+        <li>Describe HOW WELL it performs</li>
+        <li>Quality attributes and constraints</li>
+        <li>Performance: respond in &lt;2 seconds</li>
+        <li>Security: encrypt all passwords with SHA-256</li>
+        <li>Usability: accessible on mobile devices</li>
+        <li>Reliability: 99.9% uptime guaranteed</li>
+        <li>Scalability: handle 10,000 concurrent users</li>
+        <li>Legal: comply with GDPR regulations</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-size:1rem;color:var(--white);margin-bottom:1rem">NFR Types at a Glance</h3>
+  <table class="nfr-table">
+    <thead><tr><th>NFR Type</th><th>What it Measures</th><th>Example Requirement</th></tr></thead>
+    <tbody>
+      <tr><td>⚡ Performance</td><td>Speed and response time</td><td>Page loads in under 3 seconds</td></tr>
+      <tr><td>🔒 Security</td><td>Data protection</td><td>All passwords must be encrypted</td></tr>
+      <tr><td>🖥️ Usability</td><td>Ease of use</td><td>Interface must be user-friendly</td></tr>
+      <tr><td>🟢 Reliability</td><td>System stability and availability</td><td>99.9% uptime guaranteed</td></tr>
+      <tr><td>📈 Scalability</td><td>Ability to grow with demand</td><td>Support 10,000 concurrent users</td></tr>
+      <tr><td>⚖️ Legal</td><td>Regulatory compliance</td><td>Follow data protection laws</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="div">
+
+<!-- TECHNIQUES -->
+<section class="section" id="techniques">
+  <div class="sec-label">Gathering Methods</div>
+  <h2 class="sec-title">6 Requirement Gathering <span>Techniques</span></h2>
+  <p class="sec-sub">Click any technique to expand pros, cons, and when to use it.</p>
+  <div class="tech-grid" id="techGrid"></div>
+</section>
+
+<hr class="div">
+
+<!-- ANALYSIS -->
+<section class="section" id="analysis">
+  <div class="sec-label">Validation & Prioritization</div>
+  <h2 class="sec-title">Requirement <span>Analysis</span></h2>
+  <p class="sec-sub">What happens after requirements are gathered — validating, resolving conflicts, and prioritizing.</p>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon" style="background:rgba(0,212,255,.1)">✅</div>
+      <h3>Validation Ensures</h3>
+      <ul>
+        <li>Correctness — requirements are accurate</li>
+        <li>Completeness — nothing is missing</li>
+        <li>Feasibility — can actually be implemented</li>
+        <li>Consistency — no contradictions</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(124,58,237,.1)">🔍</div>
+      <h3>Validation Techniques</h3>
+      <ul>
+        <li>Requirement reviews — formal reading</li>
+        <li>Walkthroughs — step-by-step checks</li>
+        <li>Prototyping feedback — users test early model</li>
+        <li>Stakeholder approval — sign-off from owners</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(239,68,68,.1)">⚠️</div>
+      <h3>Common Problems</h3>
+      <ul>
+        <li>Conflicting stakeholder needs</li>
+        <li>Vague statements — "the system should be fast"</li>
+        <li>Missing requirements — gaps discovered late</li>
+        <li>Ambiguous language — open to interpretation</li>
+        <li>✅ Good: "respond within 2 seconds"</li>
+        <li>❌ Bad: "system should be fast"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(16,185,129,.1)">🛠️</div>
+      <h3>How to Resolve Conflicts</h3>
+      <ul>
+        <li>Clarification meetings with stakeholders</li>
+        <li>Requirement modeling — visual diagrams</li>
+        <li>Documentation standards — clear templates</li>
+        <li>Negotiation between conflicting parties</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(245,158,11,.1)">📊</div>
+      <h3>Why Prioritize?</h3>
+      <ul>
+        <li>Limited budget — can't build everything</li>
+        <li>Time constraints — deadlines</li>
+        <li>Resource availability — team size</li>
+        <li>Focus on highest business value first</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(0,212,255,.1)">🏆</div>
+      <h3>Prioritization Methods</h3>
+      <ul>
+        <li>MoSCoW — Must/Should/Could/Won't</li>
+        <li>Business Value — ROI focused</li>
+        <li>Risk-Based — high-risk items first</li>
+        <li>Stakeholder Ranking — user importance</li>
+        <li>Must: User login</li>
+        <li>Should: Email notification</li>
+        <li>Could: Dark mode</li>
+        <li>Won't (Phase 1): AI chatbot</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- MCQ -->
+<section class="section" id="mcq">
+  <div class="sec-label">Practice Questions</div>
+  <h2 class="sec-title">Multiple Choice <span>Questions</span></h2>
+  <p class="sec-sub">Click any option — instant feedback with explanations. Track your score.</p>
+
+  <div class="score-panel">
+    <div class="score-ring" id="scoreRing"><div class="score-inner" id="scoreTxt">0/0</div></div>
+    <div class="score-info">
+      <h3>Your Score</h3>
+      <p id="scoreDesc">Answer questions to track your progress.</p>
+      <div class="prog-wrap"><div class="prog-bar" id="progBar"></div></div>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+  </div>
+
+  <div class="filter-bar">
+    <button class="fbtn active" onclick="filterQ('all',this)">All</button>
+    <button class="fbtn" onclick="filterQ('gen',this)">General</button>
+    <button class="fbtn" onclick="filterQ('req',this)">Requirements</button>
+    <button class="fbtn" onclick="filterQ('fr',this)">Functional</button>
+    <button class="fbtn" onclick="filterQ('nfr',this)">Non-Functional</button>
+    <button class="fbtn" onclick="filterQ('tech',this)">Techniques</button>
+    <button class="fbtn" onclick="filterQ('ana',this)">Analysis</button>
+  </div>
+
+  <div class="mcq-wrap" id="mcqWrap"></div>
+</section>
+
+<hr class="div">
+
+<!-- ESSAY -->
+<section class="section" id="essay">
+  <div class="sec-label">Long Answer</div>
+  <h2 class="sec-title">Essay <span>Questions</span></h2>
+  <p class="sec-sub">Tap any question to reveal a complete model answer.</p>
+  <div class="essay-wrap" id="essayWrap"></div>
+</section>
+
+<hr class="div">
+
+<!-- QUICK REF -->
+<section class="section" id="quickref">
+  <div class="sec-label">Cheat Sheet</div>
+  <h2 class="sec-title">Quick <span>Reference</span></h2>
+
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.5rem">MoSCoW Priority Method</p>
+  <div class="moscow-grid">
+    <div class="moscow-card" style="background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3)">
+      <div class="mlabel" style="color:#ef4444">M — Must</div>
+      <div class="msub" style="color:#ef4444">Non-negotiable requirements</div>
+      <div class="mex">User login, Payment processing</div>
+    </div>
+    <div class="moscow-card" style="background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)">
+      <div class="mlabel" style="color:var(--a4)">S — Should</div>
+      <div class="msub" style="color:var(--a4)">Important but not critical</div>
+      <div class="mex">Email notifications, Search filters</div>
+    </div>
+    <div class="moscow-card" style="background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)">
+      <div class="mlabel" style="color:var(--green)">C — Could</div>
+      <div class="msub" style="color:var(--green)">Nice to have if time allows</div>
+      <div class="mex">Dark mode, Animated charts</div>
+    </div>
+    <div class="moscow-card" style="background:rgba(148,163,184,.08);border-color:rgba(148,163,184,.2)">
+      <div class="mlabel" style="color:var(--muted)">W — Won't</div>
+      <div class="msub" style="color:var(--muted)">Out of scope for this phase</div>
+      <div class="mex">AI chatbot, VR interface</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.2rem">Technique Comparison Summary</p>
+  <table class="nfr-table">
+    <thead><tr><th>Technique</th><th>Best For</th><th>Main Advantage</th><th>Main Disadvantage</th></tr></thead>
+    <tbody>
+      <tr><td>🗣️ Interview</td><td>Deep individual insights</td><td>Rich, detailed responses</td><td>Time-consuming</td></tr>
+      <tr><td>📋 Questionnaire</td><td>Large groups</td><td>Fast, covers many users</td><td>Cannot clarify answers</td></tr>
+      <tr><td>👀 Observation</td><td>Understanding real workflow</td><td>Reveals hidden practices</td><td>Users may behave differently</td></tr>
+      <tr><td>📄 Document Analysis</td><td>Understanding current system</td><td>Objective, existing evidence</td><td>May be outdated</td></tr>
+      <tr><td>🤝 Workshop/JAD</td><td>Consensus building</td><td>All stakeholders agree fast</td><td>Needs skilled facilitator</td></tr>
+      <tr><td>🖥️ Prototyping</td><td>Unclear requirements</td><td>Users see and react to design</td><td>May become the final product too early</td></tr>
+    </tbody>
+  </table>
+
+  <p style="color:var(--muted);font-size:.9rem;margin:2rem 0 1rem">Sources of Requirements</p>
+  <table class="nfr-table">
+    <thead><tr><th>Source</th><th>Who/What</th><th>What They Provide</th></tr></thead>
+    <tbody>
+      <tr><td>👤 Users</td><td>End users of the system</td><td>Operational and practical needs</td></tr>
+      <tr><td>👔 Managers</td><td>Decision-makers</td><td>Reports, dashboards, KPIs</td></tr>
+      <tr><td>👥 Stakeholders</td><td>Customers, suppliers, regulators</td><td>External constraints and expectations</td></tr>
+      <tr><td>🖥️ Existing Systems</td><td>Current manual/computerized systems</td><td>Weaknesses, missing features</td></tr>
+      <tr><td>📄 Documents</td><td>Policies, forms, manuals, reports</td><td>How work is officially done</td></tr>
+      <tr><td>🌐 External Sources</td><td>Laws, standards, compliance rules</td><td>Legal and regulatory requirements</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+// ── STAR CANVAS ──
+const c=document.getElementById('starCanvas'),cx=c.getContext('2d');
+let stars=[];
+function rStar(){return{x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+.3,s:Math.random()*.5+.2,phase:Math.random()*Math.PI*2}}
+function initStars(){c.width=c.offsetWidth;c.height=c.offsetHeight;stars=Array.from({length:120},rStar)}
+let t=0;
+function drawStars(){cx.clearRect(0,0,c.width,c.height);t+=.01;stars.forEach(s=>{const o=.3+.7*Math.abs(Math.sin(t*s.s+s.phase));cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(0,212,255,${o*0.7})`;cx.fill()});
+// draw faint lines
+stars.forEach((a,i)=>stars.slice(i+1,i+5).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<100){cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.strokeStyle=`rgba(0,212,255,${.06*(1-d/100)})`;cx.lineWidth=.5;cx.stroke()}}));
+requestAnimationFrame(drawStars)}
+initStars();drawStars();
+window.addEventListener('resize',initStars);
+
+// ── SCROLL ──
+function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+const sections=['overview','frvsnfr','techniques','analysis','mcq','essay','quickref'];
+window.addEventListener('scroll',()=>{sections.forEach(id=>{const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();const btn=document.querySelector(`.nav-btn[onclick="goTo('${id}')"]`);if(btn){if(r.top<200&&r.bottom>100)btn.classList.add('active');else btn.classList.remove('active')}})});
+
+// ── INTERSECTION OBSERVER ──
+const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*55);obs.unobserve(e.target)}})},{threshold:.08});
+
+// ── TECHNIQUES DATA ──
+const techniques=[
+  {icon:'🗣️',name:'Interview',tagline:'Direct conversation with stakeholders',
+   pros:['Rich, detailed, in-depth responses','Can probe and ask follow-up questions','Builds relationship with stakeholders','Uncovers hidden needs and concerns','Flexible — can adapt questions live'],
+   cons:['Very time-consuming for large groups','Success depends on interviewer skill','Stakeholders may be unavailable','Risk of interviewer bias','Hard to compare responses across people'],
+   when:'Use when you need deep understanding of individual stakeholder needs, especially for complex or sensitive requirements. Best for senior users and managers.'},
+  {icon:'📋',name:'Questionnaire / Survey',tagline:'Structured forms for large groups',
+   pros:['Can reach large number of users quickly','Cost-effective and scalable','Anonymity encourages honest answers','Easy to analyze statistically','No scheduling needed'],
+   cons:['Cannot clarify ambiguous answers','Low response rate sometimes','Misinterpretation of questions','No opportunity for follow-up','Misses non-verbal cues'],
+   when:'Use when you need to gather data from many geographically dispersed users or when statistical data is needed. Good for confirming known requirements.'},
+  {icon:'👀',name:'Observation',tagline:'Watch users in their actual work environment',
+   pros:['Reveals actual (not reported) behavior','Uncovers informal work practices','No reliance on user memory','Identifies inefficiencies in current system','Contextual understanding of work flow'],
+   cons:['Hawthorne effect — users change behavior when observed','Very time-consuming','May be intrusive','Hard to observe rare events','Observer bias possible'],
+   when:'Use when users struggle to articulate their needs or when you suspect a gap between what users say they do and what they actually do. Best for understanding current workflows.'},
+  {icon:'📄',name:'Document Analysis',tagline:'Study existing documents, forms, and reports',
+   pros:['Objective — not influenced by opinions','Provides historical context','Reveals official processes and policies','Cost-effective — documents already exist','Good starting point before interviews'],
+   cons:['Documents may be outdated or inaccurate','May not reflect actual practice','Time-consuming to review large volumes','Requires access to confidential documents','Cannot explain reasons behind processes'],
+   when:'Use at the start of the project to understand the existing system. Excellent for regulated industries where processes are formally documented.'},
+  {icon:'🤝',name:'Workshop / JAD',tagline:'Joint Application Development — group sessions',
+   pros:['All stakeholders agree on requirements faster','Reduces conflicts through direct discussion','Comprehensive coverage in short time','Builds shared understanding','Highly interactive and collaborative'],
+   cons:['Requires skilled facilitator','Dominant personalities may overpower others','Hard to schedule all stakeholders together','Can become unproductive without structure','Expensive — takes many people off work'],
+   when:'Use when there are conflicting stakeholder needs that must be resolved, or when consensus is needed quickly. JAD (Joint Application Development) is the formal version used in systems analysis.'},
+  {icon:'🖥️',name:'Prototyping',tagline:'Build an early working model for feedback',
+   pros:['Users can see and react to actual design','Uncovers requirements users could not articulate','Reduces misunderstandings','Encourages user involvement','Early error detection'],
+   cons:['Users may think prototype IS the final product','Can be expensive and time-consuming','May focus on UI over functionality','Risk of scope creep','May create false expectations'],
+   when:'Use when requirements are unclear or users cannot express needs in abstract terms. Especially effective for UI-heavy systems. Best combined with other techniques.'}
+];
+
+const tg=document.getElementById('techGrid');
+techniques.forEach((t,i)=>{
+  const d=document.createElement('div');d.className='tech-card';
+  d.style.animationDelay=(i*.08)+'s';
+  d.innerHTML=`<div class="tech-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="tech-icon">${t.icon}</div>
+    <div><div class="tech-name">${t.name}</div><div class="tech-tagline">${t.tagline}</div></div>
+    <div class="tech-arrow">▼</div>
+  </div>
+  <div class="tech-body"><div class="tech-inner">
+    <div class="tech-col pro"><h4>✓ Advantages</h4><ul>${t.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+    <div class="tech-col con"><h4>✗ Disadvantages</h4><ul>${t.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+    <div class="tech-when"><strong>📌 When to Use:</strong> ${t.when}</div>
+  </div></div>`;
+  tg.appendChild(d);obs.observe(d);
+});
+document.querySelectorAll('.card').forEach(el=>obs.observe(el));
+
+// ── MCQ DATA ──
+const mcqs=[
+  // GENERAL
+  {tag:'gen',q:'What is a requirement in systems analysis?',opts:['A programming language','A statement of what the system must do or have','A testing procedure','A deployment guide'],ans:1,exp:'A requirement is a statement of what the system must do or must have — describing behavior, constraints, and quality attributes.'},
+  {tag:'gen',q:'More than what percentage of software project failures are caused by poor requirements?',opts:['20%','40%','60%','80%'],ans:2,exp:'According to the lecture, more than 60% of software project failures are caused by poor requirements.'},
+  {tag:'gen',q:'Which of the following is NOT a source of requirements?',opts:['Users','Existing systems','Programming languages','External regulations'],ans:2,exp:'Programming languages are tools for building systems, not sources of requirements. Sources include users, managers, stakeholders, systems, documents, and external sources.'},
+  {tag:'gen',q:'What do requirements describe?',opts:['System cost only','System behavior, constraints, and quality attributes','Marketing strategy','Hardware specifications only'],ans:1,exp:'Requirements describe system behavior, system constraints, and system quality attributes.'},
+  {tag:'gen',q:'What is requirement determination?',opts:['Testing the system','Deploying the system','The process of discovering, documenting, and understanding user needs','Writing source code'],ans:2,exp:'Requirement determination is the process of discovering, documenting, and understanding what users need from a system.'},
+  {tag:'gen',q:'Why are requirements errors expensive?',opts:['They require new hardware','Errors early in SDLC cost more to fix later','They need legal approval','They slow down testing'],ans:1,exp:'Requirements form the foundation of design. Errors at this stage cascade through the entire project and are very expensive to fix later.'},
+  {tag:'gen',q:'Which source provides decision-making needs like reports and KPIs?',opts:['End users','Managers','External regulators','Existing systems'],ans:1,exp:'Managers focus on decision-making needs and are interested in reports, dashboards, and KPIs.'},
+  {tag:'gen',q:'A cashier explaining checkout system requirements is an example of which source?',opts:['Managers','Stakeholders','Users','Documents'],ans:2,exp:'Cashiers are end users who interact with the system daily and provide operational and practical needs.'},
+
+  // REQUIREMENTS
+  {tag:'req',q:'Which of the following would a stakeholder include?',opts:['Only the end users','Only the developers','Customers, suppliers, and regulators','Only the managers'],ans:2,exp:'Stakeholders are anyone affected by the system — including customers, suppliers, and regulators.'},
+  {tag:'req',q:'What do existing systems help identify?',opts:['Marketing opportunities','Weaknesses and missing features','Budget estimates','Deployment plans'],ans:1,exp:'Existing (current manual or computerized) systems help identify weaknesses and missing features in the current approach.'},
+  {tag:'req',q:'Which source shows how work is officially done?',opts:['Users','Stakeholders','Documents — policies, forms, manuals','External standards'],ans:2,exp:'Documents such as policies, forms, manuals, and reports show how work is officially done in an organization.'},
+  {tag:'req',q:'Data protection laws as a requirement source fall under:',opts:['Users','Managers','Existing systems','External sources'],ans:3,exp:'Legal regulations and data protection laws are external sources of requirements.'},
+
+  // FUNCTIONAL
+  {tag:'fr',q:'Functional requirements describe:',opts:['How well the system performs','What the system should do','The system budget','The deployment environment'],ans:1,exp:'Functional requirements describe WHAT the system should do — its functions and behaviors.'},
+  {tag:'fr',q:'"The system calculates the total bill" is an example of:',opts:['Non-functional requirement','Schedule requirement','Functional requirement','Security requirement'],ans:2,exp:'This describes a function the system must perform — it is a functional requirement.'},
+  {tag:'fr',q:'Functional requirements are described using:',opts:['Adjectives','Action verbs','Numbers only','Passive voice only'],ans:1,exp:'Functional requirements are action-oriented and described using verbs (calculate, generate, display, validate).'},
+  {tag:'fr',q:'Which of the following is a functional requirement?',opts:['System must have 99.9% uptime','System must respond in 2 seconds','User can generate an invoice','All passwords must be encrypted'],ans:2,exp:'"User can generate an invoice" describes a specific system function — it is functional. The others are non-functional (reliability, performance, security).'},
+  {tag:'fr',q:'Functional requirements are directly linked to:',opts:['Hardware specifications','Business processes','Data center location','Network topology'],ans:1,exp:'Functional requirements are directly linked to business processes — they reflect what the business needs the system to do.'},
+  {tag:'fr',q:'Which is NOT a functional requirement?',opts:['User can log in','System generates invoice','System must load in 3 seconds','Admin can view all orders'],ans:2,exp:'"System must load in 3 seconds" is a performance (non-functional) requirement. The others are functional.'},
+  {tag:'fr',q:'"User can search products by category" is:',opts:['Non-functional requirement','Legal requirement','Functional requirement','Operational requirement'],ans:2,exp:'Searching products by category is a specific system function that the system must perform — making it a functional requirement.'},
+
+  // NON-FUNCTIONAL
+  {tag:'nfr',q:'Non-functional requirements describe:',opts:['What the system does','How well the system performs its functions','The system architecture','User interface colors'],ans:1,exp:'Non-functional requirements describe HOW WELL the system performs — quality attributes like speed, security, and reliability.'},
+  {tag:'nfr',q:'"The system must have 99.9% uptime" is what type of NFR?',opts:['Performance','Security','Reliability','Scalability'],ans:2,exp:'Uptime (availability) is a reliability requirement — it describes system stability and availability.'},
+  {tag:'nfr',q:'"The system must support 10,000 concurrent users" is:',opts:['Reliability NFR','Security NFR','Scalability NFR','Usability NFR'],ans:2,exp:'Supporting a large number of users as the system grows is a scalability requirement.'},
+  {tag:'nfr',q:'"Page must load in under 3 seconds" is which type of NFR?',opts:['Security','Performance','Usability','Legal'],ans:1,exp:'Response time and speed are performance requirements.'},
+  {tag:'nfr',q:'Which NFR type ensures the system follows data protection laws?',opts:['Security','Reliability','Legal','Usability'],ans:2,exp:'Compliance with laws and regulations is a legal NFR.'},
+  {tag:'nfr',q:'"Password must be encrypted" falls under which NFR type?',opts:['Performance','Usability','Scalability','Security'],ans:3,exp:'Password encryption is a security requirement — it protects data from unauthorized access.'},
+  {tag:'nfr',q:'Usability as an NFR refers to:',opts:['System speed','Ease of use and user-friendliness','Legal compliance','Uptime percentage'],ans:1,exp:'Usability NFRs measure how easy and intuitive the system is to use.'},
+  {tag:'nfr',q:'Which of the following best represents a non-functional requirement?',opts:['The system sends a confirmation email','Admin can delete user accounts','The system must respond within 2 seconds','User can update their profile'],ans:2,exp:'"Respond within 2 seconds" is a performance (non-functional) requirement. The others are functional.'},
+
+  // TECHNIQUES
+  {tag:'tech',q:'Which technique involves direct conversation between analyst and stakeholders?',opts:['Questionnaire','Observation','Interview','Document analysis'],ans:2,exp:'Interviews are direct conversations between analysts and stakeholders to collect requirements.'},
+  {tag:'tech',q:'The Hawthorne Effect is a risk in which technique?',opts:['Interview','Questionnaire','Prototyping','Observation'],ans:3,exp:'The Hawthorne Effect — users change their behavior when they know they are being observed — is a risk specific to observation.'},
+  {tag:'tech',q:'Which technique is best for reaching large geographically dispersed groups?',opts:['Interview','Observation','Questionnaire/Survey','Workshop'],ans:2,exp:'Questionnaires/surveys can reach large numbers of users quickly regardless of location.'},
+  {tag:'tech',q:'JAD stands for:',opts:['Joint Analysis Design','Just Another Document','Joint Application Development','Java Application Design'],ans:2,exp:'JAD stands for Joint Application Development — a workshop technique where stakeholders collaborate to define requirements.'},
+  {tag:'tech',q:'Which technique reveals informal work practices not in official documents?',opts:['Questionnaire','Document analysis','Interview','Observation'],ans:3,exp:'Observation reveals what users actually do (not just what they say or what documents show) — including informal, undocumented practices.'},
+  {tag:'tech',q:'A major advantage of prototyping is:',opts:['It is always cheap','Users can see and react to the actual design','No follow-up needed','No interviewer required'],ans:1,exp:'Prototyping lets users interact with an early version, uncovering requirements they could not articulate in the abstract.'},
+  {tag:'tech',q:'Which technique requires the most skilled facilitator?',opts:['Observation','Questionnaire','Document analysis','Workshop/JAD'],ans:3,exp:'Workshops/JAD sessions require skilled facilitators to manage group dynamics, prevent domination, and keep sessions productive.'},
+  {tag:'tech',q:'Document analysis is best used when:',opts:['Requirements are completely unknown','Understanding the existing system at project start','Users cannot articulate needs','Large groups need to be surveyed'],ans:1,exp:'Document analysis is ideal at project start to understand the existing system through its formal documentation.'},
+  {tag:'tech',q:'A risk unique to prototyping is:',opts:['Low response rate','Hawthorne effect','Users thinking the prototype IS the final product','Difficulty scheduling stakeholders'],ans:2,exp:'Users may mistake the prototype for the final system, leading to false expectations or premature sign-off.'},
+  {tag:'tech',q:'Which technique is most cost-effective for data collection?',opts:['Interview','Observation','Questionnaire/Survey','Workshop'],ans:2,exp:'Questionnaires/surveys are cost-effective because they reach many users without requiring face-to-face meetings.'},
+
+  // ANALYSIS
+  {tag:'ana',q:'Which is an example of an ambiguous requirement?',opts:['"System should respond within 2 seconds"','"User can log in with email"','"System should be fast"','"System generates PDF invoices"'],ans:2,exp:'"System should be fast" is vague and ambiguous — "fast" means different things to different people. It should specify a measurable metric.'},
+  {tag:'ana',q:'Which is the CORRECT (non-ambiguous) version of a requirement?',opts:['"System should be fast"','"System should be reliable"','"System must respond within 2 seconds"','"System should have good security"'],ans:2,exp:'"System must respond within 2 seconds" is specific and measurable — the hallmark of a good, unambiguous requirement.'},
+  {tag:'ana',q:'MoSCoW stands for:',opts:['Must, Often, Should, Cannot, Won\'t','Must, Should, Could, Won\'t','More, Some, Could, Want','Must, Some, Can, Won\'t'],ans:1,exp:'MoSCoW = Must have, Should have, Could have, Won\'t have (this phase). It\'s a prioritization method.'},
+  {tag:'ana',q:'In MoSCoW, which category represents requirements that are out of scope for Phase 1?',opts:['Must','Should','Could','Won\'t'],ans:3,exp:'"Won\'t" in MoSCoW means the requirement is agreed to be excluded from the current phase/release.'},
+  {tag:'ana',q:'Validation of requirements ensures which of the following?',opts:['The system is deployed','Requirements are correct, complete, feasible, and consistent','The code is tested','The UI is designed'],ans:1,exp:'Validation ensures requirements are correct, complete, feasible (can be implemented), and consistent (no contradictions).'},
+  {tag:'ana',q:'Which validation technique involves step-by-step checking of requirements?',opts:['Stakeholder approval','Prototyping feedback','Walkthroughs','Document analysis'],ans:2,exp:'Walkthroughs involve step-by-step review of requirements with stakeholders to find errors and omissions.'},
+  {tag:'ana',q:'"Dark mode" in MoSCoW is an example of:',opts:['Must have','Should have','Could have','Won\'t have'],ans:2,exp:'Dark mode is a nice-to-have feature — "Could have" in MoSCoW. It adds value but is not critical.'},
+  {tag:'ana',q:'Why is requirement prioritization necessary?',opts:['To increase system complexity','Due to limited budget, time, and resources','To make the UI prettier','To increase number of stakeholders'],ans:1,exp:'Prioritization is necessary because organizations have limited budget, time constraints, and limited resource availability.'},
+];
+
+let saved={},corr=0,ansCount=0;
+function renderMCQ(filter='all'){
+  const wrap=document.getElementById('mcqWrap');wrap.innerHTML='';
+  const filtered=filter==='all'?mcqs:mcqs.filter(q=>q.tag===filter);
+  filtered.forEach((q,i)=>{
+    const gi=mcqs.indexOf(q);
+    const tags={gen:'General',req:'Requirements',fr:'Functional',nfr:'Non-Functional',tech:'Techniques',ana:'Analysis'};
+    const tc={gen:'t-gen',req:'t-req',fr:'t-fr',nfr:'t-nfr',tech:'t-tech',ana:'t-ana'};
+    const st=saved[gi];
+    const d=document.createElement('div');d.className='mcq-card';
+    const opts=q.opts.map((o,oi)=>{
+      let cls='opt';
+      if(st!==undefined){if(oi===q.ans)cls+=' correct';else if(oi===st&&st!==q.ans)cls+=' wrong'}
+      return `<button class="${cls}" onclick="ansQ(${gi},${oi},this.closest('.mcq-card'))" ${st!==undefined?'disabled':''}><span class="opt-ltr">${String.fromCharCode(65+oi)}</span>${o}</button>`;
+    }).join('');
+    d.innerHTML=`<span class="mcq-tag ${tc[q.tag]}">${tags[q.tag]}</span>
+    <div class="mcq-head"><div class="mcq-num">${i+1}</div><div class="mcq-q">${q.q}</div></div>
+    <div class="opts">${opts}</div>
+    <div class="exp ${st!==undefined?'show':''}"><span>💡</span><span>${q.exp}</span></div>`;
+    wrap.appendChild(d);obs.observe(d);
+  });
+}
+function ansQ(gi,chosen,card){
+  const q=mcqs[gi];saved[gi]=chosen;
+  card.querySelectorAll('.opt').forEach((o,oi)=>{o.disabled=true;if(oi===q.ans)o.classList.add('correct');else if(oi===chosen&&chosen!==q.ans)o.classList.add('wrong')});
+  card.querySelector('.exp').classList.add('show');updateScore();
+}
+function updateScore(){
+  const tot=mcqs.length;ansCount=Object.keys(saved).length;corr=mcqs.filter((q,i)=>saved[i]===q.ans).length;
+  document.getElementById('scoreTxt').textContent=`${corr}/${ansCount}`;
+  const pct=ansCount>0?Math.round(corr/ansCount*100):0;
+  document.getElementById('progBar').style.width=pct+'%';
+  document.getElementById('scoreDesc').textContent=ansCount===0?'Answer questions to track your progress.':`${pct}% correct — ${ansCount}/${tot} answered.`;
+  const deg=(ansCount>0?corr/ansCount:0)*360;
+  document.getElementById('scoreRing').style.background=`conic-gradient(var(--a1) ${deg}deg,var(--border) ${deg}deg)`;
+}
+function resetAll(){saved={};corr=0;ansCount=0;updateScore();renderMCQ('all');document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.fbtn')[0].classList.add('active')}
+function filterQ(f,btn){document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMCQ(f)}
+
+// ── ESSAY DATA ──
+const essays=[
+  {q:'Define "requirement" in systems analysis and explain why requirements are critical to project success.',marks:'8 marks',
+   pts:['A requirement is a statement of what the system must do or must have.','Requirements describe system behavior, constraints, and quality attributes.','They form the foundation of system design — all design decisions trace back to requirements.','Errors in requirements are very expensive to fix because they affect every subsequent phase.','More than 60% of software project failures are caused by poor requirements.','Poor requirements lead to system failure and user dissatisfaction.','Clear requirements ensure the final system meets user needs and business goals.','They enable proper planning, budgeting, and scheduling of the project.']},
+  {q:'What is requirement determination? Identify and explain all six primary sources of requirements.',marks:'12 marks',
+   pts:['Requirement determination: process of discovering, documenting, and understanding what users need.','Source 1 — Users: end users who interact with the system daily; provide operational, practical needs. E.g., cashiers explaining checkout requirements.','Source 2 — Managers: focus on decision-making needs; interested in reports, dashboards, and KPIs. E.g., sales manager requesting monthly performance reports.','Source 3 — Stakeholders: anyone affected by the system including customers, suppliers, and regulators.','Source 4 — Existing Systems: current manual or computerized systems; help identify weaknesses and missing features.','Source 5 — Documents: policies, forms, manuals, reports; show how work is officially done.','Source 6 — External Sources: legal regulations, industry standards, government compliance rules. E.g., data protection laws.','All six sources should be consulted for comprehensive, accurate requirements.']},
+  {q:'Distinguish between functional and non-functional requirements. Give three examples of each.',marks:'10 marks',
+   pts:['Functional Requirements (FR): describe WHAT the system should do.','FRs are action-oriented and described using verbs.','FRs are directly linked to business processes.','Example FR 1: User can log in with email and password.','Example FR 2: System calculates and displays total bill.','Example FR 3: Admin can generate monthly sales report.','Non-Functional Requirements (NFR): describe HOW WELL the system performs its functions.','NFRs represent quality attributes and constraints.','Example NFR 1: System must load pages in under 3 seconds (Performance).','Example NFR 2: All passwords must be encrypted (Security).','Example NFR 3: System must have 99.9% uptime (Reliability).','Key difference: FR = "what the system does"; NFR = "how well it does it".']},
+  {q:'Name and explain all six types of non-functional requirements with examples.',marks:'12 marks',
+   pts:['1. Performance: measures speed and response time. Example: page loads in under 3 seconds.','2. Security: measures data protection. Example: passwords must be encrypted using SHA-256.','3. Usability: measures ease of use. Example: interface must be user-friendly and accessible on mobile.','4. Reliability: measures system stability. Example: system must have 99.9% uptime.','5. Scalability: measures ability to grow. Example: system must support 10,000 concurrent users.','6. Legal: measures regulatory compliance. Example: system must follow data protection laws (GDPR).','Each type ensures a different quality dimension of the system.','NFRs are just as important as functional requirements for system success.']},
+  {q:'Explain the Interview technique for requirement gathering. What are its advantages and disadvantages?',marks:'8 marks',
+   pts:['An interview is a direct conversation between an analyst and a stakeholder to collect requirements.','It is one of the most commonly used and effective techniques.','Advantage 1: Provides rich, detailed, and in-depth responses.','Advantage 2: Analyst can probe and ask follow-up questions.','Advantage 3: Builds relationship and trust with stakeholders.','Advantage 4: Uncovers hidden needs and concerns not initially stated.','Advantage 5: Flexible — questions can be adapted during the session.','Disadvantage 1: Very time-consuming, especially for large stakeholder groups.','Disadvantage 2: Success heavily depends on the interviewer\'s skill.','Disadvantage 3: Key stakeholders may be unavailable or unwilling to participate.','Disadvantage 4: Risk of interviewer bias affecting question framing.','Best used when deep understanding of individual stakeholder needs is required.']},
+  {q:'What is the Observation technique? What is the "Hawthorne Effect" and why is it a problem?',marks:'6 marks',
+   pts:['Observation involves watching users perform their actual work tasks in their real environment.','It reveals the actual workflow — not just what users say they do.','It uncovers informal, undocumented practices and hidden inefficiencies.','The Hawthorne Effect: users change or improve their behavior when they know they are being observed.','This is a problem because it means the analyst observes unrepresentative behavior.','The observed process may look better than normal, giving a misleading picture of real needs.','Resolution: observe unobtrusively, conduct multiple sessions until behavior normalizes.','Best used when there is a gap between reported and actual user behavior.']},
+  {q:'Compare and contrast Questionnaires and Interviews as requirement gathering techniques.',marks:'8 marks',
+   pts:['Both are used to gather requirements from stakeholders.','Interviews: direct one-on-one conversation; allows follow-up questions; rich, detailed responses.','Questionnaires: structured forms distributed to many users; no opportunity for follow-up.','Interviews advantage over Q: can clarify ambiguous answers immediately.','Questionnaires advantage over I: can reach large, geographically dispersed groups quickly.','Interviews are better for complex, sensitive, or nuanced requirements.','Questionnaires are better for confirming or quantifying known requirements.','Interviews are time-consuming; questionnaires are scalable and cost-effective.','Questionnaires risk misinterpretation; interviews risk interviewer bias.','Best practice: use both — questionnaires for breadth, interviews for depth.']},
+  {q:'What is a Workshop/JAD session? When is it most useful?',marks:'6 marks',
+   pts:['A workshop (Joint Application Development — JAD) is a structured group meeting where all key stakeholders collaborate to define requirements.','All relevant stakeholders are present simultaneously.','Advantage: Resolves conflicts through direct discussion between parties.','Advantage: Achieves comprehensive coverage of requirements in a short time.','Advantage: Builds shared understanding and consensus among stakeholders.','Disadvantage: Requires a skilled, experienced facilitator.','Disadvantage: Dominant personalities may overpower quieter stakeholders.','Disadvantage: Expensive — takes many people away from their work simultaneously.','Best used when there are conflicting stakeholder needs to resolve, or when fast consensus is needed.','JAD is the formal structured version widely used in systems analysis.']},
+  {q:'Explain prototyping as a requirement gathering technique. What risks are associated with it?',marks:'6 marks',
+   pts:['Prototyping involves building an early, simplified working model of the system to gather feedback.','Users interact with the prototype and identify what they like, dislike, or feel is missing.','Advantage: Users can see and react to actual design rather than abstract descriptions.','Advantage: Uncovers requirements users could not articulate without seeing the system.','Advantage: Reduces misunderstandings between analysts and users.','Risk 1: Users may mistake the prototype for the final product — creating false expectations.','Risk 2: Can be expensive and time-consuming to build even a basic prototype.','Risk 3: Risk of scope creep — users keep adding requirements when they see what\'s possible.','Risk 4: May focus too much on visual appearance rather than functionality.','Best used when requirements are vague or users struggle to express needs in abstract form.']},
+  {q:'What is requirement analysis? Explain validation and the four properties it ensures.',marks:'8 marks',
+   pts:['Requirement analysis is the process of validating, refining, and prioritizing gathered requirements.','It ensures requirements are ready to be used as the foundation for system design.','Validation ensures requirements meet four properties:','1. Correctness: requirements accurately reflect what users and the business need.','2. Completeness: no requirements are missing — all user needs are captured.','3. Feasibility: requirements can actually be implemented within budget, time, and technology constraints.','4. Consistency: no requirements contradict each other.','Validation techniques include: requirement reviews, walkthroughs, prototyping feedback, stakeholder approval.','Validation prevents expensive errors from reaching the design and development phases.']},
+  {q:'What are ambiguous requirements? Give an example and explain how to resolve ambiguity.',marks:'6 marks',
+   pts:['Ambiguous requirements are vague, unclear, or open to multiple interpretations.','They cause confusion between developers and stakeholders, leading to incorrect systems.','Common ambiguous words: fast, good, user-friendly, reliable, efficient.','Example — Ambiguous: "The system should be fast." (What does fast mean?)','Example — Clear: "The system must respond to all user actions within 2 seconds."','Resolution method 1: Clarification meetings with stakeholders to agree on specific definitions.','Resolution method 2: Requirement modeling — create use cases, diagrams to clarify meaning.','Resolution method 3: Apply documentation standards — use measurable criteria for all requirements.','Good requirements should always be specific, measurable, achievable, relevant, and time-bound (SMART).']},
+  {q:'Explain the MoSCoW method of prioritizing requirements.',marks:'6 marks',
+   pts:['MoSCoW is a prioritization method that categorizes requirements by importance.','M = Must have: non-negotiable, core requirements. System cannot go live without these. Example: user login.','S = Should have: important but not critical for launch. Example: email notification.','C = Could have: nice-to-have if time and budget allow. Example: dark mode.','W = Won\'t have (this phase): agreed to exclude from current release. Example: AI chatbot in Phase 1.','Why prioritize? Limited budget, time constraints, and limited resource availability.','MoSCoW helps focus development effort on what matters most.','Alternative methods: Business Value (ROI), Risk-Based, Stakeholder Ranking.','Without prioritization, teams may waste time on low-value features and miss critical ones.']},
+  {q:'Why are poor requirements a major cause of project failure? Support with reasons.',marks:'6 marks',
+   pts:['60%+ of software project failures are attributed to poor requirements.','Reason 1: Poor requirements create a wrong system — developers build what was specified, not what was needed.','Reason 2: Missing requirements are discovered late, requiring expensive redesign.','Reason 3: Ambiguous requirements lead to different interpretations by different team members.','Reason 4: Conflicting requirements cause inconsistencies in the final system.','Reason 5: Infeasible requirements (not caught early) waste development effort.','Impact: Cost overruns, schedule delays, user dissatisfaction, project cancellation.','Prevention: Thorough requirement determination, appropriate gathering techniques, and rigorous validation.','Requirements are the foundation — a weak foundation causes the entire system to fail.']},
+  {q:'Describe document analysis as a requirement gathering technique and when it is most appropriate.',marks:'5 marks',
+   pts:['Document analysis involves studying existing documents such as policies, forms, manuals, and reports.','It helps understand how the current system works officially.','Advantage: Objective — not influenced by personal opinions or biases.','Advantage: Provides historical context and shows how processes evolved.','Advantage: Cost-effective — documents already exist.','Disadvantage: Documents may be outdated and not reflect current practice.','Disadvantage: Cannot explain the reasons behind documented processes.','Most appropriate at the start of a project to understand the existing system.','Especially useful in regulated industries with formal, mandatory documentation.','Should be combined with interviews to verify that documents reflect actual practice.']},
+  {q:'What conflicts can arise during requirement analysis and how are they resolved?',marks:'6 marks',
+   pts:['Conflicts arise when different stakeholders have contradictory needs for the system.','Common conflict: Management wants detailed audit logs; users want minimal data collection.','Common conflict: IT wants open platform; legal requires restricted access.','Common problem: Conflicting stakeholder needs for the same system feature.','Common problem: Vague or ambiguous requirements interpreted differently.','Common problem: Missing requirements discovered only late in development.','Resolution 1: Clarification meetings — bring conflicting parties together to negotiate.','Resolution 2: Requirement modeling — use diagrams (use case, data flow) to make needs visual.','Resolution 3: Apply documentation standards — ensure every requirement is specific and testable.','Goal: Achieve a consistent, agreed-upon set of requirements before design begins.']},
+  {q:'Compare functional requirements and non-functional requirements. Which is more important?',marks:'6 marks',
+   pts:['Functional Requirements: define WHAT the system does — its features and behaviors.','Non-Functional Requirements: define HOW WELL the system performs those features.','FR example: User can search for products. NFR example: Search must return results in under 1 second.','FRs are action-oriented and verb-driven. NFRs are quality-oriented and often measurable.','FRs are linked to business processes. NFRs are linked to quality standards.','Neither is more important — both are essential for a successful system.','A system with all FRs but poor NFRs may be functionally correct but slow, insecure, or unreliable.','A system with great NFRs but missing FRs simply does not do what the business needs.','Best practice: identify and validate both types early and rigorously.']},
+];
+
+function renderEssays(){
+  const wrap=document.getElementById('essayWrap');
+  essays.forEach((e,i)=>{
+    const d=document.createElement('div');d.className='ec';
+    d.innerHTML=`<div class="eh" onclick="this.parentElement.classList.toggle('open')">
+      <div><div class="eq">Q${i+1}. ${e.q}</div></div>
+      <div style="display:flex;gap:.5rem;align-items:center;flex-shrink:0"><span class="em">${e.marks}</span><span class="etog">▼</span></div>
+    </div>
+    <div class="eb"><div class="econt"><h4>Model Answer Key Points</h4>
+    <ul class="epoints">${e.pts.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div></div>`;
+    wrap.appendChild(d);obs.observe(d);
+  });
+}
+
+renderMCQ('all');
+renderEssays();
+</script>
+</body>
+</html>

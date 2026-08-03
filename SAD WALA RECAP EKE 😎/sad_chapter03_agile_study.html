@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAD Ch03 — Agile Methodology Exam Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04080e;
+  --s1:#0b1220;
+  --s2:#111b2e;
+  --bdr:#1a2840;
+  --a1:#f97316;   /* orange — Agile energy */
+  --a2:#22d3ee;   /* cyan */
+  --a3:#a3e635;   /* lime */
+  --a4:#f43f5e;   /* rose */
+  --a5:#8b5cf6;   /* violet */
+  --a6:#fbbf24;   /* amber */
+  --txt:#e2e8f0;
+  --dim:#94a3b8;
+  --mut:#475569;
+  --glow:rgba(249,115,22,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:'Space Grotesk',sans-serif;line-height:1.7;overflow-x:hidden;}
+
+/* animated grid */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(249,115,22,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(249,115,22,.03) 1px,transparent 1px);background-size:46px 46px;pointer-events:none;z-index:0;}
+
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(4,8,14,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);height:58px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600;color:var(--a1);display:flex;align-items:center;gap:8px;}
+.brand .s{color:var(--mut);}
+.ntabs{display:flex;gap:4px;}
+.ntab{padding:5px 14px;border-radius:6px;border:none;background:transparent;color:var(--mut);font-family:inherit;font-size:.78rem;cursor:pointer;transition:all .2s;}
+.ntab:hover,.ntab.on{background:var(--glow);color:var(--a1);}
+.badge{background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:.67rem;font-weight:700;padding:3px 12px;border-radius:20px;font-family:'JetBrains Mono',monospace;animation:blk 2s infinite;}
+@keyframes blk{0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,.5);}50%{box-shadow:0 0 0 9px rgba(249,115,22,0);}}
+
+/* LAYOUT */
+.wrap{max-width:1100px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1;}
+main{padding-top:76px;padding-bottom:4rem;}
+
+/* HERO */
+.hero{text-align:center;padding:3rem 0 2rem;}
+.ey{display:inline-block;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.3);color:var(--a1);font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:.09em;text-transform:uppercase;margin-bottom:1.2rem;font-family:'JetBrains Mono',monospace;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.9rem);font-weight:700;line-height:1.15;margin-bottom:.8rem;}
+.gr{background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--dim);max-width:560px;margin:0 auto 1.8rem;font-size:.92rem;}
+.pills{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;}
+.pill{background:var(--s2);border:1px solid var(--bdr);border-radius:30px;padding:7px 16px;display:flex;align-items:center;gap:7px;font-size:.79rem;}
+.pill .n{font-weight:700;color:var(--a1);font-family:'JetBrains Mono',monospace;}
+.pill .l{color:var(--mut);}
+
+/* TAB ROW */
+.tabrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2rem;}
+.tb{padding:8px 20px;border-radius:8px;border:1px solid var(--bdr);background:var(--s1);color:var(--dim);font-family:inherit;font-size:.84rem;font-weight:500;cursor:pointer;transition:all .25s;}
+.tb:hover{border-color:var(--a1);color:var(--a1);}
+.tb.on{background:var(--a1);border-color:var(--a1);color:#fff;font-weight:700;box-shadow:0 0 24px rgba(249,115,22,.4);}
+.sec{display:none;}
+.sec.on{display:block;}
+
+/* CARDS */
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:1.5rem;margin-bottom:1rem;transition:border-color .2s,transform .2s;animation:up .4s ease both;}
+.card:hover{border-color:rgba(249,115,22,.3);transform:translateY(-2px);}
+@keyframes up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.tag{display:inline-block;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 10px;border-radius:4px;margin-bottom:.8rem;font-family:'JetBrains Mono',monospace;}
+.to{background:rgba(249,115,22,.1);color:var(--a1);}
+.tc{background:rgba(34,211,238,.1);color:var(--a2);}
+.tg{background:rgba(163,230,53,.1);color:var(--a3);}
+.tr{background:rgba(244,63,94,.1);color:var(--a4);}
+.tv{background:rgba(139,92,246,.1);color:var(--a5);}
+.ty{background:rgba(251,191,36,.1);color:var(--a6);}
+.card h3{font-size:.97rem;font-weight:600;margin-bottom:.5rem;}
+.card p,.card ul,.card ol{font-size:.86rem;color:var(--dim);}
+.card ul,.card ol{padding-left:1.2rem;}
+.card li{margin-bottom:.28rem;}
+.hl{background:rgba(249,115,22,.07);border-left:3px solid var(--a1);border-radius:0 8px 8px 0;padding:.75rem 1rem;margin-top:.8rem;font-size:.83rem;color:var(--dim);}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.g3{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.5rem;}
+
+/* SECTION HDR */
+.shdr{display:flex;align-items:center;gap:10px;margin:2rem 0 1.1rem;}
+.shdr h2{font-size:1.05rem;font-weight:700;}
+.shdr .cnt{background:var(--s2);border:1px solid var(--bdr);border-radius:20px;padding:2px 10px;font-size:.7rem;color:var(--mut);font-family:'JetBrains Mono',monospace;}
+
+/* MANIFESTO VALUES */
+.mvals{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.mval{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:1.2rem;position:relative;overflow:hidden;animation:up .4s ease both;}
+.mval::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.mv1::before{background:linear-gradient(90deg,var(--a1),var(--a6));}
+.mv2::before{background:linear-gradient(90deg,var(--a2),var(--a5));}
+.mv3::before{background:linear-gradient(90deg,var(--a3),var(--a2));}
+.mv4::before{background:linear-gradient(90deg,var(--a4),var(--a1));}
+.mval .num{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;opacity:.08;position:absolute;top:.5rem;right:1rem;line-height:1;}
+.mval h3{font-size:.9rem;font-weight:700;margin-bottom:.5rem;}
+.over{color:var(--a3);font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.not{color:var(--mut);font-size:.75rem;font-family:'JetBrains Mono',monospace;text-decoration:line-through;margin-top:.3rem;}
+
+/* PRINCIPLES GRID */
+.prns{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.8rem;margin-bottom:1.5rem;}
+.prn{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;padding:1rem;display:flex;gap:.8rem;animation:up .4s ease both;}
+.prn-num{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--a1);background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);border-radius:6px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.prn-txt{font-size:.83rem;color:var(--dim);line-height:1.5;}
+
+/* SCRUM ROLES */
+.roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.role{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:1.3rem;animation:up .4s ease both;}
+.role-icon{font-size:1.8rem;margin-bottom:.6rem;}
+.role h3{font-size:.97rem;font-weight:700;margin-bottom:.6rem;}
+.role ul{padding-left:1.1rem;font-size:.84rem;color:var(--dim);}
+.role li{margin-bottom:.25rem;}
+.rbadge{display:inline-block;font-size:.67rem;font-weight:700;font-family:'JetBrains Mono',monospace;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-bottom:.7rem;}
+
+/* SCRUM EVENTS TIMELINE */
+.evts{display:flex;flex-direction:column;gap:.8rem;margin-bottom:1.5rem;}
+.evt{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:1.1rem 1.3rem;display:flex;gap:1rem;align-items:flex-start;animation:up .4s ease both;}
+.evt-dot{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.evt h3{font-size:.9rem;font-weight:700;margin-bottom:.2rem;}
+.evt p{font-size:.82rem;color:var(--dim);margin-bottom:.3rem;}
+.evt-meta{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:4px;}
+
+/* ARTIFACTS */
+.arts{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.art{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:1.3rem;animation:up .4s ease both;}
+.art h3{font-size:.95rem;font-weight:700;margin-bottom:.5rem;}
+.art ul{padding-left:1.1rem;font-size:.83rem;color:var(--dim);}
+.art li{margin-bottom:.25rem;}
+
+/* MCQ */
+.mqcard{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:1.4rem;margin-bottom:1rem;animation:up .35s ease both;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:.67rem;font-weight:700;color:var(--a2);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.06em;}
+.qt{font-weight:600;font-size:.93rem;margin-bottom:.9rem;line-height:1.5;}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:8px;border:1px solid var(--bdr);cursor:pointer;transition:all .2s;font-size:.85rem;}
+.opt:hover{border-color:rgba(249,115,22,.45);background:rgba(249,115,22,.05);}
+.opt.sel{border-color:var(--a1);background:rgba(249,115,22,.08);}
+.opt.ok{border-color:var(--a3)!important;background:rgba(163,230,53,.08)!important;}
+.opt.no{border-color:var(--a4)!important;background:rgba(244,63,94,.07)!important;}
+.ol{width:22px;height:22px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;font-family:'JetBrains Mono',monospace;transition:all .2s;}
+.opt.ok .ol{background:var(--a3);border-color:var(--a3);color:#000;}
+.opt.no .ol{background:var(--a4);border-color:var(--a4);color:#fff;}
+.fb{margin-top:.85rem;padding:.8rem 1rem;border-radius:8px;font-size:.81rem;display:none;}
+.fb.show{display:block;animation:up .2s ease;}
+.fb.cf{background:rgba(163,230,53,.08);border:1px solid rgba(163,230,53,.25);color:#bef264;}
+.fb.xf{background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.2);color:#fda4af;}
+.ckbtn{margin-top:.85rem;background:var(--a1);color:#fff;border:none;border-radius:8px;padding:7px 18px;font-family:inherit;font-size:.79rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.ckbtn:hover{background:#ea6b0c;transform:translateY(-1px);}
+.ckbtn:disabled{background:var(--s2);color:var(--mut);cursor:default;transform:none;}
+
+/* ESSAY */
+.ecard{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:1.4rem;margin-bottom:1rem;animation:up .35s ease both;}
+.elbl{font-size:.67rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:.5rem;}
+.de{color:var(--a3);}
+.dm{color:var(--a6);}
+.dh{color:var(--a4);}
+.dmk{color:var(--a2);}
+.eq{font-weight:600;font-size:.94rem;margin-bottom:.9rem;}
+.atog{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;border:1px solid var(--bdr);background:transparent;color:var(--mut);font-family:inherit;font-size:.79rem;cursor:pointer;transition:all .2s;}
+.atog:hover{border-color:var(--a1);color:var(--a1);}
+.atog svg{transition:transform .25s;}
+.atog.open svg{transform:rotate(180deg);}
+.abody{display:none;margin-top:1rem;padding:1.2rem;border-radius:10px;background:var(--s2);border:1px solid var(--bdr);font-size:.84rem;color:var(--dim);animation:up .25s ease;}
+.abody.show{display:block;}
+.abody h4{color:var(--txt);font-size:.87rem;margin-bottom:.45rem;font-weight:600;}
+.abody p,.abody ul,.abody ol{margin-bottom:.6rem;}
+.abody ul,.abody ol{padding-left:1.2rem;}
+.abody li{margin-bottom:.28rem;}
+.kp{display:inline-block;background:rgba(249,115,22,.12);color:var(--a1);font-size:.71rem;font-weight:700;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:4px;margin-right:3px;}
+.mh{font-size:.76rem;color:var(--mut);margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr);}
+
+/* SCORE */
+.sw{position:fixed;bottom:20px;right:20px;background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:12px 18px;z-index:200;min-width:155px;box-shadow:0 8px 32px rgba(0,0,0,.6);animation:si .4s ease;}
+@keyframes si{from{transform:translateX(100px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.sw .sl{font-size:.67rem;color:var(--mut);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.sw .sv{font-size:1.4rem;font-weight:700;color:var(--a1);font-family:'JetBrains Mono',monospace;}
+.sw .ss{font-size:.7rem;color:var(--mut);}
+.pb{background:var(--s2);border-radius:20px;height:4px;margin-top:7px;}
+.pf{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--a1),var(--a2));transition:width .5s ease;}
+
+/* PROS CONS */
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:.9rem;}
+.pros{background:rgba(163,230,53,.06);border:1px solid rgba(163,230,53,.2);border-radius:8px;padding:.8rem;}
+.cons{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.18);border-radius:8px;padding:.8rem;}
+.pros h4{color:var(--a3);font-size:.78rem;font-weight:700;margin-bottom:.4rem;}
+.cons h4{color:var(--a4);font-size:.78rem;font-weight:700;margin-bottom:.4rem;}
+.pros ul,.cons ul{padding-left:1rem;font-size:.79rem;color:var(--dim);}
+.pros li,.cons li{margin-bottom:.2rem;}
+
+@media(max-width:640px){.ntabs{display:none;}.hero h1{font-size:1.5rem;}.g2,.g3,.roles,.mvals,.arts,.prns{grid-template-columns:1fr;}.pc{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<nav>
+  <div class="brand"><span>◈</span><span>SE201.3</span><span class="s">/</span><span>Chapter 03</span></div>
+  <div class="ntabs">
+    <button class="ntab on" onclick="goN(this)">Overview</button>
+    <button class="ntab" onclick="goN(this)">MCQ</button>
+    <button class="ntab" onclick="goN(this)">Essay</button>
+  </div>
+  <span class="badge">EXAM 🔥 SOON</span>
+</nav>
+
+<main><div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ey">Agile Methodology &nbsp;|&nbsp; SE201.3 Chapter 03</div>
+  <h1>Agile Development<br><span class="gr">Manifesto · Scrum · Principles</span></h1>
+  <p>Complete exam prep — full topic notes, 60+ MCQs with instant feedback, and 20+ model essay answers. All from your lecture slides.</p>
+  <div class="pills">
+    <div class="pill"><span class="n">4</span><span class="l">Core Values</span></div>
+    <div class="pill"><span class="n">12</span><span class="l">Principles</span></div>
+    <div class="pill"><span class="n">60+</span><span class="l">MCQs</span></div>
+    <div class="pill"><span class="n">20+</span><span class="l">Essay Qs</span></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabrow">
+  <button class="tb on" onclick="sw('overview',this)">📖 Topic Overview</button>
+  <button class="tb" onclick="sw('mcq',this)">🎯 MCQ Practice</button>
+  <button class="tb" onclick="sw('essay',this)">✍️ Essay Questions</button>
+</div>
+
+<!-- ═══════════ OVERVIEW ═══════════ -->
+<div id="sec-overview" class="sec on">
+
+  <!-- INTRO -->
+  <div class="shdr"><h2>Introduction to Agile</h2><span class="cnt">Topic 1</span></div>
+  <div class="g2">
+    <div class="card">
+      <span class="tag to">Why Agile?</span>
+      <h3>Problems Agile Solved</h3>
+      <p>Traditional development models faced these challenges:</p>
+      <ul>
+        <li><strong style="color:var(--txt)">Late delivery</strong> of software</li>
+        <li><strong style="color:var(--txt)">Difficulty handling</strong> changing requirements</li>
+        <li><strong style="color:var(--txt)">Limited customer</strong> involvement throughout</li>
+      </ul>
+      <div class="hl">💡 Agile was introduced specifically to overcome these limitations of Waterfall-style development.</div>
+    </div>
+    <div class="card">
+      <span class="tag to">Definition</span>
+      <h3>What is Agile?</h3>
+      <p>A <strong style="color:var(--txt)">set of principles and practices</strong> for software development that emphasises:</p>
+      <ul>
+        <li>Flexibility and adaptability</li>
+        <li>Customer collaboration throughout</li>
+        <li>Frequent, early delivery of working software</li>
+        <li>Continuous feedback and incremental improvement</li>
+      </ul>
+      <div class="hl">⚡ Key: Agile is <strong style="color:var(--txt)">adaptive, not predictive.</strong> Software developed in small increments called <strong style="color:var(--txt)">iterations or sprints.</strong></div>
+    </div>
+    <div class="card">
+      <span class="tag tc">Important Clarification</span>
+      <h3>Agile Does NOT Eliminate Planning</h3>
+      <p>A common misconception is that Agile means "no planning." In reality:</p>
+      <ul>
+        <li>Planning is done <strong style="color:var(--txt)">continuously</strong> throughout the project</li>
+        <li>Plans adapt as new information emerges</li>
+        <li>Each sprint has its own planning session</li>
+        <li>The product backlog is continuously refined</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="tag tg">Agile Promotes</span>
+      <h3>Core Agile Focus Areas</h3>
+      <ul>
+        <li>🤝 <strong style="color:var(--txt)">Teamwork</strong> — cross-functional, self-organising teams</li>
+        <li>🔄 <strong style="color:var(--txt)">Continuous feedback</strong> — from users and stakeholders</li>
+        <li>📈 <strong style="color:var(--txt)">Incremental improvement</strong> — each sprint improves on the last</li>
+        <li>💬 <strong style="color:var(--txt)">Face-to-face communication</strong> — preferred over written</li>
+        <li>⚡ <strong style="color:var(--txt)">Early delivery</strong> — working software from sprint 1</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MANIFESTO VALUES -->
+  <div class="shdr"><h2>The Agile Manifesto — 4 Core Values</h2><span class="cnt">Topic 2 — Very High Exam Weight</span></div>
+  <div class="mvals">
+    <div class="mval mv1" style="animation-delay:.05s">
+      <span class="num">1</span>
+      <h3>Individuals &amp; Interactions</h3>
+      <div class="over">✓ over Processes and Tools</div>
+      <div class="not">over Processes and Tools</div>
+      <p style="font-size:.82rem;color:var(--dim);margin-top:.6rem;">People and communication matter more than rigid processes or specific tools. A great team with basic tools beats a poor team with the best tools.</p>
+    </div>
+    <div class="mval mv2" style="animation-delay:.1s">
+      <span class="num">2</span>
+      <h3>Working Software</h3>
+      <div class="over">✓ over Comprehensive Documentation</div>
+      <p style="font-size:.82rem;color:var(--dim);margin-top:.6rem;">Delivering functional software is the primary goal. Documentation is valuable but should not slow down delivery of working features.</p>
+    </div>
+    <div class="mval mv3" style="animation-delay:.15s">
+      <span class="num">3</span>
+      <h3>Customer Collaboration</h3>
+      <div class="over">✓ over Contract Negotiation</div>
+      <p style="font-size:.82rem;color:var(--dim);margin-top:.6rem;">Ongoing partnership with the customer produces better outcomes than rigid, contract-driven relationships where change is penalised.</p>
+    </div>
+    <div class="mval mv4" style="animation-delay:.2s">
+      <span class="num">4</span>
+      <h3>Responding to Change</h3>
+      <div class="over">✓ over Following a Plan</div>
+      <p style="font-size:.82rem;color:var(--dim);margin-top:.6rem;">Adapting to new requirements and circumstances is valued over sticking to an outdated plan. Change is expected and welcomed.</p>
+    </div>
+  </div>
+  <div class="card" style="border-color:rgba(249,115,22,.3);">
+    <span class="tag to">⚠️ Critical Note</span>
+    <h3>The "Over" Wording Matters</h3>
+    <p style="color:var(--dim);font-size:.86rem;">The Agile Manifesto says "while there is value in the items on the right, we value the items on the left more." Agile does NOT say documentation, tools, contracts, and plans are worthless — it says the left-side items are <strong style="color:var(--txt)">prioritised over</strong> the right-side items. This distinction is frequently tested.</p>
+  </div>
+
+  <!-- 12 PRINCIPLES -->
+  <div class="shdr"><h2>12 Principles of Agile Development</h2><span class="cnt">Topic 3</span></div>
+  <div class="prns">
+    <div class="prn" style="animation-delay:.02s"><span class="prn-num">1</span><div class="prn-txt"><strong style="color:var(--txt)">Customer satisfaction</strong> through early and continuous delivery of working software</div></div>
+    <div class="prn" style="animation-delay:.04s"><span class="prn-num">2</span><div class="prn-txt"><strong style="color:var(--txt)">Welcome changing requirements</strong>, even late in development — change is a competitive advantage</div></div>
+    <div class="prn" style="animation-delay:.06s"><span class="prn-num">3</span><div class="prn-txt"><strong style="color:var(--txt)">Deliver working software frequently</strong> — from weeks to months — with a preference for shorter timescales</div></div>
+    <div class="prn" style="animation-delay:.08s"><span class="prn-num">4</span><div class="prn-txt"><strong style="color:var(--txt)">Business people and developers</strong> must work together daily throughout the project</div></div>
+    <div class="prn" style="animation-delay:.10s"><span class="prn-num">5</span><div class="prn-txt"><strong style="color:var(--txt)">Build projects around motivated individuals.</strong> Give them the environment and support they need and trust them.</div></div>
+    <div class="prn" style="animation-delay:.12s"><span class="prn-num">6</span><div class="prn-txt"><strong style="color:var(--txt)">Face-to-face conversation</strong> is the most efficient and effective method of communication</div></div>
+    <div class="prn" style="animation-delay:.14s"><span class="prn-num">7</span><div class="prn-txt"><strong style="color:var(--txt)">Working software</strong> is the primary measure of progress — not documentation or meetings</div></div>
+    <div class="prn" style="animation-delay:.16s"><span class="prn-num">8</span><div class="prn-txt"><strong style="color:var(--txt)">Sustainable development pace</strong> — sponsors, developers, and users should maintain a constant pace indefinitely</div></div>
+    <div class="prn" style="animation-delay:.18s"><span class="prn-num">9</span><div class="prn-txt"><strong style="color:var(--txt)">Continuous attention to technical excellence</strong> and good design enhances agility</div></div>
+    <div class="prn" style="animation-delay:.20s"><span class="prn-num">10</span><div class="prn-txt"><strong style="color:var(--txt)">Simplicity</strong> — the art of maximizing the amount of work NOT done — is essential</div></div>
+    <div class="prn" style="animation-delay:.22s"><span class="prn-num">11</span><div class="prn-txt"><strong style="color:var(--txt)">Self-organizing teams</strong> produce the best architectures, requirements, and designs</div></div>
+    <div class="prn" style="animation-delay:.24s"><span class="prn-num">12</span><div class="prn-txt">At regular intervals, <strong style="color:var(--txt)">reflect on how to become more effective</strong> (retrospectives) and adjust accordingly</div></div>
+  </div>
+
+  <!-- KEY CHARACTERISTICS -->
+  <div class="shdr"><h2>Key Characteristics of Agile Development</h2><span class="cnt">Topic 4</span></div>
+  <div class="g3">
+    <div class="card"><span class="tag to">Characteristic</span><h3>🔁 Iterative &amp; Incremental</h3><p>Development done in repeated cycles, each adding to and refining the previous version of the system.</p></div>
+    <div class="card"><span class="tag tc">Characteristic</span><h3>⏱️ Short Development Cycles</h3><p>Sprints last <strong style="color:var(--txt)">2–4 weeks</strong>. Each sprint produces a potentially shippable product increment.</p></div>
+    <div class="card"><span class="tag tg">Characteristic</span><h3>👥 Continuous User Involvement</h3><p>Users and stakeholders are engaged throughout — not just at requirements and delivery.</p></div>
+    <div class="card"><span class="tag tv">Characteristic</span><h3>📄 Minimal Documentation</h3><p><strong style="color:var(--txt)">Minimal but sufficient</strong> documentation — enough to guide work, not enough to slow it down.</p></div>
+    <div class="card"><span class="tag ty">Characteristic</span><h3>🧪 Frequent Testing</h3><p>Testing and integration happen continuously — not just at the end of the project.</p></div>
+    <div class="card"><span class="tag tr">Characteristic</span><h3>🔀 High Adaptability</h3><p>Teams can change direction quickly in response to evolving requirements or market feedback.</p></div>
+    <div class="card"><span class="tag to">Characteristic</span><h3>🏗️ Cross-Functional Teams</h3><p>Teams include all skills needed to complete a sprint — developers, testers, designers, analysts — without external dependencies.</p></div>
+  </div>
+
+  <!-- AGILE METHODS -->
+  <div class="shdr"><h2>Common Agile Methods</h2><span class="cnt">Topic 5</span></div>
+  <div class="g3">
+    <div class="card" style="border-top:3px solid var(--a1);"><span class="tag to">Most Popular</span><h3>🏉 Scrum</h3><p>The most widely used Agile framework. Uses sprints, defined roles (Product Owner, Scrum Master, Development Team), events, and artifacts. Ideal for complex product development.</p></div>
+    <div class="card" style="border-top:3px solid var(--a2);"><span class="tag tc">Method</span><h3>⚡ Extreme Programming (XP)</h3><p>Focuses on technical excellence — pair programming, test-driven development (TDD), continuous integration, and refactoring. Highly disciplined coding practices.</p></div>
+    <div class="card" style="border-top:3px solid var(--a3);"><span class="tag tg">Method</span><h3>📋 Kanban</h3><p>Visual workflow management using a board with columns (To Do / In Progress / Done). Focuses on limiting work in progress (WIP) to improve flow and reduce bottlenecks.</p></div>
+    <div class="card" style="border-top:3px solid var(--a5);"><span class="tag tv">Method</span><h3>💎 Crystal</h3><p>A family of Agile methodologies scaled to team size and project criticality. Crystal Clear, Crystal Yellow, Crystal Orange for different team sizes.</p></div>
+    <div class="card" style="border-top:3px solid var(--a6);"><span class="tag ty">Method</span><h3>🎯 Feature-Driven Development (FDD)</h3><p>Organizes development around building and delivering features (client-valued functions). Uses a feature list and model-driven approach. Good for larger teams.</p></div>
+  </div>
+
+  <!-- SCRUM FRAMEWORK -->
+  <div class="shdr"><h2>Scrum Framework — Roles</h2><span class="cnt">Topic 6 — Core Exam Topic</span></div>
+  <div class="roles">
+    <div class="role" style="border-top:3px solid var(--a1);">
+      <div class="role-icon">👔</div>
+      <span class="rbadge" style="background:rgba(249,115,22,.1);color:var(--a1);">Role 1</span>
+      <h3>Product Owner</h3>
+      <ul>
+        <li>Represents customer and stakeholders</li>
+        <li>Responsible for <strong style="color:var(--txt)">maximizing product value</strong></li>
+        <li>Manages and owns the <strong style="color:var(--txt)">Product Backlog</strong></li>
+        <li>Prioritizes requirements based on business value</li>
+        <li>Decides what gets built and in what order</li>
+      </ul>
+    </div>
+    <div class="role" style="border-top:3px solid var(--a2);">
+      <div class="role-icon">🛡️</div>
+      <span class="rbadge" style="background:rgba(34,211,238,.1);color:var(--a2);">Role 2</span>
+      <h3>Scrum Master</h3>
+      <ul>
+        <li>Facilitates the Scrum process</li>
+        <li>Removes obstacles (<strong style="color:var(--txt)">impediments</strong>)</li>
+        <li>Ensures Scrum rules are followed</li>
+        <li>Acts as a <strong style="color:var(--txt)">servant leader</strong> — serves the team</li>
+        <li>Protects the team from outside interference</li>
+      </ul>
+    </div>
+    <div class="role" style="border-top:3px solid var(--a3);">
+      <div class="role-icon">💻</div>
+      <span class="rbadge" style="background:rgba(163,230,53,.1);color:var(--a3);">Role 3</span>
+      <h3>Development Team</h3>
+      <ul>
+        <li>Cross-functional professionals</li>
+        <li>Responsible for <strong style="color:var(--txt)">delivering the product increment</strong></li>
+        <li><strong style="color:var(--txt)">Self-organising</strong> — decides how to do the work</li>
+        <li>Typically <strong style="color:var(--txt)">3–9 members</strong></li>
+        <li>No sub-teams or hierarchies within</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SCRUM EVENTS -->
+  <div class="shdr"><h2>Scrum Framework — Events</h2><span class="cnt">Topic 7</span></div>
+  <div class="evts">
+    <div class="evt" style="animation-delay:.02s">
+      <div class="evt-dot" style="background:rgba(249,115,22,.1);font-size:1.2rem;">🏃</div>
+      <div>
+        <h3>Sprint</h3>
+        <p>The core of Scrum — a fixed-duration development cycle (usually <strong style="color:var(--txt)">2–4 weeks</strong>). <strong style="color:var(--txt)">No changes allowed once a sprint starts.</strong> Goal: deliver a working, potentially releasable increment.</p>
+        <span class="evt-meta" style="background:rgba(249,115,22,.1);color:var(--a1);">Duration: 2–4 weeks | Produces: Working Increment</span>
+      </div>
+    </div>
+    <div class="evt" style="animation-delay:.06s">
+      <div class="evt-dot" style="background:rgba(34,211,238,.1);">📋</div>
+      <div>
+        <h3>Sprint Planning</h3>
+        <p>Held at the start of each sprint. The team decides <strong style="color:var(--txt)">what to build</strong> in the sprint by selecting items from the Product Backlog. Sets the Sprint Goal.</p>
+        <span class="evt-meta" style="background:rgba(34,211,238,.1);color:var(--a2);">When: Start of sprint | Output: Sprint Backlog</span>
+      </div>
+    </div>
+    <div class="evt" style="animation-delay:.10s">
+      <div class="evt-dot" style="background:rgba(163,230,53,.1);">☀️</div>
+      <div>
+        <h3>Daily Scrum (Daily Standup)</h3>
+        <p>A <strong style="color:var(--txt)">15-minute daily meeting</strong> for the development team. Three questions: What was done yesterday? What will be done today? Any impediments?</p>
+        <span class="evt-meta" style="background:rgba(163,230,53,.1);color:var(--a3);">Duration: 15 minutes | Frequency: Every day | For: Dev team</span>
+      </div>
+    </div>
+    <div class="evt" style="animation-delay:.14s">
+      <div class="evt-dot" style="background:rgba(139,92,246,.1);">🎯</div>
+      <div>
+        <h3>Sprint Review</h3>
+        <p>Held at the end of the sprint. The team <strong style="color:var(--txt)">demonstrates completed work</strong> to stakeholders and collects feedback. Product Backlog may be updated based on feedback.</p>
+        <span class="evt-meta" style="background:rgba(139,92,246,.1);color:var(--a5);">When: End of sprint | Output: Feedback, updated backlog</span>
+      </div>
+    </div>
+    <div class="evt" style="animation-delay:.18s">
+      <div class="evt-dot" style="background:rgba(244,63,94,.1);">🔍</div>
+      <div>
+        <h3>Sprint Retrospective</h3>
+        <p>The team <strong style="color:var(--txt)">reflects on the process</strong> (not the product). Identifies what went well, what didn't, and what to improve in the next sprint.</p>
+        <span class="evt-meta" style="background:rgba(244,63,94,.1);color:var(--a4);">When: After Sprint Review | Focus: Process improvement</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRUM ARTIFACTS -->
+  <div class="shdr"><h2>Scrum Framework — Artifacts</h2><span class="cnt">Topic 8</span></div>
+  <div class="arts">
+    <div class="art" style="border-top:3px solid var(--a1);">
+      <h3>📦 Product Backlog</h3>
+      <ul>
+        <li>Ordered list of <strong style="color:var(--txt)">all requirements</strong> for the product</li>
+        <li>Continuously refined and re-prioritized</li>
+        <li>Owned and managed by the <strong style="color:var(--txt)">Product Owner</strong></li>
+        <li>Single source of truth for what needs to be done</li>
+        <li>Never complete — evolves as the product evolves</li>
+      </ul>
+    </div>
+    <div class="art" style="border-top:3px solid var(--a2);">
+      <h3>📝 Sprint Backlog</h3>
+      <ul>
+        <li>A <strong style="color:var(--txt)">subset of the Product Backlog</strong></li>
+        <li>Selected items to be completed in the current sprint</li>
+        <li>Created during Sprint Planning</li>
+        <li>Owned by the <strong style="color:var(--txt)">Development Team</strong></li>
+        <li>Cannot be changed once sprint starts</li>
+      </ul>
+    </div>
+    <div class="art" style="border-top:3px solid var(--a3);">
+      <h3>✅ Increment</h3>
+      <ul>
+        <li>Sum of <strong style="color:var(--txt)">all completed backlog items</strong> from current and previous sprints</li>
+        <li>Must be <strong style="color:var(--txt)">usable and potentially releasable</strong></li>
+        <li>Must meet the team's "Definition of Done"</li>
+        <li>Demonstrates real progress to stakeholders</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ADVANTAGES & LIMITATIONS -->
+  <div class="shdr"><h2>Advantages &amp; Limitations of Agile</h2><span class="cnt">Topic 9</span></div>
+  <div class="card">
+    <div class="pc">
+      <div class="pros">
+        <h4>✅ Advantages</h4>
+        <ul>
+          <li>Faster delivery of working software</li>
+          <li>Better customer satisfaction</li>
+          <li>Early detection of issues and defects</li>
+          <li>Improved team collaboration</li>
+          <li>Adaptable to changing requirements</li>
+          <li>Continuous feedback reduces wrong-system risk</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>❌ Limitations</h4>
+        <ul>
+          <li>Less suitable for very large teams</li>
+          <li>Requires active customer involvement</li>
+          <li>Difficult to estimate cost and schedule initially</li>
+          <li>Depends heavily on team skills and maturity</li>
+          <li>Minimal documentation can cause issues later</li>
+          <li>Scope creep risk if backlog not managed well</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+<!-- ═══════════ MCQ ═══════════ -->
+<div id="sec-mcq" class="sec">
+  <div class="shdr"><h2>Multiple Choice Questions</h2><span class="cnt" id="mpill">60 Questions</span></div>
+  <p style="color:var(--dim);font-size:.86rem;margin-bottom:1.5rem;">Select your answer → click <strong style="color:var(--txt)">Check Answer</strong> for instant feedback and explanation.</p>
+  <div id="mbox"></div>
+</div>
+
+<!-- ═══════════ ESSAY ═══════════ -->
+<div id="sec-essay" class="sec">
+  <div class="shdr"><h2>Essay &amp; Short Answer Questions</h2><span class="cnt">22 Questions</span></div>
+  <p style="color:var(--dim);font-size:.86rem;margin-bottom:1.5rem;">Click <strong style="color:var(--txt)">Show Model Answer</strong> to reveal a complete, exam-ready response.</p>
+  <div id="ebox"></div>
+</div>
+
+</div></main>
+
+<!-- SCORE WIDGET -->
+<div class="sw">
+  <div class="sl">MCQ Score</div>
+  <div class="sv"><span id="sc">0</span>/<span id="st">0</span></div>
+  <div class="ss">answered</div>
+  <div class="pb"><div class="pf" id="pf" style="width:0%"></div></div>
+</div>
+
+<script>
+/* ── PARTICLES ── */
+(()=>{
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight;};
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<110;i++)pts.push({x:Math.random()*2200,y:Math.random()*1400,vx:(Math.random()-.5)*.32,vy:(Math.random()-.5)*.32,r:Math.random()*1.5+.3,o:Math.random()*.38+.07,
+    hue:Math.random()<.6?'249,115,22':'34,211,238'});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.hue},${p.o})`;ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){ctx.beginPath();ctx.strokeStyle=`rgba(249,115,22,${.05*(1-d/110)})`;ctx.lineWidth=.5;ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── TABS ── */
+function sw(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('sec-'+id).classList.add('on');btn.classList.add('on');
+}
+function goN(btn){document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+
+/* ══════ MCQ DATA ══════ */
+const MCQ=[
+/* INTRO */
+{q:"Why was Agile methodology introduced?",opts:["To increase project documentation","To overcome challenges like late delivery, difficulty handling change, and limited customer involvement","To replace all software testing","To eliminate the need for project managers"],ans:1,exp:"Agile was introduced to overcome traditional model challenges: late delivery, difficulty handling changing requirements, and limited customer involvement."},
+{q:"Agile development is best described as:",opts:["Predictive and plan-driven","Adaptive and flexible, not predictive","Focused on comprehensive upfront documentation","Sequential with no customer involvement"],ans:1,exp:"'Agile development is adaptive, not predictive' — it adapts to change rather than following a fixed plan from start to finish."},
+{q:"In Agile, software is developed in small increments called:",opts:["Phases","Modules","Iterations or Sprints","Deployments"],ans:2,exp:"'Software is developed in small increments called iterations or sprints' — typically 2–4 week cycles."},
+{q:"Which statement about Agile and planning is TRUE?",opts:["Agile eliminates planning entirely","Agile does no planning — it just reacts to change","Agile does NOT eliminate planning — planning is done continuously","Agile only plans at the start of a project"],ans:2,exp:"'Agile does NOT eliminate planning. Planning is done continuously throughout the project.' This is a common misconception about Agile."},
+{q:"Agile focuses on all EXCEPT:",opts:["Flexibility","Comprehensive upfront documentation","Customer collaboration","Frequent delivery"],ans:1,exp:"Agile values 'working software over comprehensive documentation' — extensive upfront documentation is a Waterfall characteristic, not Agile."},
+{q:"Traditional software development models that Agile replaced had problems with:",opts:["Too much customer involvement","Being too fast and flexible","Late delivery and difficulty handling changing requirements","Too little documentation"],ans:2,exp:"Traditional models faced: late delivery, difficulty handling changing requirements, and limited customer involvement — the problems Agile was designed to solve."},
+
+/* MANIFESTO VALUES */
+{q:"How many core values are in the Agile Manifesto?",opts:["2","3","4","12"],ans:2,exp:"The Agile Manifesto has exactly 4 core values, expressed as four 'X over Y' statements."},
+{q:"The first Agile Manifesto value states:",opts:["Working software over comprehensive documentation","Individuals and interactions over processes and tools","Customer collaboration over contract negotiation","Responding to change over following a plan"],ans:1,exp:"Value 1: 'Individuals and interactions over processes and tools' — people matter more than rigid processes."},
+{q:"Which Agile value prioritises working software?",opts:["Individuals and interactions over processes and tools","Customer collaboration over contract negotiation","Working software over comprehensive documentation","Responding to change over following a plan"],ans:2,exp:"Value 2: 'Working software over comprehensive documentation' — delivering functional software is the primary measure of progress."},
+{q:"'Customer collaboration over contract negotiation' means:",opts:["Contracts are not needed in Agile projects","Customers are not involved in Agile","Ongoing partnership with customers is valued more than rigid contract enforcement","Customer signatures replace software delivery"],ans:2,exp:"This value means that maintaining an ongoing, collaborative relationship with customers is valued over strict adherence to contract terms."},
+{q:"The fourth Agile Manifesto value is:",opts:["Working software over comprehensive documentation","Individuals and interactions over processes and tools","Customer collaboration over contract negotiation","Responding to change over following a plan"],ans:3,exp:"Value 4: 'Responding to change over following a plan' — agility means adapting to new information rather than rigidly following an outdated plan."},
+{q:"The Agile Manifesto values say that documentation, contracts, and plans are:",opts:["Completely worthless and should never be produced","Valued, but the left-side items (individuals, working software, etc.) are prioritised over them","More important than working software","The primary measures of project success"],ans:1,exp:"The Manifesto explicitly states 'while there is value in the items on the right, we value the items on the left more' — it doesn't eliminate right-side items, it prioritises left-side ones."},
+{q:"In Agile, the primary measure of progress is:",opts:["Amount of documentation produced","Number of team meetings held","Working software","Lines of code written"],ans:2,exp:"Agile Principle 7: 'Working software is the primary measure of progress' — not documentation, meetings, or code quantity."},
+
+/* 12 PRINCIPLES */
+{q:"Which Agile principle welcomes change even late in development?",opts:["Principle 1 — customer satisfaction","Principle 2 — welcome changing requirements","Principle 7 — working software is progress","Principle 12 — retrospectives"],ans:1,exp:"Principle 2: 'Welcome changing requirements, even late in development' — Agile views late changes as a competitive advantage, not a problem."},
+{q:"Agile Principle 4 states that business people and developers should:",opts:["Communicate only through formal documentation","Interact only during requirements and testing phases","Work together daily throughout the project","Meet once per month for status updates"],ans:2,exp:"Principle 4: 'Business people and developers must work together daily throughout the project' — continuous daily collaboration is essential."},
+{q:"According to Agile principles, the most efficient communication method is:",opts:["Written documentation","Formal emails","Face-to-face conversation","Video presentations"],ans:2,exp:"Principle 6: 'Face-to-face conversation is the most efficient and effective method of conveying information' — even in modern Agile, in-person/synchronous communication is preferred."},
+{q:"Agile Principle 10 — Simplicity — means:",opts:["Write as little code as possible","Use the simplest programming language","Maximise the amount of work NOT done — build only what's needed","Never use complex algorithms"],ans:2,exp:"Principle 10: 'Simplicity — the art of maximizing the amount of work not done is essential' — avoid building unnecessary features."},
+{q:"Which principle describes 'sustainable development pace'?",opts:["Principle 1","Principle 6","Principle 8","Principle 12"],ans:2,exp:"Principle 8: 'Sustainable development — sponsors, developers, and users should be able to maintain a constant pace indefinitely.' No unsustainable crunch periods."},
+{q:"According to Agile Principle 11, the best architectures and designs emerge from:",opts:["Senior management directives","External consultants","Self-organizing teams","Detailed upfront specifications"],ans:2,exp:"Principle 11: 'The best architectures, requirements, and designs emerge from self-organizing teams' — teams work better without micro-management."},
+{q:"Agile Principle 12 involves teams regularly:",opts:["Replacing team members who underperform","Reflecting on how to become more effective and adjusting (retrospectives)","Increasing working hours to meet deadlines","Producing comprehensive status reports"],ans:1,exp:"Principle 12: 'At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly' — this is the retrospective."},
+{q:"How many principles are in the Agile Manifesto?",opts:["4","6","8","12"],ans:3,exp:"The Agile Manifesto has 4 core values AND 12 supporting principles. Questions often try to confuse these numbers."},
+
+/* KEY CHARACTERISTICS */
+{q:"Agile development cycles (sprints) typically last:",opts:["1 day","1 week","2–4 weeks","3–6 months"],ans:2,exp:"'Short development cycles (2–4 weeks)' — this sprint duration is a defining characteristic of Agile, particularly Scrum."},
+{q:"Cross-functional development teams in Agile means:",opts:["Teams are divided by skill type — separate design, coding, testing teams","Teams include all skills needed (development, testing, design) within one team","Teams work across different office locations","Teams are led by a functional manager"],ans:1,exp:"Cross-functional teams include all necessary skills (developer, tester, designer, analyst) within the same team, eliminating handoffs between specialist departments."},
+{q:"Agile documentation approach is best described as:",opts:["No documentation at all","Minimal but sufficient — enough to guide work without slowing delivery","Comprehensive documentation at every phase","Documentation produced only at project end"],ans:1,exp:"'Minimal but sufficient documentation' — enough to support the work without becoming a bureaucratic burden that slows delivery."},
+{q:"Which is NOT a key characteristic of Agile development?",opts:["Iterative and incremental development","High adaptability to requirement changes","Single large delivery at project completion","Continuous user involvement"],ans:2,exp:"'Single large delivery at project completion' describes Waterfall, not Agile. Agile delivers frequently — potentially after every sprint."},
+
+/* AGILE METHODS */
+{q:"Which is the most widely used Agile framework?",opts:["Extreme Programming (XP)","Kanban","Scrum","Crystal"],ans:2,exp:"'Scrum is the most widely used Agile framework' — stated directly in the lecture slides."},
+{q:"Extreme Programming (XP) is known for:",opts:["Visual workflow boards","Risk analysis at every cycle","Technical practices like pair programming and test-driven development","Feature-based planning for large teams"],ans:2,exp:"XP focuses on technical excellence through practices like pair programming, TDD (test-driven development), continuous integration, and refactoring."},
+{q:"Kanban uses a board with columns to:",opts:["Track project budget","Visualise workflow and limit work in progress (WIP)","Plan sprint goals","Document system requirements"],ans:1,exp:"Kanban is a visual workflow management method that uses a board (columns: To Do / In Progress / Done) to visualise flow and limit WIP to reduce bottlenecks."},
+{q:"Feature-Driven Development (FDD) organises work around:",opts:["Risk cycles","Sprint timeboxes","Client-valued features","Visual workflow boards"],ans:2,exp:"FDD organises development around building and delivering features — specific, client-valued functions. It uses a feature list as the primary planning tool."},
+{q:"Crystal is an Agile methodology that is scaled based on:",opts:["Budget and timeline","Team size and project criticality","Programming language used","Geographic location of the team"],ans:1,exp:"Crystal is a family of methodologies (Crystal Clear, Yellow, Orange) scaled based on team size and criticality — different variants for different contexts."},
+
+/* SCRUM ROLES */
+{q:"Who owns and manages the Product Backlog in Scrum?",opts:["Scrum Master","Development Team","Product Owner","Project Manager"],ans:2,exp:"The Product Owner 'manages the Product Backlog' — they own it, prioritize it, and are responsible for its content."},
+{q:"The Product Owner in Scrum represents:",opts:["The Scrum Master","The software architecture","The customer and stakeholders","The development team's interests"],ans:2,exp:"The Product Owner 'represents customer and stakeholders' — they are the voice of the customer within the Scrum team."},
+{q:"The Scrum Master's primary role is to:",opts:["Write code and deliver features","Manage the Product Backlog","Facilitate the Scrum process, remove impediments, and act as servant leader","Represent the customer's requirements"],ans:2,exp:"The Scrum Master facilitates the process, removes impediments (obstacles), ensures Scrum rules are followed, and acts as a servant leader."},
+{q:"'Servant leader' in the context of the Scrum Master means:",opts:["The Scrum Master is the team's boss","The Scrum Master serves and supports the team rather than commanding it","The Scrum Master writes the most code","The Scrum Master manages the Product Backlog"],ans:1,exp:"Servant leader means the Scrum Master leads by serving — supporting the team, removing their obstacles, and enabling them to do their best work, rather than directing or commanding."},
+{q:"The Development Team in Scrum typically has:",opts:["1–3 members","3–9 members","10–20 members","Any number of members"],ans:1,exp:"'Typically 3–9 members' — small enough to communicate effectively, large enough to have all skills needed for a sprint."},
+{q:"The Development Team in Scrum is described as:",opts:["Hierarchical with team leads and junior developers","Managed directly by the Product Owner","Self-organising and cross-functional","Externally managed by a Project Manager"],ans:2,exp:"The Development Team is 'self-organizing' (they decide how to do the work) and 'cross-functional' (they have all skills needed to deliver an increment)."},
+{q:"Who decides what gets built and in what order in Scrum?",opts:["The Scrum Master","The Development Team","The Product Owner","External stakeholders directly"],ans:2,exp:"The Product Owner 'prioritizes requirements based on business value' and decides what to build and in what order through the Product Backlog."},
+
+/* SCRUM EVENTS */
+{q:"A Sprint in Scrum has a fixed duration of:",opts:["1 day","1 week","2–4 weeks","3 months"],ans:2,exp:"'Fixed duration (usually 2–4 weeks)' — Sprints are timeboxed and this duration doesn't change during a sprint."},
+{q:"Which rule applies once a Sprint has started?",opts:["The team can add unlimited new items at any time","No changes are allowed to the Sprint Backlog","The Product Owner can change the Sprint Goal daily","The Scrum Master assigns daily tasks"],ans:1,exp:"'No changes allowed once sprint starts' — the Sprint Backlog is locked to protect the team's focus and commitments during the sprint."},
+{q:"The Daily Scrum is a meeting that lasts:",opts:["5 minutes","15 minutes","30 minutes","1 hour"],ans:1,exp:"'15-minute daily meeting' — the Daily Scrum (standup) is strictly timeboxed to 15 minutes."},
+{q:"Which THREE questions are discussed in the Daily Scrum?",opts:["Budget, timeline, and risks","What was done yesterday, what will be done today, and any impediments","Sprint goal, backlog items, and team assignments","Customer feedback, product quality, and documentation"],ans:1,exp:"Daily Scrum discusses: What was done yesterday? What will be done today? Any impediments? These keep the team aligned and surface blockers quickly."},
+{q:"The purpose of Sprint Planning is to:",opts:["Review and demonstrate completed work to stakeholders","Reflect on the process and identify improvements","Decide what to build in the sprint by selecting items from the Product Backlog","Run all 15-minute daily check-ins"],ans:2,exp:"Sprint Planning: 'Decide what to build in the sprint. Select items from Product Backlog.' It sets the Sprint Goal and creates the Sprint Backlog."},
+{q:"In the Sprint Review, the team:",opts:["Reflects on the development process and plans improvements","Plans the next sprint's work","Demonstrates completed work to stakeholders and collects feedback","Removes impediments from the team"],ans:2,exp:"Sprint Review: 'Demonstrate completed work. Collect stakeholder feedback.' It's about showing what was built — not how it was built."},
+{q:"Sprint Retrospective focuses on:",opts:["The product and its features","Collecting stakeholder feedback on the increment","The process — what went well, what didn't, and how to improve","Planning the next sprint's backlog items"],ans:2,exp:"Sprint Retrospective: 'Reflect on process. Identify improvements for next sprint.' It's about HOW the team works, not WHAT they built. (Sprint Review covers the product.)"},
+{q:"What is the correct order of Scrum events within a sprint?",opts:["Daily Scrum → Sprint Planning → Sprint Review → Sprint Retrospective","Sprint Planning → Daily Scrum (daily) → Sprint Review → Sprint Retrospective","Sprint Review → Sprint Planning → Daily Scrum → Sprint Retrospective","Sprint Retrospective → Sprint Planning → Sprint Review → Daily Scrum"],ans:1,exp:"Correct order: Sprint Planning (start) → Daily Scrum (every day during sprint) → Sprint Review (end, show work) → Sprint Retrospective (end, reflect on process)."},
+{q:"The key difference between Sprint Review and Sprint Retrospective is:",opts:["They are the same event with different names","Sprint Review looks at the product (what was built); Sprint Retrospective looks at the process (how the team worked)","Sprint Retrospective is for customers; Sprint Review is for the team","Sprint Review happens at the start; Retrospective at the end"],ans:1,exp:"Sprint Review = show and evaluate the PRODUCT (increment). Sprint Retrospective = evaluate the PROCESS (team's way of working). This distinction is frequently tested."},
+
+/* SCRUM ARTIFACTS */
+{q:"The Product Backlog is described as:",opts:["A fixed list created once at project start","An ordered list of all requirements, continuously refined, owned by the Product Owner","The team's internal task list for the current sprint","A document produced at the end of each sprint"],ans:1,exp:"Product Backlog: 'Ordered list of requirements. Continuously refined. Owned by Product Owner.' It's the master list of everything that might be needed in the product."},
+{q:"The Sprint Backlog is:",opts:["The complete list of all product requirements","A subset of the Product Backlog selected for the current sprint","The team's daily meeting notes","The Product Owner's priority list"],ans:1,exp:"Sprint Backlog: 'Subset of Product Backlog. Selected for current sprint.' It represents what the team commits to delivering in this specific sprint."},
+{q:"An Increment in Scrum must be:",opts:["A complete, final version of the product","A written documentation package","Usable and potentially releasable, meeting the Definition of Done","Only the features added in the latest sprint"],ans:2,exp:"'Increment: Sum of all completed backlog items. Must be usable and potentially releasable.' It must meet the team's Definition of Done."},
+{q:"Who owns the Sprint Backlog?",opts:["Product Owner","Scrum Master","Development Team","All Scrum roles jointly"],ans:2,exp:"The Sprint Backlog is owned by the Development Team — they are the ones who select items and commit to completing them during the sprint."},
+{q:"Which artifact is 'never complete and evolves as the product evolves'?",opts:["Sprint Backlog","Increment","Product Backlog","Sprint Goal"],ans:2,exp:"The Product Backlog is never complete — it continuously evolves as new features are requested, priorities change, and the product matures."},
+
+/* ADVANTAGES & LIMITATIONS */
+{q:"Which is an ADVANTAGE of Agile methodology?",opts:["Easy to estimate cost and schedule upfront","Requires minimal customer involvement","Faster delivery of working software and better customer satisfaction","Suitable for very large teams without modification"],ans:2,exp:"Agile advantages include: faster delivery, better customer satisfaction, early detection of issues, and improved team collaboration."},
+{q:"Which is a LIMITATION of Agile?",opts:["Too much documentation slows progress","Difficult to estimate cost and schedule initially","Not adaptable to changing requirements","Requires no customer involvement"],ans:1,exp:"'Difficult to estimate cost and schedule initially' — because Agile's flexible, evolving nature makes upfront estimation inherently imprecise."},
+{q:"Agile is LESS suitable for:",opts:["Small teams working on a startup app","Projects with evolving requirements","Very large teams or very large complex systems without adaptation","Projects needing frequent customer feedback"],ans:2,exp:"'Less suitable for very large teams' — Agile's communication-intensive, self-organising approach becomes harder to coordinate at large scale without frameworks like SAFe."},
+{q:"The limitation 'depends heavily on team skills' means:",opts:["Only senior developers can use Agile","Agile teams don't need any skills","Agile's success is significantly influenced by the ability, experience, and maturity of the team members","Agile requires all team members to have identical skills"],ans:2,exp:"'Depends heavily on team skills' — Agile's self-organising, collaborative nature requires skilled, experienced, and mature team members. Poor teams struggle with Agile's autonomy."},
+];
+
+/* ══════ ESSAY DATA ══════ */
+const ESSAYS=[
+{q:"What is Agile methodology? Explain why it was introduced and what problems it solves.",diff:"easy",marks:"6",
+ans:`<h4>What is Agile?</h4>
+<p><span class="kp">Agile</span> is a set of principles and practices for software development that emphasises flexibility, customer collaboration, frequent delivery of working software, and continuous feedback. It is adaptive rather than predictive.</p>
+<h4>Why It Was Introduced</h4>
+<p>Traditional development models (such as Waterfall) faced significant challenges that led to the creation of Agile:</p>
+<ul><li><strong>Late delivery</strong> — sequential phases meant users waited months or years to see working software</li><li><strong>Difficulty handling changing requirements</strong> — once requirements were signed off, changes were costly and resisted</li><li><strong>Limited customer involvement</strong> — customers were only engaged at the start and end, leading to systems that didn't meet actual needs</li></ul>
+<h4>How Agile Solves These</h4>
+<ul><li>Late delivery → Agile delivers working software after every sprint (2–4 weeks)</li><li>Changing requirements → Agile welcomes change at any point (Principle 2)</li><li>Limited customer involvement → Agile involves customers continuously throughout</li></ul>
+<div class="mh">💡 Structure: Definition (1) + problems (3 × 0.5) + how Agile solves each (3 × 0.5) = 6 marks.</div>`},
+
+{q:"State and explain the four core values of the Agile Manifesto. Why is the word 'over' significant?",diff:"medium",marks:"10",
+ans:`<h4>The Four Agile Manifesto Values</h4>
+<ol>
+<li><strong>Individuals and Interactions over Processes and Tools</strong> — People and their communication are more valuable than rigid processes or specific tools. A motivated, communicating team with basic tools outperforms a dysfunctional team with the best toolset.</li>
+<li><strong>Working Software over Comprehensive Documentation</strong> — Delivering functional, usable software is the primary goal. Documentation is produced only to the extent it supports delivery — never for its own sake.</li>
+<li><strong>Customer Collaboration over Contract Negotiation</strong> — Maintaining an ongoing, collaborative partnership with the customer produces better outcomes than enforcing rigid contractual terms. Change requests shouldn't trigger contract disputes.</li>
+<li><strong>Responding to Change over Following a Plan</strong> — The ability to adapt to new requirements, market changes, or stakeholder feedback is more valuable than sticking to an outdated initial plan.</li>
+</ol>
+<h4>Why 'Over' Matters</h4>
+<p>The word <span class="kp">over</span> is critical. The Manifesto explicitly states: <em>"while there is value in the items on the right, we value the items on the left more."</em> This means Agile does NOT say documentation, contracts, tools, or plans are worthless. It says the left-side items are <strong>prioritised</strong> when trade-offs must be made. A team that produces NO documentation is not following Agile — they are being reckless.</p>
+<div class="mh">💡 10-mark structure: each value 2 marks (statement + explanation) + significance of 'over' 2 marks.</div>`},
+
+{q:"List all 12 principles of Agile development and briefly explain any FOUR of them.",diff:"medium",marks:"10",
+ans:`<h4>All 12 Agile Principles</h4>
+<ol>
+<li>Customer satisfaction through early and continuous delivery</li>
+<li>Welcome changing requirements, even late in development</li>
+<li>Deliver working software frequently</li>
+<li>Business people and developers work together daily</li>
+<li>Build projects around motivated individuals</li>
+<li>Face-to-face communication is most effective</li>
+<li>Working software is the primary measure of progress</li>
+<li>Maintain sustainable development pace</li>
+<li>Continuous attention to technical excellence</li>
+<li>Simplicity — maximise work NOT done</li>
+<li>Self-organizing teams produce better designs</li>
+<li>Regular reflection and improvement (retrospectives)</li>
+</ol>
+<h4>Explanation of Four Key Principles</h4>
+<p><strong>Principle 2 — Welcome Change:</strong> Unlike Waterfall where change is resisted after requirements are signed off, Agile actively welcomes changes even late in development, treating them as a competitive advantage rather than a problem.</p>
+<p><strong>Principle 7 — Working Software as Progress:</strong> Progress is measured by functional, working software — not by documents produced, meetings held, or milestones ticked. A team with 50% of features working has made real progress.</p>
+<p><strong>Principle 10 — Simplicity:</strong> Teams should only build what is actually needed. Maximising work NOT done means avoiding over-engineering, unnecessary features, and wasteful processes.</p>
+<p><strong>Principle 12 — Retrospectives:</strong> Regular reflection at the end of each sprint allows teams to continuously improve their working practices, not just their software. This built-in self-improvement is what makes Agile teams get better over time.</p>
+<div class="mh">💡 Full list (4 marks) + 4 explanations × 1.5 marks each = 10 marks. Choose principles you understand well.</div>`},
+
+{q:"Describe the seven key characteristics of Agile development with examples.",diff:"medium",marks:"7",
+ans:`<h4>Seven Key Characteristics of Agile</h4>
+<ol>
+<li><strong>Iterative and Incremental Development</strong> — Software is built in repeated cycles (iterations), each adding to the previous version. <em>Example: Sprint 1 delivers login. Sprint 2 adds dashboard. Sprint 3 adds reporting.</em></li>
+<li><strong>Short Development Cycles (2–4 weeks)</strong> — Fixed-duration sprints ensure regular delivery and enable frequent stakeholder feedback. <em>Example: A 3-week sprint to build and test the payment module.</em></li>
+<li><strong>Continuous User Involvement</strong> — Customers and users are engaged throughout, reviewing work at Sprint Reviews and influencing the backlog continuously.</li>
+<li><strong>Minimal but Sufficient Documentation</strong> — Only documentation that adds value is produced. User stories replace lengthy specification documents.</li>
+<li><strong>Frequent Testing and Integration</strong> — Code is tested and integrated continuously — not held until a final testing phase. Defects are caught immediately.</li>
+<li><strong>High Adaptability to Requirement Changes</strong> — New requirements or changed priorities can be accommodated in the next sprint's planning without disrupting the entire project.</li>
+<li><strong>Cross-Functional Teams</strong> — Teams include developers, testers, and designers. No handoffs to separate departments — everything is done within the team.</li>
+</ol>
+<div class="mh">💡 1 mark per characteristic. Include a brief example or implication — don't just define.</div>`},
+
+{q:"Name and briefly describe five common Agile methods. Which one is most widely used?",diff:"easy",marks:"6",
+ans:`<h4>Five Common Agile Methods</h4>
+<ol>
+<li><strong>Scrum</strong> — The most widely used Agile framework. Uses fixed-duration sprints, defined roles (Product Owner, Scrum Master, Development Team), and ceremonies (Sprint Planning, Daily Scrum, Sprint Review, Retrospective). Best for complex product development.</li>
+<li><strong>Extreme Programming (XP)</strong> — Focuses on technical excellence. Key practices: pair programming (two developers share one screen), test-driven development (TDD), continuous integration, and regular code refactoring. Very disciplined coding approach.</li>
+<li><strong>Kanban</strong> — Visual workflow management using a board with columns (To Do / In Progress / Done). Limits work in progress (WIP) to improve flow and reduce bottlenecks. No fixed sprints — continuous flow.</li>
+<li><strong>Crystal</strong> — A family of Agile methodologies (Crystal Clear, Crystal Yellow, Crystal Orange) scaled to team size and project criticality. Flexible and people-centric.</li>
+<li><strong>Feature-Driven Development (FDD)</strong> — Organises development around building and delivering client-valued features. Uses a feature list and model-driven approach. Better suited to larger teams than other Agile methods.</li>
+</ol>
+<p><strong>Most widely used: <span class="kp">Scrum</span></strong> — stated directly in the lecture materials.</p>
+<div class="mh">💡 1 mark each (5) + correct identification of Scrum as most popular (1) = 6 marks.</div>`},
+
+{q:"Describe the three roles in the Scrum framework. What does each role do?",diff:"medium",marks:"9",
+ans:`<h4>Scrum Role 1: Product Owner</h4>
+<p>The <span class="kp">Product Owner</span> represents the customer and stakeholders within the Scrum team. Key responsibilities:</p>
+<ul><li>Responsible for <strong>maximizing product value</strong></li><li>Manages and owns the <strong>Product Backlog</strong> — the ordered list of all requirements</li><li>Prioritizes backlog items based on business value</li><li>Decides what gets built and in what order</li><li>Is the single voice of the customer to the team</li></ul>
+<h4>Scrum Role 2: Scrum Master</h4>
+<p>The <span class="kp">Scrum Master</span> is a servant leader who facilitates the Scrum process. Key responsibilities:</p>
+<ul><li>Facilitates all Scrum events (Planning, Daily Scrum, Review, Retrospective)</li><li>Removes <strong>impediments</strong> (obstacles) blocking the team's progress</li><li>Ensures Scrum rules and values are understood and followed</li><li>Protects the team from outside interference</li><li>Acts as a coach — not a manager or boss</li></ul>
+<h4>Scrum Role 3: Development Team</h4>
+<p>The <span class="kp">Development Team</span> are the professionals who do the actual work of delivering an increment. Key characteristics:</p>
+<ul><li>Cross-functional — all skills (dev, test, design) within one team</li><li>Self-organising — they decide how to complete their work without being directed</li><li>Typically 3–9 members — optimal for collaboration</li><li>Collectively responsible for delivering the sprint increment</li></ul>
+<div class="mh">💡 3 marks per role: title + responsibilities (2–3 points) + a unique characteristic. Don't confuse Product Owner with Scrum Master.</div>`},
+
+{q:"Describe all five Scrum events. For each, state its purpose and when it occurs.",diff:"medium",marks:"10",
+ans:`<h4>Scrum Event 1: Sprint</h4>
+<p><strong>When:</strong> Core recurring cycle — continuous throughout the project.<br><strong>Duration:</strong> Fixed, 2–4 weeks.<br><strong>Purpose:</strong> The heart of Scrum. A fixed-duration cycle in which a usable, working increment is created. No changes to the Sprint Backlog are allowed once started. Each sprint has a clear goal.</p>
+<h4>Scrum Event 2: Sprint Planning</h4>
+<p><strong>When:</strong> Start of every sprint.<br><strong>Purpose:</strong> The team decides WHAT to build in the upcoming sprint by selecting items from the Product Backlog. The Sprint Goal is set and the Sprint Backlog is created. The Development Team estimates how much work they can complete.</p>
+<h4>Scrum Event 3: Daily Scrum (Daily Standup)</h4>
+<p><strong>When:</strong> Every working day during the sprint.<br><strong>Duration:</strong> Exactly 15 minutes.<br><strong>Purpose:</strong> Synchronise the team's work. Three questions: (1) What did I do yesterday? (2) What will I do today? (3) Are there any impediments? Keeps the whole team aligned and surfaces blockers early.</p>
+<h4>Scrum Event 4: Sprint Review</h4>
+<p><strong>When:</strong> End of the sprint.<br><strong>Purpose:</strong> The Development Team demonstrates the completed Increment to stakeholders. Feedback is gathered. The Product Backlog may be updated based on what stakeholders say. Focuses on the PRODUCT.</p>
+<h4>Scrum Event 5: Sprint Retrospective</h4>
+<p><strong>When:</strong> After Sprint Review, at the end of the sprint.<br><strong>Purpose:</strong> The team reflects on HOW they worked — what went well, what didn't, and what specific improvements to make in the next sprint. Focuses on the PROCESS, not the product.</p>
+<div class="mh">💡 Key exam trap: Review = product, Retrospective = process. 2 marks per event = 10 marks.</div>`},
+
+{q:"Describe the three Scrum artifacts. What is the purpose of each?",diff:"easy",marks:"6",
+ans:`<h4>Scrum Artifact 1: Product Backlog</h4>
+<p><strong>Owned by:</strong> Product Owner.<br><strong>Description:</strong> An ordered, prioritised list of ALL requirements, features, and enhancements needed for the product. It is the single source of truth for what might be built.</p>
+<p><strong>Key properties:</strong> Never complete — continuously refined and re-prioritized as new information emerges. Items at the top are most detailed and ready; items at the bottom are less defined.</p>
+<h4>Scrum Artifact 2: Sprint Backlog</h4>
+<p><strong>Owned by:</strong> Development Team.<br><strong>Description:</strong> A subset of the Product Backlog — the specific items selected by the team to complete in the current sprint. Created during Sprint Planning.</p>
+<p><strong>Key properties:</strong> Cannot be changed once the sprint starts. The team uses it to track daily progress toward the Sprint Goal.</p>
+<h4>Scrum Artifact 3: Increment</h4>
+<p><strong>Owned by:</strong> Development Team (delivered to stakeholders).<br><strong>Description:</strong> The sum of all Product Backlog items completed during a sprint PLUS the value of all previous sprints' increments. It represents real, working software.</p>
+<p><strong>Key properties:</strong> Must be <strong>usable and potentially releasable</strong>. Must meet the team's Definition of Done. Each sprint adds to the increment, building the product progressively.</p>
+<div class="mh">💡 2 marks per artifact: what it is + key property/owner. Don't confuse Product Backlog (ALL requirements) with Sprint Backlog (THIS sprint's requirements).</div>`},
+
+{q:"Explain the difference between Sprint Review and Sprint Retrospective. Why is this distinction important?",diff:"easy",marks:"5",
+ans:`<h4>Sprint Review</h4>
+<p>The <span class="kp">Sprint Review</span> is held at the end of a sprint and focuses on the <strong>PRODUCT</strong> — what was actually built.</p>
+<ul><li>The Development Team demonstrates the completed increment to stakeholders</li><li>Customers and stakeholders review the working software and provide feedback</li><li>The Product Backlog may be updated based on that feedback</li><li>Answers the question: "Did we build the right thing?"</li></ul>
+<h4>Sprint Retrospective</h4>
+<p>The <span class="kp">Sprint Retrospective</span> is held after the Sprint Review and focuses on the <strong>PROCESS</strong> — how the team worked.</p>
+<ul><li>Only the Scrum team participates (not external stakeholders)</li><li>The team identifies what went well, what didn't, and commits to specific improvements</li><li>Changes to team practices, tools, or workflows are agreed upon</li><li>Answers the question: "Did we build it the right way?"</li></ul>
+<h4>Why the Distinction Matters</h4>
+<p>Confusing these two is a very common mistake. They serve fundamentally different purposes: Review = external-facing (show product to stakeholders). Retrospective = internal-facing (improve team process). Together they ensure both the product and the team improve every sprint.</p>
+<div class="mh">💡 Exam shortcut: Review = WHAT was built. Retrospective = HOW we worked.</div>`},
+
+{q:"Discuss the advantages and limitations of Agile methodology. Under what circumstances is Agile NOT the best choice?",diff:"medium",marks:"8",
+ans:`<h4>Advantages of Agile</h4>
+<ul>
+<li><strong>Faster delivery</strong> — Working software is delivered after every sprint, providing value early rather than waiting for full project completion</li>
+<li><strong>Better customer satisfaction</strong> — Continuous involvement ensures the final product aligns with actual user needs</li>
+<li><strong>Early detection of issues</strong> — Continuous testing and integration catches defects immediately rather than at a final testing phase</li>
+<li><strong>Improved team collaboration</strong> — Daily scrums, cross-functional teams, and self-organisation foster communication and shared ownership</li>
+<li><strong>Adaptability</strong> — Requirements can change between sprints without derailing the whole project</li>
+</ul>
+<h4>Limitations of Agile</h4>
+<ul>
+<li><strong>Less suitable for very large teams</strong> — Communication-intensive approach scales poorly without additional frameworks (e.g., SAFe)</li>
+<li><strong>Requires active customer involvement</strong> — Customers must commit significant time throughout; unavailable customers create a major bottleneck</li>
+<li><strong>Difficult to estimate cost and schedule upfront</strong> — The evolving, adaptive nature makes fixed-price contracts difficult</li>
+<li><strong>Depends heavily on team skills</strong> — Self-organising teams require experienced, mature members; less skilled teams struggle</li>
+<li><strong>Documentation gaps</strong> — Minimal documentation can make maintenance harder later</li>
+</ul>
+<h4>When NOT to Use Agile</h4>
+<ul>
+<li>Safety-critical systems (medical, aviation, military) where formal verification is legally required</li>
+<li>Fixed-price, fixed-scope government contracts where every requirement must be documented and approved</li>
+<li>Projects with a very large, distributed team unfamiliar with Agile</li>
+<li>Short, simple projects where overhead of Agile ceremonies exceeds benefit</li>
+</ul>
+<div class="mh">💡 8-mark answer: advantages (3 marks) + limitations (3 marks) + when not to use (2 marks).</div>`},
+
+{q:"Compare Agile methodology with the Waterfall model across five key dimensions.",diff:"hard",marks:"10",
+ans:`<h4>Agile vs Waterfall — Five Key Dimensions</h4>
+<ol>
+<li><strong>Approach to Requirements:</strong> Waterfall requires all requirements defined and signed off upfront — changes are resisted and costly. Agile welcomes evolving requirements at any stage (Principle 2) — the Product Backlog is continuously refined.</li>
+<li><strong>Customer Involvement:</strong> Waterfall involves customers mainly at requirements gathering and final acceptance testing. Agile involves customers continuously — reviewing sprint outputs, adjusting priorities, and participating in Sprint Reviews every cycle.</li>
+<li><strong>Delivery Model:</strong> Waterfall produces a single, complete delivery at the end of the project (months or years). Agile delivers working software after every sprint (2–4 weeks) — providing business value much earlier.</li>
+<li><strong>Testing Approach:</strong> Waterfall tests after the implementation phase is fully complete — defects are found late and are expensive to fix. Agile tests continuously throughout each sprint — defects are found and fixed within days.</li>
+<li><strong>Documentation:</strong> Waterfall emphasises comprehensive documentation at every phase (Very High). Agile produces minimal but sufficient documentation — enough to guide work, not enough to slow delivery. Working software replaces many documents.</li>
+</ol>
+<h4>Summary</h4>
+<p>Waterfall is best for stable, well-defined, contract-driven projects. Agile is best for dynamic environments where requirements evolve and continuous stakeholder collaboration is possible. Neither is universally superior — the choice depends on project context.</p>
+<div class="mh">💡 2 marks per dimension: Waterfall position + Agile position + implication. 5 × 2 = 10 marks.</div>`},
+
+{q:"What is the Scrum framework? Explain how its roles, events, and artifacts work together in a sprint cycle.",diff:"hard",marks:"12",
+ans:`<h4>The Scrum Framework</h4>
+<p><span class="kp">Scrum</span> is the most widely used Agile framework, organising software development into short, fixed-duration cycles called sprints (2–4 weeks). It defines three roles, five events, and three artifacts that work together to deliver a working product increment every sprint.</p>
+<h4>How They Work Together in a Sprint Cycle</h4>
+<p><strong>Step 1 — Sprint Planning (Event):</strong> The <em>Product Owner</em> (Role) brings the prioritised <em>Product Backlog</em> (Artifact) to the meeting. The <em>Development Team</em> (Role) selects items they can complete and creates the <em>Sprint Backlog</em> (Artifact). The <em>Scrum Master</em> (Role) facilitates. The Sprint Goal is set.</p>
+<p><strong>Step 2 — Sprint Execution (Event: Daily Scrum):</strong> For 2–4 weeks, the <em>Development Team</em> works on Sprint Backlog items. Every day they hold a 15-minute <em>Daily Scrum</em> to synchronise. The <em>Scrum Master</em> removes any impediments that arise. Code is built, tested, and integrated continuously.</p>
+<p><strong>Step 3 — Sprint Review (Event):</strong> At sprint end, the team demonstrates the <em>Increment</em> (Artifact) to stakeholders. The <em>Product Owner</em> gathers feedback and updates the <em>Product Backlog</em> for the next sprint.</p>
+<p><strong>Step 4 — Sprint Retrospective (Event):</strong> The Scrum team (all three roles) reflects on how they worked. Improvements are identified and committed to for the next sprint.</p>
+<p><strong>Then the cycle repeats</strong> — each sprint builds on the last, progressively delivering more value through growing Increments.</p>
+<h4>Integration Summary</h4>
+<p>Roles define WHO does what. Artifacts define WHAT is being worked on. Events define WHEN and HOW the work happens. Together they create a transparent, inspect-and-adapt cycle that produces working software reliably and continuously.</p>
+<div class="mh">💡 12-mark answer: definition (2) + walkthrough of roles/events/artifacts in sequence (8) + integration summary (2).</div>`},
+
+{q:"A software company is building a mobile banking app with evolving user requirements. Justify why Agile/Scrum is the best approach.",diff:"hard",marks:"10",
+ans:`<h4>Scenario Analysis: Mobile Banking App</h4>
+<p>Key characteristics of this project: evolving requirements, mobile/UI-heavy, user-facing, competitive market requiring speed.</p>
+<h4>Why Agile/Scrum is Best</h4>
+<ul>
+<li><strong>Evolving requirements:</strong> Banking app features (biometrics, open banking APIs, regulatory changes) evolve constantly. Agile Principle 2 explicitly welcomes changing requirements — the Product Backlog can be re-prioritized between every sprint. Waterfall would require expensive change requests.</li>
+<li><strong>Speed to market:</strong> Sprint cycles of 2–4 weeks mean working features (login, balance check, transfers) are delivered and potentially released early — beating competitors and generating revenue before the full app is complete.</li>
+<li><strong>User feedback:</strong> Sprint Reviews allow real users to test each feature iteration. UX issues are discovered after 2 weeks (not 18 months). Early feedback prevents building the wrong UI experience.</li>
+<li><strong>Cross-functional team:</strong> A Scrum team with developers, testers, and UX designers working together eliminates the handoff delays common in Waterfall teams.</li>
+<li><strong>Risk reduction:</strong> Early, working increments let the team test payment processing with real users before the full app is built — reducing the risk of launching a broken financial product.</li>
+<li><strong>Regulatory adaptation:</strong> Banking regulations change. Scrum's ability to re-prioritize the Product Backlog means compliance features can be fast-tracked when new rules are announced.</li>
+</ul>
+<h4>Scrum Structure for This Project</h4>
+<p>Product Owner = bank's product manager. Scrum Master = Agile coach. Dev Team = mobile devs, backend devs, QA tester, UX designer. Sprints = 2 weeks. MVP (minimum viable product) released after 3–4 sprints.</p>
+<div class="mh">💡 Link every justification to the SPECIFIC scenario (banking app) — not just generic Agile benefits.</div>`},
+
+{q:"Explain the concept of 'self-organising teams' in Agile and why it leads to better outcomes.",diff:"medium",marks:"6",
+ans:`<h4>Self-Organising Teams in Agile</h4>
+<p>A <span class="kp">self-organising team</span> is one where team members collectively decide HOW to accomplish their work — without being directed by a manager or external authority telling them who does what task.</p>
+<h4>What Self-Organisation Means in Practice</h4>
+<ul><li>During Sprint Planning, the Development Team selects how many and which backlog items to take on (not assigned by a manager)</li><li>Team members volunteer for tasks based on skills and capacity</li><li>The team collectively solves problems and adjusts daily in the Daily Scrum</li><li>No one is told "you code, you test" — roles are fluid within the team</li></ul>
+<h4>Why It Leads to Better Outcomes</h4>
+<ul>
+<li><strong>Motivation:</strong> People who choose their own work are more engaged and committed than those assigned tasks</li>
+<li><strong>Better decisions:</strong> Those doing the work have the most knowledge about how it should be done — bottom-up decision making is more informed than top-down</li>
+<li><strong>Speed:</strong> No waiting for manager approval or direction — teams can immediately respond to blockers and opportunities</li>
+<li><strong>Innovation:</strong> Freedom to choose approach encourages creative problem solving (Principle 11: "best architectures emerge from self-organising teams")</li>
+<li><strong>Accountability:</strong> When teams choose their commitments, they own them more strongly</li>
+</ul>
+<div class="mh">💡 Reference Agile Principle 11 directly — examiners reward use of specific principles.</div>`},
+
+{q:"What is the Daily Scrum? Explain its purpose, structure, and why it is timeboxed to 15 minutes.",diff:"easy",marks:"5",
+ans:`<h4>The Daily Scrum</h4>
+<p>The <span class="kp">Daily Scrum</span> (also called the Daily Standup) is a 15-minute synchronisation meeting held every working day during a sprint for the Development Team.</p>
+<h4>Structure — Three Questions</h4>
+<ol>
+<li><strong>What did I do yesterday</strong> that helped meet the Sprint Goal?</li>
+<li><strong>What will I do today</strong> to help meet the Sprint Goal?</li>
+<li><strong>Are there any impediments</strong> blocking my progress?</li>
+</ol>
+<h4>Purpose</h4>
+<ul><li>Keeps the whole team aligned on progress and direction every single day</li><li>Identifies blockers immediately so the Scrum Master can remove them</li><li>Enables team members to offer help to colleagues who are stuck</li><li>Builds team transparency and accountability</li><li>Replaces the need for lengthy status meetings and progress reports</li></ul>
+<h4>Why Timeboxed to 15 Minutes</h4>
+<ul><li>It happens every day — if it ran longer, it would consume significant productive time over a sprint</li><li>15 minutes is enough for synchronisation — detailed problem solving should happen in separate meetings after the Daily Scrum</li><li>Short, focused meetings maintain team energy and prevent meeting fatigue</li><li>The timebox enforces discipline — topics drift if there's no time limit</li></ul>
+<div class="mh">💡 The Scrum Master facilitates the Daily Scrum but it is FOR the Development Team — not a status report to the Scrum Master.</div>`},
+
+{q:"How does the Product Backlog differ from the Sprint Backlog? Explain the relationship between them.",diff:"easy",marks:"5",
+ans:`<h4>Product Backlog</h4>
+<p>The <span class="kp">Product Backlog</span> is the master ordered list of ALL requirements, features, and improvements needed for the entire product. It:</p>
+<ul><li>Is owned and managed by the <strong>Product Owner</strong></li><li>Contains everything that might ever be needed — from critical to nice-to-have</li><li>Is <strong>never complete</strong> — continuously refined as the product evolves</li><li>Items at the top are detailed and ready to be built; items lower down are less defined</li><li>Spans the entire life of the product</li></ul>
+<h4>Sprint Backlog</h4>
+<p>The <span class="kp">Sprint Backlog</span> is a subset of the Product Backlog — the specific items selected for the current sprint. It:</p>
+<ul><li>Is owned by the <strong>Development Team</strong></li><li>Created during Sprint Planning by the team selecting items they can complete</li><li>Is <strong>fixed for the duration of the sprint</strong> — cannot be changed once started</li><li>Includes only what will be worked on in this specific 2–4 week sprint</li></ul>
+<h4>Relationship</h4>
+<p>Think of the Product Backlog as a supermarket — it has everything the product needs. The Sprint Backlog is this week's shopping list — the specific items you'll buy this trip. After each sprint, more items from the Product Backlog are pulled into the next Sprint Backlog until the product is complete.</p>
+<div class="mh">💡 Key difference: Product Backlog = ALL future work. Sprint Backlog = THIS sprint's work.</div>`},
+
+{q:"Explain what is meant by 'Agile is adaptive, not predictive.' How does this affect how Agile projects are managed?",diff:"medium",marks:"6",
+ans:`<h4>Adaptive vs Predictive</h4>
+<p>A <span class="kp">predictive</span> approach (like Waterfall) assumes all requirements, risks, and solutions can be identified and planned at the start. It creates a comprehensive plan and follows it strictly. Success is measured by how closely the project followed the plan.</p>
+<p>An <span class="kp">adaptive</span> approach (Agile) accepts that requirements will evolve, technologies will change, and what the customer needs will become clearer over time. Rather than predict the future, Agile continuously inspects and adapts.</p>
+<h4>How This Affects Agile Project Management</h4>
+<ul>
+<li><strong>Rolling planning:</strong> Instead of one upfront plan, Agile plans sprint by sprint. The Product Backlog is the plan — and it changes constantly.</li>
+<li><strong>Embracing change:</strong> When stakeholders discover a better approach mid-project, Agile teams accommodate it in the next sprint rather than resisting it.</li>
+<li><strong>No fixed scope:</strong> The scope of an Agile project is not fixed — the team delivers the highest-value features first and adjusts what gets built based on feedback.</li>
+<li><strong>Regular inspection:</strong> Sprint Reviews and Retrospectives are built-in adaptation mechanisms — the team regularly checks whether they're building the right thing the right way.</li>
+<li><strong>Estimates are rolling:</strong> Velocity (how much work a team completes per sprint) is measured and used to forecast — but forecasts are updated each sprint, not locked in upfront.</li>
+</ul>
+<div class="mh">💡 The keyword from the slides: "Agile development is adaptive, not predictive." Quote it in your answer.</div>`},
+
+{q:"What role does customer collaboration play in Agile? Refer to both the Agile Manifesto and Agile Principles in your answer.",diff:"hard",marks:"8",
+ans:`<h4>Customer Collaboration in the Agile Manifesto</h4>
+<p>The third Agile Manifesto value — <span class="kp">Customer Collaboration over Contract Negotiation</span> — establishes customer involvement as a core Agile value. Rather than defining every requirement in a contract at the start and penalising the customer for changes, Agile treats the customer as a continuous partner. The relationship is collaborative, not transactional.</p>
+<h4>Customer Collaboration in the 12 Principles</h4>
+<ul>
+<li><strong>Principle 1:</strong> Customer satisfaction through early and continuous delivery — the customer sees and benefits from working software from sprint 1.</li>
+<li><strong>Principle 2:</strong> Welcome changing requirements — customers can change their mind as they learn more, without penalty.</li>
+<li><strong>Principle 4:</strong> Business people and developers must work together daily — the customer is not a distant stakeholder but an active daily participant.</li>
+<li><strong>Principle 7:</strong> Working software is the primary measure of progress — customers evaluate real software, not status reports.</li>
+</ul>
+<h4>How Customer Collaboration Works in Scrum</h4>
+<ul>
+<li>The <strong>Product Owner</strong> role exists specifically to represent the customer daily within the team</li>
+<li><strong>Sprint Reviews</strong> bring customers into direct contact with working software every 2–4 weeks</li>
+<li><strong>Product Backlog</strong> prioritisation reflects customer business value — customers influence what gets built first</li>
+</ul>
+<h4>Why It Matters</h4>
+<p>Traditional models produced software that didn't meet customer needs because customers were only consulted at the start and end. Continuous collaboration ensures the team builds the right product, not just a technically correct one.</p>
+<div class="mh">💡 Explicitly reference the Manifesto value + 2 principles + how Scrum implements it = full marks.</div>`},
+
+{q:"Explain the concept of an 'Increment' in Scrum. Why must it be 'potentially releasable' at the end of every sprint?",diff:"medium",marks:"5",
+ans:`<h4>The Scrum Increment</h4>
+<p>The <span class="kp">Increment</span> is a Scrum artifact representing the sum of all Product Backlog items completed during the current sprint, combined with the value of all previous sprints' increments. It is the tangible output of each sprint — actual, working software.</p>
+<h4>Properties of a Valid Increment</h4>
+<ul><li>Must be <strong>usable</strong> — functions correctly and can be interacted with</li><li>Must be <strong>potentially releasable</strong> — meets quality standards to be deployed to real users if the Product Owner chooses</li><li>Must meet the team's <strong>Definition of Done</strong> — agreed standards for completeness (coded, tested, documented, integrated)</li></ul>
+<h4>Why 'Potentially Releasable' Matters</h4>
+<ul>
+<li><strong>Business agility:</strong> If the market demands an urgent release, the team can deploy the current Increment immediately — without additional work. This is impossible if quality is deferred.</li>
+<li><strong>Honest measurement:</strong> "Potentially releasable" proves the work is genuinely done — not 90% done. It prevents teams from claiming completion when features still need testing or fixing.</li>
+<li><strong>Stakeholder trust:</strong> Showing a releasable increment at every Sprint Review builds confidence that the team is producing real value, not just activity.</li>
+<li><strong>Risk reduction:</strong> Each sprint ends with deployable software — if the project is cancelled, the team has already delivered value.</li>
+</ul>
+<div class="mh">💡 "Potentially releasable" doesn't mean it MUST be released — it means it COULD be released. The Product Owner decides.</div>`},
+];
+
+/* ── RENDER MCQ ── */
+const L=['A','B','C','D'];let sC=0,sT=0;
+function renderMCQ(){
+  const b=document.getElementById('mbox');
+  MCQ.forEach((m,i)=>{
+    const opts=m.opts.map((o,oi)=>`<div class="opt" data-q="${i}" data-o="${oi}" onclick="sel(this,${i},${oi})"><span class="ol">${L[oi]}</span><span>${o}</span></div>`).join('');
+    b.innerHTML+=`<div class="mqcard" style="animation-delay:${i*.02}s">
+      <div class="qn">Q${i+1} / ${MCQ.length}</div>
+      <div class="qt">${m.q}</div>
+      <div class="opts" id="o${i}">${opts}</div>
+      <div class="fb" id="f${i}"></div>
+      <button class="ckbtn" id="b${i}" onclick="chk(${i})" disabled>Check Answer</button>
+    </div>`;
+  });
+  document.getElementById('mpill').textContent=MCQ.length+' Questions';
+}
+function sel(el,qi,oi){
+  document.querySelectorAll(`[data-q="${qi}"]`).forEach(o=>{if(!o.classList.contains('ok')&&!o.classList.contains('no'))o.classList.remove('sel');});
+  el.classList.add('sel');document.getElementById('b'+qi).disabled=false;
+}
+function chk(qi){
+  const opts=document.querySelectorAll(`[data-q="${qi}"]`);
+  let ch=-1;opts.forEach(o=>{if(o.classList.contains('sel'))ch=+o.dataset.o;});
+  if(ch<0)return;
+  const m=MCQ[qi],fb=document.getElementById('f'+qi);
+  opts.forEach(o=>{o.onclick=null;o.style.cursor='default';});
+  opts[m.ans].classList.add('ok');sT++;
+  if(ch===m.ans){sC++;fb.className='fb cf show';fb.innerHTML='✅ <strong>Correct!</strong> '+m.exp;}
+  else{opts[ch].classList.add('no');fb.className='fb xf show';fb.innerHTML='❌ <strong>Wrong.</strong> Correct: <strong>'+L[m.ans]+'</strong>. '+m.exp;}
+  const btn=document.getElementById('b'+qi);btn.disabled=true;btn.textContent='Answered ✓';
+  updS();
+}
+function updS(){
+  document.getElementById('sc').textContent=sC;document.getElementById('st').textContent=sT;
+  document.getElementById('pf').style.width=(sT>0?sC/sT*100:0)+'%';
+}
+
+/* ── RENDER ESSAY ── */
+function renderEssay(){
+  const b=document.getElementById('ebox');
+  const dm={easy:{c:'de',l:'EASY'},medium:{c:'dm',l:'MEDIUM'},hard:{c:'dh',l:'HARD'}};
+  ESSAYS.forEach((e,i)=>{
+    const d=dm[e.diff];
+    b.innerHTML+=`<div class="ecard" style="animation-delay:${i*.02}s">
+      <div class="elbl"><span class="${d.c}">${d.l}</span> · <span class="dmk">${e.marks} Marks</span> · <span style="color:var(--mut)">Q${i+1}</span></div>
+      <div class="eq">${e.q}</div>
+      <button class="atog" onclick="tog(this,'ea${i}')">Show Model Answer
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="abody" id="ea${i}">${e.ans}</div>
+    </div>`;
+  });
+}
+function tog(btn,id){
+  const b=document.getElementById(id),open=b.classList.toggle('show');
+  btn.classList.toggle('open',open);btn.childNodes[0].textContent=open?'Hide Model Answer ':'Show Model Answer ';
+}
+
+renderMCQ();renderEssay();
+</script>
+</body>
+</html>
